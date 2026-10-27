@@ -86,17 +86,17 @@ export type BackgroundSpec =
       type: 'interactive';
       effect:
         | 'spotlight'
-        | 'gradient-mesh'
         | 'particles'
-        | 'blobs'
         | 'dots'
-        | 'noise'
         | 'waves'
-        | 'aurora'
-        | 'starfield'
         | 'retro-grid'
         | 'ripples'
-        | 'rain';
+        | 'rain'
+        | 'constellation'
+        | 'grid-glow'
+        | 'matrix'
+        | 'confetti'
+        | 'snow';
       baseColor?: string;
       effectColor?: string;
       intensity: number;

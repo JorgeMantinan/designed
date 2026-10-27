@@ -5,7 +5,7 @@ import s from './backgrounds.module.scss';
 
 /**
  * CSS-driven interactive backgrounds (no per-frame JS except pointer vars):
- * spotlight, gradient mesh, blobs, dots, noise and waves.
+ * spotlight, dot grid, waves, retro grid and ripples.
  */
 
 /** Two-period sine path (period360 units) so translateX(-360) loops seamlessly. */
@@ -28,27 +28,6 @@ export function Spotlight({ effect, hostRef }: EffectProps) {
 }
 
 /** Slow-drifting radial gradients tinted with the effect color. */
-export function GradientMesh({ effect }: EffectProps) {
-  return (
-    <div
-      className={`${s.layer} ${s.mesh}`}
-      data-effect="gradient-mesh"
-      style={effectVars(effect)}
-    />
-  );
-}
-
-/** Organic blobs that morph and float. */
-export function Blobs({ effect }: EffectProps) {
-  return (
-    <div className={`${s.layer} ${s.blobs}`} data-effect="blobs" style={effectVars(effect)}>
-      <span className={s.blob} />
-      <span className={s.blob} />
-      <span className={s.blob} />
-    </div>
-  );
-}
-
 /** Dot grid revealed in a circle around the pointer. */
 export function Dots({ effect, hostRef }: EffectProps) {
   const layerRef = usePointerVars(hostRef);
@@ -61,11 +40,6 @@ export function Dots({ effect, hostRef }: EffectProps) {
       style={effectVars(effect)}
     />
   );
-}
-
-/** Film-grain texture (SVG turbulence) with a subtle stepped shimmer. */
-export function Noise({ effect }: EffectProps) {
-  return <div className={`${s.layer} ${s.noise}`} data-effect="noise" style={effectVars(effect)} />;
 }
 
 /** Two overlapping sine waves sliding along the bottom of the section. */
@@ -82,20 +56,6 @@ export function Waves({ effect }: EffectProps) {
         <path className={s.waveAlt} d={WAVE_PATH} />
       </svg>
     </div>
-  );
-}
-
-/** Aurora boreal: three blurred light bands swaying across the sky. */
-export function Aurora({ effect }: EffectProps) {
-  return (
-    <div className={`${s.layer} ${s.aurora}`} data-effect="aurora" style={effectVars(effect)} />
-  );
-}
-
-/** Starry sky with twinkling stars and a periodic shooting star. */
-export function Starfield({ effect }: EffectProps) {
-  return (
-    <div className={`${s.layer} ${s.stars}`} data-effect="starfield" style={effectVars(effect)} />
   );
 }
 

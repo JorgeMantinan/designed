@@ -30,7 +30,7 @@ describe('InteractiveBackground', () => {
 
   it('usa el primario del tema cuando no hay effectColor', () => {
     const html = renderToStaticMarkup(
-      <InteractiveBackground background={{ ...base, effect: 'blobs' }} />,
+      <InteractiveBackground background={{ ...base, effect: 'spotlight' }} />,
     );
 
     expect(html).toContain('--effect-color:var(--color-primary)');
@@ -45,13 +45,13 @@ describe('InteractiveBackground', () => {
     expect(html).toContain('data-effect="particles"');
   });
 
-  it('los efectos CSS pintan sus capas (malla, puntos, grano, ondas)', () => {
+  it('los efectos CSS pintan sus capas (puntos, cuadrícula, ondas)', () => {
     const render = (effect: string): string =>
       renderToStaticMarkup(<InteractiveBackground background={{ ...base, effect } as never} />);
 
-    expect(render('gradient-mesh')).toContain('data-effect="gradient-mesh"');
+    expect(render('retro-grid')).toContain('data-effect="retro-grid"');
     expect(render('dots')).toContain('data-effect="dots"');
-    expect(render('noise')).toContain('data-effect="noise"');
+    expect(render('ripples')).toContain('data-effect="ripples"');
     expect(render('waves')).toContain('data-effect="waves"');
     expect(render('waves')).toContain('<path');
   });

@@ -33,7 +33,9 @@ export const paletteSchema = z.object({
   textMuted: hexColorSchema.optional(),
 });
 
-const FONT_STACK = "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+/** Default font stack for headings and body — kept in sync with the builder's FONT_OPTIONS. */
+export const FONT_STACK =
+  "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
 export const typographySchema = z.object({
   headingFont: z.string().min(1).max(300).default(FONT_STACK),

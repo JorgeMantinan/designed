@@ -560,6 +560,7 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   const { state, dispatch } = useBuilder();
   const update = useUpdate();
   const section = state.spec.sections.find((item) => item.id === sectionId);
+  const sectionNumber = state.spec.sections.findIndex((item) => item.id === sectionId) + 1;
 
   if (!section) return null;
 
@@ -616,7 +617,9 @@ function SectionForm({ sectionId }: { sectionId: string }) {
 
   return (
     <>
-      <PanelSection title={`Sección · ${section.kind}`}>
+      <PanelSection
+        title={`Sección ${sectionNumber} · ${SECTION_KIND_LABELS[section.kind] ?? section.kind}`}
+      >
         <SelectField
           label="Tipo"
           value={section.kind}

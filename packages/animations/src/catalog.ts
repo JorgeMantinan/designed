@@ -132,21 +132,9 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     tracksPointer: true,
   },
   {
-    id: 'gradient-mesh',
-    name: 'Malla de gradiente',
-    description: 'Degradados animados en deriva lenta.',
-    tracksPointer: false,
-  },
-  {
     id: 'particles',
     name: 'Partículas',
     description: 'Puntos flotantes ligeros en canvas.',
-    tracksPointer: false,
-  },
-  {
-    id: 'blobs',
-    name: 'Blobs orgánicos',
-    description: 'Formas blandas que se transforman.',
     tracksPointer: false,
   },
   {
@@ -156,27 +144,9 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     tracksPointer: true,
   },
   {
-    id: 'noise',
-    name: 'Grano',
-    description: 'Textura de ruido sutil estilo película.',
-    tracksPointer: false,
-  },
-  {
     id: 'waves',
     name: 'Ondas',
     description: 'Ondas SVG en movimiento perpetuo.',
-    tracksPointer: false,
-  },
-  {
-    id: 'aurora',
-    name: 'Aurora boreal',
-    description: 'Cintas de luz desenfocadas ondeando por el cielo.',
-    tracksPointer: false,
-  },
-  {
-    id: 'starfield',
-    name: 'Cielo estrellado',
-    description: 'Estrellas que titilan y una estrella fugaz de vez en cuando.',
     tracksPointer: false,
   },
   {
@@ -195,6 +165,36 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     id: 'rain',
     name: 'Lluvia',
     description: 'Gotas de lluvia cayendo con viento, más gruesas según se acercan.',
+    tracksPointer: false,
+  },
+  {
+    id: 'constellation',
+    name: 'Constelación',
+    description: 'Puntos unidos por líneas que se conectan con tu ratón.',
+    tracksPointer: true,
+  },
+  {
+    id: 'grid-glow',
+    name: 'Rejilla luminosa',
+    description: 'Cuadrados que se encienden y crecen al pasar el ratón.',
+    tracksPointer: true,
+  },
+  {
+    id: 'matrix',
+    name: 'Lluvia de código',
+    description: 'Columnas de caracteres cayendo, estilo Matrix.',
+    tracksPointer: false,
+  },
+  {
+    id: 'confetti',
+    name: 'Confeti',
+    description: 'Tiras de colores cayendo y girando en celebración.',
+    tracksPointer: false,
+  },
+  {
+    id: 'snow',
+    name: 'Nieve',
+    description: 'Copos de nieve cayendo despacio con balanceo.',
     tracksPointer: false,
   },
 ];

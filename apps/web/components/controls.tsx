@@ -1,5 +1,6 @@
 'use client';
 
+import { FONT_STACK } from '@designed/schema';
 import type { ReactNode } from 'react';
 
 import { buildShadow, DEFAULT_SHADOW_PARTS, parseShadow } from '../lib/shadow';
@@ -366,7 +367,9 @@ export const FONT_OPTIONS: readonly FontOption[] = [
   {
     id: 'sistema',
     label: 'Sistema (moderna)',
-    value: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    // idéntico al FONT_STACK por defecto del schema para que el selector
+    // reconozca la fuente inicial en vez de mostrar la pila cruda.
+    value: FONT_STACK,
   },
   { id: 'clasica', label: 'Clásica (Arial)', value: 'Arial, Helvetica, sans-serif' },
   { id: 'elegante', label: 'Elegante (Georgia)', value: "Georgia, 'Times New Roman', serif" },
@@ -376,8 +379,20 @@ export const FONT_OPTIONS: readonly FontOption[] = [
   { id: 'personalizada', label: 'Personalizada…', value: '' },
 ];
 
+const normalizeStack = (stack: string): string => stack.trim().replace(/\s+/g, ' ');
+
 export function currentFontId(font: string): string {
-  return FONT_OPTIONS.find((option) => option.value === font)?.id ?? 'personalizada';
+  const wanted = normalizeStack(font);
+  return FONT_OPTIONS.find((option) => option.value === wanted)?.id ?? 'personalizada';
+}
+
+/** First family of a stack ("Georgia, serif" → "Georgia") for the simple input. */
+function firstFamily(stack: string): string {
+  return (
+    normalizeStack(stack)
+      .split(',')[0]
+      ?.replace(/^['"]|['"]$/g, '') ?? ''
+  );
 }
 
 export const WEIGHT_OPTIONS: readonly PresetOption[] = [
@@ -425,10 +440,10 @@ export function FontField({
       {selectedId === 'personalizada' && (
         <TextField
           label="Nombre de la fuente"
-          value={value}
-          placeholder="Georgia, serif"
-          hint="Escribe la letra que quieras. Si dudas, separa varias con comas: la web usará la primera que tenga instalada el navegador."
-          onCommit={(next) => typeof next === 'string' && onChange(next)}
+          value={firstFamily(value)}
+          placeholder="Georgia"
+          hint="Escribe solo la letra, por ejemplo «Georgia» o «Comic Sans MS». Las pilas largas no hacen falta."
+          onCommit={(next) => typeof next === 'string' && onChange(next.trim())}
         />
       )}
     </>

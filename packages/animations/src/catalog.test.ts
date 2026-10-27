@@ -56,9 +56,11 @@ describe('BACKGROUND_EFFECTS', () => {
     expect(getBackgroundEffect('spotlight')?.tracksPointer).toBe(true);
     expect(getBackgroundEffect('dots')?.tracksPointer).toBe(true);
     expect(getBackgroundEffect('ripples')?.tracksPointer).toBe(true);
+    expect(getBackgroundEffect('constellation')?.tracksPointer).toBe(true);
+    expect(getBackgroundEffect('grid-glow')?.tracksPointer).toBe(true);
     expect(getBackgroundEffect('particles')?.tracksPointer).toBe(false);
     expect(getBackgroundEffect('waves')?.tracksPointer).toBe(false);
-    expect(getBackgroundEffect('aurora')?.tracksPointer).toBe(false);
+    expect(getBackgroundEffect('matrix')?.tracksPointer).toBe(false);
   });
 
   it('cada efecto tiene nombre y descripción', () => {

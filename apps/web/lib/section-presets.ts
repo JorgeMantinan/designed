@@ -530,7 +530,7 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
     id: 'fondo-interactivo',
     label: 'Fondo interactivo',
     description:
-      'Sección con malla de gradiente que sigue al ratón. Cambia el efecto en «Fondo de la sección».',
+      'Sección sobre una constelación de puntos que se unen con el ratón. Cambia el efecto en «Fondo de la sección».',
     icon: '🌈',
     build: () =>
       makeSection(
@@ -546,7 +546,7 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
                   animation: { entrance: { type: 'fade-in' } },
                 }),
                 comp('text', newId('texto'), {
-                  text: 'Pasa el ratón por la sección: la malla de gradiente te sigue. Elige otro efecto (spotlight, partículas, ondas…) en el panel de fondo.',
+                  text: 'Pasa el ratón por la sección: los puntos se unen con líneas a tu paso. Elige otro efecto (spotlight, lluvia, código…) en el panel de fondo.',
                   align: 'center',
                   maxWidthPx: 560,
                 }),
@@ -561,7 +561,7 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
           ]),
         ],
         {
-          background: { type: 'interactive', effect: 'gradient-mesh', intensity: 0.6, speed: 0.5 },
+          background: { type: 'interactive', effect: 'constellation', intensity: 0.6, speed: 0.5 },
           animation: { entrance: { type: 'fade-in' } },
         },
       ),

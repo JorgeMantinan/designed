@@ -159,9 +159,7 @@ export function LayersTree() {
                   if (event.key === 'Enter') select({ kind: 'section', id: section.id });
                 }}
               >
-                <span>
-                  {section.kind} · {section.id}
-                </span>
+                <span title={section.id}>Sección {index + 1}</span>
                 <span className={s.treeMiniRow}>
                   {rowButton('↑', () => moveSection(index, -1))}
                   {rowButton('↓', () => moveSection(index, 1))}

@@ -22,20 +22,24 @@ export const gradientSchema = z.object({
   stops: z.array(gradientStopSchema).min(2).max(6),
 });
 
-/** Interactive backgrounds that react to pointer movement. */
+/**
+ * Interactive backgrounds that react to pointer movement.
+ * The12 effects that render correctly in the builder (canvas-driven ones
+ * plus pointer/SVG/CSS layers that have been visually verified).
+ */
 export const INTERACTIVE_BACKGROUND_EFFECTS = [
   'spotlight',
-  'gradient-mesh',
   'particles',
-  'blobs',
   'dots',
-  'noise',
   'waves',
-  'aurora',
-  'starfield',
   'retro-grid',
   'ripples',
   'rain',
+  'constellation',
+  'grid-glow',
+  'matrix',
+  'confetti',
+  'snow',
 ] as const;
 
 export const backgroundSchema = z.discriminatedUnion('type', [

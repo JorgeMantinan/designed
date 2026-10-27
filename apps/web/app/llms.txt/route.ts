@@ -23,8 +23,8 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
   sección, spacing, padding, radios, sombras, gradientes y breakpoints responsive.
 - 51 paletas de5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible.
 - Animaciones de entrada y hover con preview en vivo (16 efectos) y 12 fondos interactivos que reaccionan
-  al ratón (spotlight, malla de gradiente, partículas, blobs, rejilla de puntos, grano, ondas,
-  aurora boreal, cielo estrellado, cuadrícula retro, ondas expansivas y lluvia).
+  al ratón (spotlight, partículas, rejilla de puntos, ondas, cuadrícula retro, ondas expansivas,
+  lluvia, constelación, rejilla luminosa, lluvia de código, confeti y nieve).
 - Sombreados de imágenes y carruseles: lateral, vertical, diagonal, radial, duotone y viñeta.
 - Undo/redo, autoguardado local e import/export del diseño como JSON.
 

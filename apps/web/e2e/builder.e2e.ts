@@ -34,8 +34,8 @@ test('flujo completo: template → editor → propiedades → deshacer', async (
   ).toBeVisible();
 
   // Seleccionar una sección en el árbol → panel de propiedades contextual.
-  await page.getByRole('button', { name: /hero · hero/ }).click();
-  await expect(page.getByText('Sección · hero')).toBeVisible();
+  await page.getByRole('button', { name: /^Sección 1/ }).click();
+  await expect(page.getByText('Sección 1 · Hero')).toBeVisible();
   await expect(page.getByText('Tipo de fondo')).toBeVisible();
 
   // Renombrar el diseño (commit al desenfocar).
@@ -55,7 +55,7 @@ test('flujo completo: template → editor → propiedades → deshacer', async (
   // Petición: nueva sección desde presets con contenido y animaciones.
   await page.getByRole('button', { name: /Añadir sección/ }).click();
   await page.getByRole('button', { name: /Cifras con spotlight/ }).click();
-  await expect(page.getByText('Sección · stats')).toBeVisible();
+  await expect(page.getByText(/Sección \d+ · Cifras/)).toBeVisible();
   await expect(page.getByText('Tipo de fondo')).toBeVisible();
 });
 

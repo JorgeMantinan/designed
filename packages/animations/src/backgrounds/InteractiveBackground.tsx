@@ -2,20 +2,14 @@ import type { InteractiveBackgroundSpec } from '@designed/schema';
 import type { CSSProperties, RefObject } from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
-import {
-  Aurora,
-  Blobs,
-  Dots,
-  GradientMesh,
-  Noise,
-  RetroGrid,
-  Ripples,
-  Spotlight,
-  Starfield,
-  Waves,
-} from './CssEffects';
+import { Dots, RetroGrid, Ripples, Spotlight, Waves } from './CssEffects';
+import { Confetti } from './Confetti';
+import { Constellation } from './Constellation';
+import { GridGlow } from './GridGlow';
+import { Matrix } from './Matrix';
 import { Particles } from './Particles';
 import { Rain } from './Rain';
+import { Snow } from './Snow';
 
 export interface EffectProps {
   effect: InteractiveBackgroundSpec;
@@ -86,28 +80,28 @@ export function InteractiveBackground({ background, hostRef }: InteractiveBackgr
   switch (background.effect) {
     case 'spotlight':
       return <Spotlight {...props} />;
-    case 'gradient-mesh':
-      return <GradientMesh {...props} />;
     case 'particles':
       return <Particles {...props} />;
-    case 'blobs':
-      return <Blobs {...props} />;
     case 'dots':
       return <Dots {...props} />;
-    case 'noise':
-      return <Noise {...props} />;
     case 'waves':
       return <Waves {...props} />;
-    case 'aurora':
-      return <Aurora {...props} />;
-    case 'starfield':
-      return <Starfield {...props} />;
     case 'retro-grid':
       return <RetroGrid {...props} />;
     case 'ripples':
       return <Ripples {...props} />;
     case 'rain':
       return <Rain {...props} />;
+    case 'constellation':
+      return <Constellation {...props} />;
+    case 'grid-glow':
+      return <GridGlow {...props} />;
+    case 'matrix':
+      return <Matrix {...props} />;
+    case 'confetti':
+      return <Confetti {...props} />;
+    case 'snow':
+      return <Snow {...props} />;
     default:
       return null;
   }

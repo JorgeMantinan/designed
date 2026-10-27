@@ -16,7 +16,7 @@ const FEATURES = [
   {
     icon: '✨',
     title: 'Animaciones por doquier',
-    text: 'Entradas, hovers y 12 fondos interactivos (spotlight, aurora, partículas...).',
+    text: 'Entradas, hovers y 12 fondos interactivos (spotlight, constelación, lluvia...).',
   },
   {
     icon: '📦',
