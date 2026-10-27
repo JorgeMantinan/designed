@@ -1,0 +1,15 @@
+{
+  "name": "@designed/palettes",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Catálogo de paletas de 5 colores con validación de contraste WCAG",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@designed/components",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Primitivas headless: Button, Card, Header, Nav, Section, Carousel, Footer, Panel...",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "react": "^19"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@designed/codegen",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Emisor: DesignSpec → proyecto Vite+React+TS exportable en ZIP",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@designed/schema": "workspace:*"
+  }
+}

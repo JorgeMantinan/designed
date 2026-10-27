@@ -1,0 +1,15 @@
+{
+  "name": "@designed/animations",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Catálogo de animaciones (botones, menús, entradas) y fondos interactivos",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

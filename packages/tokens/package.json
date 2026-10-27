@@ -1,0 +1,15 @@
+{
+  "name": "@designed/tokens",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline de design tokens: tokens → SCSS + CSS custom properties + TS",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

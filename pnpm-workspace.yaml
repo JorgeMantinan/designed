@@ -1,0 +1,10 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Scripts de construcción de dependencias aprobados (pnpm 11 los bloquea por defecto).
+# Revisar cada uno antes de añadirlo: solo paquetes de confianza.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  '@parcel/watcher': true

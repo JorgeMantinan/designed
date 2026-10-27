@@ -1,0 +1,16 @@
+# Normalizar finales de línea: LF en el repositorio en todas las plataformas
+* text=auto eol=lf
+
+# Binarios sin transformar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.pdf binary

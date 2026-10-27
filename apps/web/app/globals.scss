@@ -1,0 +1,75 @@
+// Estilos globales del builder (Fase 5 los ampliará).
+// Se usa SCSS desde el día 1 para validar el toolchain exportado.
+
+:root {
+  // Tokens provisionales (Fase 2 los generará con Style Dictionary)
+  --color-primary: #6c5ce7;
+  --color-background: #0b0b10;
+  --color-surface: #14141c;
+  --color-text: #f5f5f7;
+  --color-text-muted: #a1a1ad;
+  --spacing-md: 1rem;
+  --radius-card: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+
+.hero {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: 2rem;
+  text-align: center;
+}
+
+.hero__kicker {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  margin: 0;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.hero__subtitle {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.hero__status {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
