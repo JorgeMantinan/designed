@@ -61,9 +61,10 @@ export interface CommitFieldProps {
   value: string | number | undefined;
   onCommit: (value: string | number | undefined) => void;
   placeholder?: string;
+  hint?: string;
 }
 
-export function TextField({ label, value, onCommit, placeholder }: CommitFieldProps) {
+export function TextField({ label, value, onCommit, placeholder, hint }: CommitFieldProps) {
   const [local, setLocal] = useLocalValue(value);
 
   const commit = (): void => {
@@ -84,6 +85,7 @@ export function TextField({ label, value, onCommit, placeholder }: CommitFieldPr
           if (event.key === 'Enter') event.currentTarget.blur();
         }}
       />
+      {hint && <small className={s.fieldHint}>{hint}</small>}
     </FieldRow>
   );
 }
@@ -144,7 +146,7 @@ export function NumberField({ label, value, onCommit, placeholder }: CommitField
   );
 }
 
-export function ColorField({ label, value, onCommit, hint }: CommitFieldProps & { hint?: string }) {
+export function ColorField({ label, value, onCommit, hint }: CommitFieldProps) {
   const hex = typeof value === 'string' ? value : '#000000';
   const [local, setLocal] = useState(hex);
   const [previous, setPrevious] = useState(hex);

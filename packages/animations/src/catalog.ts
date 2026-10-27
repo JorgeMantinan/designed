@@ -194,7 +194,7 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
   {
     id: 'rain',
     name: 'Lluvia',
-    description: 'Gotas cayendo en diagonal a dos profundidades.',
+    description: 'Gotas de lluvia cayendo con viento, más gruesas según se acercan.',
     tracksPointer: false,
   },
 ];

@@ -8,7 +8,6 @@ import {
   Dots,
   GradientMesh,
   Noise,
-  Rain,
   RetroGrid,
   Ripples,
   Spotlight,
@@ -16,6 +15,7 @@ import {
   Waves,
 } from './CssEffects';
 import { Particles } from './Particles';
+import { Rain } from './Rain';
 
 export interface EffectProps {
   effect: InteractiveBackgroundSpec;

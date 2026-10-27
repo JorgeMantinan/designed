@@ -127,8 +127,3 @@ export function Ripples({ effect, hostRef }: EffectProps) {
     </div>
   );
 }
-
-/** Diagonal rain streaks falling at two depths. */
-export function Rain({ effect }: EffectProps) {
-  return <div className={`${s.layer} ${s.rain}`} data-effect="rain" style={effectVars(effect)} />;
-}

@@ -424,9 +424,10 @@ export function FontField({
       </label>
       {selectedId === 'personalizada' && (
         <TextField
-          label={`Pila de ${label.toLowerCase()} (CSS)`}
+          label="Nombre de la fuente"
           value={value}
           placeholder="Georgia, serif"
+          hint="Escribe la letra que quieras. Si dudas, separa varias con comas: la web usará la primera que tenga instalada el navegador."
           onCommit={(next) => typeof next === 'string' && onChange(next)}
         />
       )}
