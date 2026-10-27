@@ -161,6 +161,7 @@ describe('Section', () => {
     );
 
     expect(html).toContain('data-effect="spotlight"');
+    expect(html).toContain('data-effect-layer');
   });
 
   it('aplica padding personalizado cuando se define', () => {

@@ -68,3 +68,5 @@ export const backgroundSchema = z.discriminatedUnion('type', [
 export type BackgroundSpec = z.infer<typeof backgroundSchema>;
 export type GradientSpec = z.infer<typeof gradientSchema>;
 export type InteractiveBackgroundEffect = (typeof INTERACTIVE_BACKGROUND_EFFECTS)[number];
+/** The interactive member of the background union (effect layer config). */
+export type InteractiveBackgroundSpec = Extract<BackgroundSpec, { type: 'interactive' }>;

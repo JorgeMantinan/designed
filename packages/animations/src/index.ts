@@ -19,3 +19,11 @@ export const ANIMATION_FAMILIES = [
 export type AnimationFamily = (typeof ANIMATION_FAMILIES)[number];
 
 export * from './motion';
+export * from './catalog';
+export {
+  InteractiveBackground,
+  effectVars,
+  useHostPointer,
+  usePointerVars,
+} from './backgrounds/InteractiveBackground';
+export type { EffectProps, InteractiveBackgroundProps } from './backgrounds/InteractiveBackground';

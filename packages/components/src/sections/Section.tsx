@@ -1,6 +1,6 @@
 'use client';
 
-import { useMotion } from '@designed/animations';
+import { InteractiveBackground, useMotion } from '@designed/animations';
 import { useRef } from 'react';
 import type { BackgroundSpec, SectionPadding, SectionSpec } from '@designed/schema';
 import type { CSSProperties } from 'react';
@@ -61,6 +61,11 @@ export function Section({
         ...motion.style,
       }}
     >
+      {background?.type === 'interactive' && (
+        <div className={s.effectLayer} data-effect-layer="" aria-hidden="true">
+          <InteractiveBackground background={background} hostRef={ref} />
+        </div>
+      )}
       <div className={s.inner}>
         {rows.map((row) => (
           <div
