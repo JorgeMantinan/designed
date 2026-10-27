@@ -694,6 +694,26 @@ function SectionForm({ sectionId }: { sectionId: string }) {
               <button
                 type="button"
                 className={s.treeMini}
+                title="Añadir columna a esta fila"
+                onClick={() =>
+                  patch((target) => {
+                    const targetRow = target.rows[index];
+                    if (!targetRow) return;
+                    targetRow.columns.push({
+                      id: newId('columna'),
+                      span: 12,
+                      hideOn: [],
+                      verticalAlign: 'start',
+                      components: [createDefaultComponent('text')],
+                    });
+                  })
+                }
+              >
+                +col
+              </button>
+              <button
+                type="button"
+                className={s.treeMini}
                 title="Subir fila"
                 onClick={() => moveRow(index, -1)}
               >

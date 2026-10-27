@@ -47,6 +47,16 @@ test('flujo completo: template → editor → propiedades → deshacer', async (
   // Deshacer con el botón de la topbar.
   await page.getByTitle('Deshacer (Ctrl+Z)').click();
   await expect(page.getByText('Diseño — Landing clásica')).toBeVisible();
+
+  // Petición: añadir columna visible desde la lista de filas.
+  await page.locator('button[title="Añadir columna a esta fila"]').click();
+  await expect(page.getByText('Fila 1 · 2 col.')).toBeVisible();
+
+  // Petición: nueva sección desde presets con contenido y animaciones.
+  await page.getByRole('button', { name: /Añadir sección/ }).click();
+  await page.getByRole('button', { name: /Cifras con spotlight/ }).click();
+  await expect(page.getByText('Sección · stats')).toBeVisible();
+  await expect(page.getByText('Tipo de fondo')).toBeVisible();
 });
 
 test('exportar ZIP: descarga un archivo válido', async ({ page }) => {

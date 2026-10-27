@@ -1,12 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 import type { ComponentSpec } from '@designed/schema';
 
-import { createDefaultComponent, newId } from '../lib/fields';
 import { useBuilder } from '../lib/store';
 import type { Selection } from '../lib/store';
+import { SECTION_PRESETS, createSectionFromPreset } from '../lib/section-presets';
 
 import s from './builder.module.scss';
 
@@ -109,34 +110,20 @@ export function LayersTree() {
     if (selection.kind === 'section' && selection.id === id) select({ kind: 'global' });
   };
 
-  const addSection = (): void => {
-    const id = newId('seccion');
+  const [showPresets, setShowPresets] = useState(false);
+
+  /** Adds a rich, pre-designed section from the preset catalog. */
+  const addSection = (presetId: string): void => {
+    const section = createSectionFromPreset(presetId);
+    if (!section) return;
     dispatch({
       type: 'update',
       mutate: (draft) => {
-        draft.sections.push({
-          id,
-          kind: 'generic',
-          width: 'contained',
-          rows: [
-            {
-              id: newId('fila'),
-              columns: [
-                {
-                  id: newId('columna'),
-                  span: 12,
-                  hideOn: [],
-                  verticalAlign: 'start',
-                  components: [createDefaultComponent('heading'), createDefaultComponent('text')],
-                },
-              ],
-              stackBelow: 'mobile',
-            },
-          ],
-        });
+        draft.sections.push(section as (typeof draft.sections)[number]);
       },
     });
-    select({ kind: 'section', id });
+    select({ kind: 'section', id: section.id });
+    setShowPresets(false);
   };
 
   return (
@@ -278,9 +265,28 @@ export function LayersTree() {
             </div>
           );
         })}
-        <button type="button" className={s.ghostButton} onClick={addSection}>
-          + Añadir sección
-        </button>{' '}
+        <button
+          type="button"
+          className={s.ghostButton}
+          onClick={() => setShowPresets((visible) => !visible)}
+        >
+          {showPresets ? '✕ Cerrar' : '+ Añadir sección'}
+        </button>
+        {showPresets && (
+          <div className={s.chipGrid} role="group" aria-label="Tipos de sección">
+            {SECTION_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                type="button"
+                className={s.chip}
+                title={preset.description}
+                onClick={() => addSection(preset.id)}
+              >
+                <span aria-hidden="true">{preset.icon}</span> {preset.label}
+              </button>
+            ))}
+          </div>
+        )}{' '}
       </div>
 
       <button
