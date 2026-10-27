@@ -678,6 +678,8 @@ function SectionForm({ sectionId }: { sectionId: string }) {
         </ButtonRow>
       </PanelSection>
 
+      <BackgroundEditor section={section} onPatch={patch} />
+
       <PanelSection title={`Filas (${section.rows.length})`}>
         <div className={s.rowList}>
           {section.rows.map((row, index) => (
@@ -704,6 +706,7 @@ function SectionForm({ sectionId }: { sectionId: string }) {
                       span: 12,
                       hideOn: [],
                       verticalAlign: 'start',
+                      contentAlign: 'stretch',
                       components: [createDefaultComponent('text')],
                     });
                   })
@@ -753,6 +756,7 @@ function SectionForm({ sectionId }: { sectionId: string }) {
                       span: 12,
                       hideOn: [],
                       verticalAlign: 'start',
+                      contentAlign: 'stretch',
                       components: [createDefaultComponent('heading')],
                     },
                   ],
@@ -764,8 +768,6 @@ function SectionForm({ sectionId }: { sectionId: string }) {
           </button>
         </ButtonRow>
       </PanelSection>
-
-      <BackgroundEditor section={section} onPatch={patch} />
 
       <AnimationPicker
         allowHover={false}
@@ -811,7 +813,7 @@ function BackgroundEditor({
   ];
 
   return (
-    <PanelSection title="Fondo de la sección">
+    <PanelSection title="Fondo de la sección — color, degradado, imagen o interactivo">
       <SelectField
         label="Tipo de fondo"
         value={type}
@@ -1254,6 +1256,7 @@ function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
                   span: 12,
                   hideOn: [],
                   verticalAlign: 'start',
+                  contentAlign: 'stretch',
                   components: [createDefaultComponent('text')],
                 });
               })
@@ -1324,6 +1327,23 @@ function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: stri
           max={12}
           hint="12 = ancho completo · 6 = mitad · 4 = un tercio."
           onChange={(v) => patch((target) => void (target.span = Number(v ?? 12)))}
+        />
+        <SelectField
+          label="Alineación del contenido horizontal"
+          hint="«Centro» deja el contenido en medio de la pantalla aunque la columna ocupe poco ancho."
+          value={column.contentAlign}
+          options={[
+            { value: 'stretch', label: 'Estirado (rellena la columna)' },
+            { value: 'start', label: 'Izquierda' },
+            { value: 'center', label: '★ Centro en medio de la pantalla' },
+            { value: 'end', label: 'Derecha' },
+          ]}
+          onChange={(value) =>
+            patch(
+              (target) =>
+                void (target.contentAlign = (value ?? 'stretch') as ColumnDraft['contentAlign']),
+            )
+          }
         />
         <SelectField
           label="Alineación vertical"

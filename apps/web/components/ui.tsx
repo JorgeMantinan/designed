@@ -189,11 +189,13 @@ export function SelectField({
   value,
   options,
   onChange,
+  hint,
 }: {
   label: string;
   value: string | undefined;
   options: readonly { value: string; label: string }[];
   onChange: (value: string | undefined) => void;
+  hint?: string;
 }) {
   return (
     <FieldRow label={label}>
@@ -208,6 +210,7 @@ export function SelectField({
           </option>
         ))}
       </select>
+      {hint && <small className={s.fieldHint}>{hint}</small>}
     </FieldRow>
   );
 }

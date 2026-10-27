@@ -39,7 +39,14 @@ export const columnSchema = z.object({
   components: z.array(componentSchema).min(1).max(30),
   /** Hide this column entirely on smaller breakpoints. */
   hideOn: z.array(z.enum(['tablet', 'mobile'])).default([]),
+  /** Vertical position of the column inside the grid row (block axis). */
   verticalAlign: verticalAlignSchema.default('start'),
+  /**
+   * Horizontal alignment of the column's content inside the column box
+   * (flex cross axis): `center` centres the block on the page whatever its
+   * width — the "centrar en medio de la pantalla" control.
+   */
+  contentAlign: z.enum(['stretch', 'start', 'center', 'end']).default('stretch'),
 });
 
 export const rowSchema = z.object({

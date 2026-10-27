@@ -35,12 +35,24 @@ function makeRow(columns: ColumnInput[], extra: Partial<RowInput> = {}): RowInpu
   return { id: newId('fila'), stackBelow: 'mobile', columns, ...extra };
 }
 
-function makeColumn(components: ComponentInput[], span = 12): ColumnInput {
-  return { id: newId('columna'), span, hideOn: [], verticalAlign: 'start', components };
+function makeColumn(
+  components: ComponentInput[],
+  span = 12,
+  contentAlign: 'stretch' | 'start' | 'center' | 'end' = 'stretch',
+): ColumnInput {
+  return {
+    id: newId('columna'),
+    span,
+    hideOn: [],
+    verticalAlign: 'start',
+    contentAlign,
+    components,
+  };
 }
 
 export interface SectionPreset {
-  id: NonNullable<SectionInput['kind']>;
+  /** Preset id (chips, lookup). May exceed the section-kind list. */
+  id: string;
   label: string;
   description: string;
   icon: string;
@@ -77,28 +89,32 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         'hero',
         [
           makeRow([
-            makeColumn([
-              comp('badge', newId('badge'), { label: 'Nuevo', tone: 'accent' }),
-              comp('heading', newId('titulo'), {
-                level: 1,
-                text: 'Un titular que engancha',
-                size: 'display',
-                align: 'center',
-                animation: { entrance: { type: 'fade-in', delayMs: 100 } },
-              }),
-              comp('text', newId('texto'), {
-                text: 'Describe en una frase el valor de tu producto para quien te visita.',
-                align: 'center',
-                maxWidthPx: 560,
-              }),
-              comp('buttonGroup', newId('botones'), {
-                buttons: [
-                  { id: newId('cta'), label: 'Empezar', href: '#', variant: 'gradient' },
-                  { id: newId('cta'), label: 'Saber más', href: '#', variant: 'outline' },
-                ],
-                align: 'center',
-              }),
-            ]),
+            makeColumn(
+              [
+                comp('badge', newId('badge'), { label: 'Nuevo', tone: 'accent' }),
+                comp('heading', newId('titulo'), {
+                  level: 1,
+                  text: 'Un titular que engancha',
+                  size: 'display',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in', delayMs: 100 } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Describe en una frase el valor de tu producto para quien te visita.',
+                  align: 'center',
+                  maxWidthPx: 560,
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [
+                    { id: newId('cta'), label: 'Empezar', href: '#', variant: 'gradient' },
+                    { id: newId('cta'), label: 'Saber más', href: '#', variant: 'outline' },
+                  ],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
           ]),
         ],
         {
@@ -253,21 +269,25 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         'cta',
         [
           makeRow([
-            makeColumn([
-              comp('heading', newId('titulo'), {
-                level: 2,
-                text: '¿Listo para empezar?',
-                align: 'center',
-              }),
-              comp('text', newId('texto'), {
-                text: 'Prueba gratis hoy, sin tarjeta de crédito.',
-                align: 'center',
-              }),
-              comp('buttonGroup', newId('botones'), {
-                buttons: [{ id: newId('cta'), label: 'Crear mi cuenta', variant: 'gradient' }],
-                align: 'center',
-              }),
-            ]),
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: '¿Listo para empezar?',
+                  align: 'center',
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Prueba gratis hoy, sin tarjeta de crédito.',
+                  align: 'center',
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [{ id: newId('cta'), label: 'Crear mi cuenta', variant: 'gradient' }],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
           ]),
         ],
         {
@@ -472,34 +492,78 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         'contact',
         [
           makeRow([
-            makeColumn([
-              comp('badge', newId('badge'), { label: 'Hablemos', tone: 'primary' }),
-              comp('heading', newId('titulo'), {
-                level: 2,
-                text: 'Cuéntanos tu proyecto',
-                align: 'center',
-                animation: { entrance: { type: 'fade-in' } },
-              }),
-              comp('text', newId('texto'), {
-                text: 'Respondemos en menos de24 horas laborables.',
-                align: 'center',
-              }),
-              comp('buttonGroup', newId('botones'), {
-                buttons: [
-                  {
-                    id: newId('cta'),
-                    label: 'Escríbenos',
-                    href: 'mailto:hola@ejemplo.com',
-                    variant: 'solid',
-                    icon: 'mail',
-                  },
-                ],
-                align: 'center',
-              }),
-            ]),
+            makeColumn(
+              [
+                comp('badge', newId('badge'), { label: 'Hablemos', tone: 'primary' }),
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Cuéntanos tu proyecto',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Respondemos en menos de24 horas laborables.',
+                  align: 'center',
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [
+                    {
+                      id: newId('cta'),
+                      label: 'Escríbenos',
+                      href: 'mailto:hola@ejemplo.com',
+                      variant: 'solid',
+                      icon: 'mail',
+                    },
+                  ],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
           ]),
         ],
         { animation: { entrance: { type: 'blur-in' } } },
+      ),
+  },
+  {
+    id: 'fondo-interactivo',
+    label: 'Fondo interactivo',
+    description:
+      'Sección con malla de gradiente que sigue al ratón. Cambia el efecto en «Fondo de la sección».',
+    icon: '🌈',
+    build: () =>
+      makeSection(
+        'generic',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Contenido sobre un fondo que se mueve',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Pasa el ratón por la sección: la malla de gradiente te sigue. Elige otro efecto (spotlight, partículas, ondas…) en el panel de fondo.',
+                  align: 'center',
+                  maxWidthPx: 560,
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [{ id: newId('cta'), label: 'Probar el efecto', variant: 'gradient' }],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
+          ]),
+        ],
+        {
+          background: { type: 'interactive', effect: 'gradient-mesh', intensity: 0.6, speed: 0.5 },
+          animation: { entrance: { type: 'fade-in' } },
+        },
       ),
   },
   {
@@ -512,17 +576,23 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         'generic',
         [
           makeRow([
-            makeColumn([
-              comp('heading', newId('titulo'), {
-                level: 2,
-                text: 'Nueva sección',
-                animation: { entrance: { type: 'slide-up' } },
-              }),
-              comp('text', newId('texto'), {
-                text: 'Escribe aquí el contenido de esta sección.',
-              }),
-              comp('divider', newId('separador'), { animated: true }),
-            ]),
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Nueva sección',
+                  align: 'center',
+                  animation: { entrance: { type: 'slide-up' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Escribe aquí el contenido de esta sección.',
+                  align: 'center',
+                }),
+                comp('divider', newId('separador'), { animated: true }),
+              ],
+              12,
+              'center',
+            ),
           ]),
         ],
         { animation: { entrance: { type: 'slide-up' } } },

@@ -81,6 +81,14 @@ export function Section({
                 data-hide={column.hideOn.length > 0 ? column.hideOn.join(' ') : undefined}
                 style={{
                   gridColumn: `span ${column.span}`,
+                  alignItems:
+                    column.contentAlign === 'center'
+                      ? 'center'
+                      : column.contentAlign === 'start'
+                        ? 'flex-start'
+                        : column.contentAlign === 'end'
+                          ? 'flex-end'
+                          : 'stretch',
                   alignSelf:
                     column.verticalAlign === 'start'
                       ? 'stretch'

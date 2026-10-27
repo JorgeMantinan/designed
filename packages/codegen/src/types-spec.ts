@@ -227,6 +227,7 @@ export interface ColumnSpec {
   components: ComponentSpec[];
   hideOn: ('tablet' | 'mobile')[];
   verticalAlign: 'start' | 'center' | 'end';
+  contentAlign: 'stretch' | 'start' | 'center' | 'end';
 }
 
 export interface SectionSpec {

@@ -33,10 +33,15 @@ function countComponents(section: {
 }
 
 describe('SECTION_PRESETS', () => {
-  it('cubre los14 tipos de sección del schema', () => {
-    expect(SECTION_PRESETS).toHaveLength(SECTION_KINDS.length);
-    const presetIds = SECTION_PRESETS.map((preset) => preset.id).sort();
-    expect(presetIds).toEqual([...SECTION_KINDS].sort());
+  it('cubre todos los tipos de sección del schema (superset: puede haber extras)', () => {
+    const presetIds = SECTION_PRESETS.map((preset) => preset.id);
+    for (const kind of SECTION_KINDS) {
+      expect(presetIds, kind).toContain(kind);
+    }
+    // Preset extra más allá de los kinds: fondo interactivo (issue del usuario).
+    expect(presetIds).toContain('fondo-interactivo');
+    // Sin duplicados en el catálogo.
+    expect(new Set(presetIds).size).toBe(presetIds.length);
   });
 
   it('cada preset genera una sección válida con contenido y animación de entrada', () => {
@@ -44,7 +49,11 @@ describe('SECTION_PRESETS', () => {
       const section = preset.build();
       const spec = parseWithSections([section]);
 
-      expect(spec.sections[0]?.kind, preset.id).toBe(preset.id);
+      // El id del preset puede ser libre (extras como 'fondo-interactivo');
+      // cuando coincide con un kind del schema, la sección debe usarlo.
+      if ((SECTION_KINDS as readonly string[]).includes(preset.id)) {
+        expect(spec.sections[0]?.kind, preset.id).toBe(preset.id);
+      }
       expect(countComponents(section), preset.id).toBeGreaterThanOrEqual(1);
       // Todos los presets traen animación de entrada (sección o componente).
       expect(JSON.stringify(section), preset.id).toContain('"entrance"');

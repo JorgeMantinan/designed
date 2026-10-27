@@ -294,23 +294,33 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
             'cta',
             [
               row('cta-fila', [
-                col('cta-col', [
-                  comp('heading', 'cta-titulo', {
-                    level: 2,
-                    text: 'Crea tu web hoy',
-                    align: 'center',
-                  }),
-                  comp('text', 'cta-texto', {
-                    text: 'Sin instalar nada. Diseña, previsualiza y descarga.',
-                    align: 'center',
-                  }),
-                  comp('buttonGroup', 'cta-botones', {
-                    buttons: [
-                      { id: 'cta-cta-1', label: 'Abrir el editor', href: '#', variant: 'gradient' },
-                    ],
-                    align: 'center',
-                  }),
-                ]),
+                col(
+                  'cta-col',
+                  [
+                    comp('heading', 'cta-titulo', {
+                      level: 2,
+                      text: 'Crea tu web hoy',
+                      align: 'center',
+                    }),
+                    comp('text', 'cta-texto', {
+                      text: 'Sin instalar nada. Diseña, previsualiza y descarga.',
+                      align: 'center',
+                    }),
+                    comp('buttonGroup', 'cta-botones', {
+                      buttons: [
+                        {
+                          id: 'cta-cta-1',
+                          label: 'Abrir el editor',
+                          href: '#',
+                          variant: 'gradient',
+                        },
+                      ],
+                      align: 'center',
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
               ]),
             ],
             {
@@ -603,19 +613,24 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
           ),
           section('info', 'cta', [
             row('info-fila', [
-              col('info-col', [
-                comp('heading', 'info-titulo', {
-                  level: 2,
-                  text: 'Ocho razones, un solo clic',
-                  align: 'center',
-                }),
-                comp('buttonGroup', 'info-botones', {
-                  buttons: [
-                    { id: 'info-cta', label: 'Probar el editor', href: '#', variant: 'gradient' },
-                  ],
-                  align: 'center',
-                }),
-              ]),
+              col(
+                'info-col',
+                [
+                  comp('heading', 'info-titulo', {
+                    level: 2,
+                    text: 'Ocho razones, un solo clic',
+                    align: 'center',
+                  }),
+                  comp('buttonGroup', 'info-botones', {
+                    buttons: [
+                      { id: 'info-cta', label: 'Probar el editor', href: '#', variant: 'gradient' },
+                    ],
+                    align: 'center',
+                  }),
+                ],
+                12,
+                { contentAlign: 'center' },
+              ),
             ]),
           ]),
         ],
@@ -643,52 +658,72 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
             'generic',
             [
               row('historia-fila-1', [
-                col('historia-col-1', [
-                  comp('badge', 'historia-badge', { label: 'Capítulo uno', tone: 'secondary' }),
-                  comp('heading', 'historia-titulo', {
-                    level: 1,
-                    text: 'Una columna. Tres momentos.',
-                    size: 'display',
-                    align: 'center',
-                  }),
-                  comp('text', 'historia-texto', {
-                    text: 'A veces menos es más: una idea por fila, avanzando hacia la acción final.',
-                    align: 'center',
-                    maxWidthPx: 520,
-                  }),
-                ]),
+                col(
+                  'historia-col-1',
+                  [
+                    comp('badge', 'historia-badge', { label: 'Capítulo uno', tone: 'secondary' }),
+                    comp('heading', 'historia-titulo', {
+                      level: 1,
+                      text: 'Una columna. Tres momentos.',
+                      size: 'display',
+                      align: 'center',
+                    }),
+                    comp('text', 'historia-texto', {
+                      text: 'A veces menos es más: una idea por fila, avanzando hacia la acción final.',
+                      align: 'center',
+                      maxWidthPx: 520,
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
               ]),
               row('historia-fila-2', [
-                col('historia-col-2', [
-                  comp('image', 'historia-imagen', {
-                    src: 'https://placehold.co/1200x600',
-                    alt: 'Escena de la historia',
-                    ratio: '16:9',
-                    radius: 'lg',
-                    overlay: { direction: 'to-bottom', intensity: 0.45 },
-                  }),
-                ]),
+                col(
+                  'historia-col-2',
+                  [
+                    comp('image', 'historia-imagen', {
+                      src: 'https://placehold.co/1200x600',
+                      alt: 'Escena de la historia',
+                      ratio: '16:9',
+                      radius: 'lg',
+                      overlay: { direction: 'to-bottom', intensity: 0.45 },
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
               ]),
               row('historia-fila-3', [
-                col('historia-col-3', [
-                  comp('heading', 'historia-cierre', {
-                    level: 2,
-                    text: 'El siguiente capítulo es tuyo',
-                    align: 'center',
-                  }),
-                  comp('buttonGroup', 'historia-ctas', {
-                    buttons: [
-                      { id: 'historia-cta-1', label: 'Continuar', href: '#', variant: 'gradient' },
-                      {
-                        id: 'historia-cta-2',
-                        label: 'Empezar de cero',
-                        href: '#',
-                        variant: 'outline',
-                      },
-                    ],
-                    align: 'center',
-                  }),
-                ]),
+                col(
+                  'historia-col-3',
+                  [
+                    comp('heading', 'historia-cierre', {
+                      level: 2,
+                      text: 'El siguiente capítulo es tuyo',
+                      align: 'center',
+                    }),
+                    comp('buttonGroup', 'historia-ctas', {
+                      buttons: [
+                        {
+                          id: 'historia-cta-1',
+                          label: 'Continuar',
+                          href: '#',
+                          variant: 'gradient',
+                        },
+                        {
+                          id: 'historia-cta-2',
+                          label: 'Empezar de cero',
+                          href: '#',
+                          variant: 'outline',
+                        },
+                      ],
+                      align: 'center',
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
               ]),
             ],
             { animation: { entrance: { type: 'fade-in' } } },
@@ -856,19 +891,24 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
         sections: [
           section('hero', 'hero', [
             row('hero-fila', [
-              col('hero-col', [
-                comp('heading', 'hero-titulo', {
-                  level: 1,
-                  text: 'Precios simples, sin sorpresas',
-                  size: 'xl',
-                  align: 'center',
-                }),
-                comp('text', 'hero-texto', {
-                  text: 'Elige el plan que encaje contigo. Cambia o cancela cuando quieras.',
-                  align: 'center',
-                  maxWidthPx: 520,
-                }),
-              ]),
+              col(
+                'hero-col',
+                [
+                  comp('heading', 'hero-titulo', {
+                    level: 1,
+                    text: 'Precios simples, sin sorpresas',
+                    size: 'xl',
+                    align: 'center',
+                  }),
+                  comp('text', 'hero-texto', {
+                    text: 'Elige el plan que encaje contigo. Cambia o cancela cuando quieras.',
+                    align: 'center',
+                    maxWidthPx: 520,
+                  }),
+                ],
+                12,
+                { contentAlign: 'center' },
+              ),
             ]),
           ]),
           section('precios', 'pricing', [

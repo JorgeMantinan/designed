@@ -3,6 +3,29 @@
   font-size: var(--text-h2);
 }
 
+// El nivel (h1-h6) SÍ afecta al tamaño visual cuando no hay tamaño explícito:
+// así "Máxima (h1)" se ve más grande y "Baja (h4)" más pequeño.
+.lv1 {
+  font-size: var(--text-h1);
+}
+
+.lv2 {
+  font-size: var(--text-h2);
+}
+
+.lv3 {
+  font-size: var(--text-h3);
+}
+
+.lv4 {
+  font-size: var(--text-h4);
+}
+
+.lv5,
+.lv6 {
+  font-size: calc(var(--text-h4) * 0.85);
+}
+
 .display {
   font-size: var(--text-display);
   letter-spacing: -0.03em;

@@ -16,6 +16,9 @@ export type FieldDescriptor =
       kind: 'select';
       label: string;
       options: { value: string; label: string }[];
+      /** Emit a number instead of a string (e.g. heading level). */
+      valueType?: 'number';
+      hint?: string;
     }
   | { key: string; kind: 'checkbox'; label: string }
   | {
@@ -188,21 +191,36 @@ const BUTTON_ITEM_FIELDS: FieldDescriptor[] = [
 /** Editable fields for every component type of the union. */
 export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
   heading: [
-    { key: 'level', kind: 'number', label: 'Nivel (1-6)', min: 1, max: 6, step: 1 },
-    { key: 'text', kind: 'textarea', label: 'Texto', rows: 2 },
     {
       key: 'size',
       kind: 'select',
-      label: 'Tamaño visual',
+      label: 'Tamaño del título',
+      hint: '«Automático» sigue la jerarquía de abajo; elegir un tamaño lo sobreescribe.',
       options: [
-        { value: '', label: 'Automático' },
-        { value: 'display', label: 'Display' },
-        { value: 'xl', label: 'XL' },
-        { value: 'lg', label: 'L' },
-        { value: 'md', label: 'M' },
-        { value: 'sm', label: 'S' },
+        { value: '', label: 'Automático (por jerarquía)' },
+        { value: 'display', label: 'Enorme (display)' },
+        { value: 'xl', label: 'Muy grande' },
+        { value: 'lg', label: 'Grande' },
+        { value: 'md', label: 'Medio' },
+        { value: 'sm', label: 'Pequeño' },
       ],
     },
+    {
+      key: 'level',
+      kind: 'select',
+      valueType: 'number',
+      label: 'Jerarquía del título (h1-h6)',
+      hint: 'Así los buscadores entienden la estructura: h1 = título principal (uno por página), h2 = apartados, h3+ = sub apartados.',
+      options: [
+        { value: '1', label: 'Máxima · h1' },
+        { value: '2', label: 'Alta · h2' },
+        { value: '3', label: 'Media · h3' },
+        { value: '4', label: 'Baja · h4' },
+        { value: '5', label: 'Mínima · h5' },
+        { value: '6', label: 'Mínima · h6' },
+      ],
+    },
+    { key: 'text', kind: 'textarea', label: 'Texto', rows: 2 },
     { key: 'align', kind: 'select', label: 'Alineación', options: ALIGN_OPTIONS },
     { key: 'tone', kind: 'select', label: 'Color', options: TONE_OPTIONS },
   ],

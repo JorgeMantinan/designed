@@ -29,6 +29,15 @@ import {
  * - `FieldsEditor` is the component-flavored wrapper with a titled section.
  */
 
+/** Select values may need numeric coercion (heading level) or blank → undefined. */
+function coerceSelectValue(
+  next: string | undefined,
+  field: { valueType?: 'number' },
+): number | string | undefined {
+  if (next == null || next === '') return undefined;
+  return field.valueType === 'number' ? Number(next) : next;
+}
+
 export function FieldsForm({
   fields,
   value,
@@ -109,7 +118,8 @@ export function FieldsForm({
             label={field.label}
             value={current as string | undefined}
             options={field.options}
-            onChange={(next) => change(field.key, next)}
+            hint={field.hint}
+            onChange={(next) => change(field.key, coerceSelectValue(next, field))}
           />
         );
 
@@ -290,7 +300,8 @@ function ItemField({
           label={field.label}
           value={current as string | undefined}
           options={field.options}
-          onChange={(next) => onChange({ ...item, [field.key]: next })}
+          hint={field.hint}
+          onChange={(next) => onChange({ ...item, [field.key]: coerceSelectValue(next, field) })}
         />
       );
     case 'color':

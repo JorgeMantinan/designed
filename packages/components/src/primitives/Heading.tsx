@@ -41,7 +41,15 @@ export function Heading({
     <Tag
       id={id}
       ref={ref}
-      className={cx(s.heading, size && s[size], s[tone], s[align], motion.className, className)}
+      className={cx(
+        s.heading,
+        s[`lv${index + 1}`],
+        size && s[size],
+        s[tone],
+        s[align],
+        motion.className,
+        className,
+      )}
       style={motion.style}
     >
       {text}

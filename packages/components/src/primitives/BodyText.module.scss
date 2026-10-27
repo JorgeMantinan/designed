@@ -9,10 +9,13 @@
 
 .center {
   text-align: center;
+  /* Centra el bloque en la página aunque tenga ancho máximo. */
+  margin-inline: auto;
 }
 
 .right {
   text-align: right;
+  margin-inline-start: auto;
 }
 
 .default {
