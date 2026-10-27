@@ -441,14 +441,15 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
     {
       key: 'size',
       kind: 'select',
-      label: 'Tamaño',
+      label: 'Tamaño del hueco',
+      hint: 'Cuánto espacio vacío deja este separador entre los bloques.',
       options: [
-        { value: 'xs', label: 'XS' },
-        { value: 'sm', label: 'SM' },
-        { value: 'md', label: 'MD' },
-        { value: 'lg', label: 'LG' },
-        { value: 'xl', label: 'XL' },
-        { value: 'xxl', label: 'XXL' },
+        { value: 'xs', label: 'Muy pequeña (XS)' },
+        { value: 'sm', label: 'Pequeña (SM)' },
+        { value: 'md', label: 'Media (MD)' },
+        { value: 'lg', label: 'Grande (LG)' },
+        { value: 'xl', label: 'Muy grande (XL)' },
+        { value: 'xxl', label: 'Enorme (XXL)' },
       ],
     },
   ],
@@ -511,6 +512,26 @@ export function newId(prefix: string): string {
     .replace(/[^a-zA-Z0-9-]+/g, '-')
     .toLowerCase();
   return `${kebabPrefix}-${idCounter}-${suffix}`;
+}
+
+/**
+ * Regenerates every `id` found in a cloned subtree (deep). Duplicating a
+ * section without this fails the global-uniqueness check of parseDesignSpec
+ * (nested ids like the buttons of a buttonGroup also count) and the reducer
+ * would reject the mutation silently — the classic "the button does nothing".
+ */
+export function reassignIds(node: unknown): void {
+  if (Array.isArray(node)) {
+    for (const item of node) reassignIds(item);
+    return;
+  }
+  if (!node || typeof node !== 'object') return;
+  const record = node as Record<string, unknown>;
+  if (typeof record.id === 'string') {
+    const prefix = typeof record.type === 'string' ? (record.type as string) : 'pieza';
+    record.id = newId(prefix);
+  }
+  for (const value of Object.values(record)) reassignIds(value);
 }
 
 /** Creates a filled-in instance of any component type (for "add component"). */

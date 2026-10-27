@@ -455,6 +455,15 @@
   background: #e8e8ee;
 }
 
+.shadowPreview {
+  display: block;
+  height: 3.4rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px dashed var(--ui-border);
+}
+
 .swatchRow {
   display: flex;
   flex-wrap: wrap;

@@ -31,6 +31,11 @@ export const INTERACTIVE_BACKGROUND_EFFECTS = [
   'dots',
   'noise',
   'waves',
+  'aurora',
+  'starfield',
+  'retro-grid',
+  'ripples',
+  'rain',
 ] as const;
 
 export const backgroundSchema = z.discriminatedUnion('type', [

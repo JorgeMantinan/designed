@@ -91,7 +91,12 @@ export type BackgroundSpec =
         | 'blobs'
         | 'dots'
         | 'noise'
-        | 'waves';
+        | 'waves'
+        | 'aurora'
+        | 'starfield'
+        | 'retro-grid'
+        | 'ripples'
+        | 'rain';
       baseColor?: string;
       effectColor?: string;
       intensity: number;

@@ -2,7 +2,19 @@ import type { InteractiveBackgroundSpec } from '@designed/schema';
 import type { CSSProperties, RefObject } from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { Blobs, Dots, GradientMesh, Noise, Spotlight, Waves } from './CssEffects';
+import {
+  Aurora,
+  Blobs,
+  Dots,
+  GradientMesh,
+  Noise,
+  Rain,
+  RetroGrid,
+  Ripples,
+  Spotlight,
+  Starfield,
+  Waves,
+} from './CssEffects';
 import { Particles } from './Particles';
 
 export interface EffectProps {
@@ -86,6 +98,16 @@ export function InteractiveBackground({ background, hostRef }: InteractiveBackgr
       return <Noise {...props} />;
     case 'waves':
       return <Waves {...props} />;
+    case 'aurora':
+      return <Aurora {...props} />;
+    case 'starfield':
+      return <Starfield {...props} />;
+    case 'retro-grid':
+      return <RetroGrid {...props} />;
+    case 'ripples':
+      return <Ripples {...props} />;
+    case 'rain':
+      return <Rain {...props} />;
     default:
       return null;
   }

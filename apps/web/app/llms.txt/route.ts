@@ -22,8 +22,9 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
 - Editor con panel de propiedades completo: filas, columnas (grid de12 unidades), botones por
   sección, spacing, padding, radios, sombras, gradientes y breakpoints responsive.
 - 51 paletas de5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible.
-- Animaciones de entrada y hover con preview en vivo (16 efectos) y7 fondos interactivos que reaccionan
-  al ratón (spotlight, malla de gradiente, partículas, blobs, rejilla de puntos, grano, ondas).
+- Animaciones de entrada y hover con preview en vivo (16 efectos) y 12 fondos interactivos que reaccionan
+  al ratón (spotlight, malla de gradiente, partículas, blobs, rejilla de puntos, grano, ondas,
+  aurora boreal, cielo estrellado, cuadrícula retro, ondas expansivas y lluvia).
 - Sombreados de imágenes y carruseles: lateral, vertical, diagonal, radial, duotone y viñeta.
 - Undo/redo, autoguardado local e import/export del diseño como JSON.
 

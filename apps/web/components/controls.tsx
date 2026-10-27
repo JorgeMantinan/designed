@@ -2,7 +2,9 @@
 
 import type { ReactNode } from 'react';
 
-import { TextField, useLocalValue } from './ui';
+import { buildShadow, DEFAULT_SHADOW_PARTS, parseShadow } from '../lib/shadow';
+
+import { ColorField, TextField, useLocalValue } from './ui';
 
 import s from './builder.module.scss';
 
@@ -159,6 +161,89 @@ export function currentShadowPresetId(
     SHADOW_PRESETS.find(
       (preset) => preset.sm === shadow.sm && preset.md === shadow.md && preset.lg === shadow.lg,
     )?.id ?? null
+  );
+}
+
+/**
+ * Visual shadow editor: sliders for offset/blur/spread/opacity + a color
+ * picker with live preview. Writes a plain CSS string back (the spec stores
+ * shadows as CSS), so no code knowledge is needed from the client.
+ */
+export function ShadowEditor({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (css: string) => void;
+}) {
+  const current = parseShadow(value) ?? DEFAULT_SHADOW_PARTS;
+
+  const patch = (changes: Partial<typeof current>): void => {
+    onChange(buildShadow({ ...current, ...changes }));
+  };
+
+  return (
+    <div className={s.field}>
+      <span className={s.fieldLabel}>Vista previa</span>
+      <div className={s.shadowPreview} style={{ boxShadow: buildShadow(current) }} />
+      <div className={s.twoCols}>
+        <SliderNumberField
+          label="Distancia lateral"
+          value={current.x}
+          min={-20}
+          max={20}
+          unit=" px"
+          onChange={(v) => patch({ x: Number(v ?? 0) })}
+        />
+        <SliderNumberField
+          label="Distancia hacia abajo"
+          value={current.y}
+          min={-20}
+          max={40}
+          unit=" px"
+          onChange={(v) => patch({ y: Number(v ?? 0) })}
+        />
+      </div>
+      <div className={s.twoCols}>
+        <SliderNumberField
+          label="Difuminado"
+          value={current.blur}
+          min={0}
+          max={80}
+          unit=" px"
+          onChange={(v) => patch({ blur: Number(v ?? 0) })}
+        />
+        <SliderNumberField
+          label="Grosor"
+          value={current.spread}
+          min={-10}
+          max={40}
+          unit=" px"
+          onChange={(v) => patch({ spread: Number(v ?? 0) })}
+        />
+      </div>
+      <SliderNumberField
+        label="Opacidad"
+        value={Math.round(current.opacity * 100)}
+        min={0}
+        max={100}
+        unit=" %"
+        onChange={(v) => patch({ opacity: Math.round(Number(v ?? 10)) / 100 })}
+      />
+      <ColorField
+        label="Color de la sombra"
+        value={current.color}
+        onCommit={(v) => typeof v === 'string' && patch({ color: v })}
+      />
+      <button
+        type="button"
+        className={s.ghostButton}
+        onClick={() => onChange('none')}
+        title="Quita la sombra por completo"
+      >
+        Sin sombra
+      </button>
+    </div>
   );
 }
 

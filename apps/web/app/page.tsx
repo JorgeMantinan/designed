@@ -16,7 +16,7 @@ const FEATURES = [
   {
     icon: '✨',
     title: 'Animaciones por doquier',
-    text: 'Entradas, hovers y7 fondos interactivos (spotlight, malla, partículas...).',
+    text: 'Entradas, hovers y 12 fondos interactivos (spotlight, aurora, partículas...).',
   },
   {
     icon: '📦',
@@ -44,7 +44,7 @@ const softwareJsonLd = {
   featureList: [
     'Galería de plantillas filtrables',
     '51 paletas con validación WCAG AA/AAA',
-    '16 animaciones y 7 fondos interactivos',
+    '16 animaciones y 12 fondos interactivos',
     'Export a ZIP: proyecto Vite + React + TypeScript autónomo',
   ],
   codeRepository: repoUrl,

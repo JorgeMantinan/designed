@@ -8,7 +8,7 @@ import { InteractiveBackground } from './backgrounds/InteractiveBackground';
 const base = { type: 'interactive' as const, intensity: 0.6, speed: 0.4 };
 
 describe('InteractiveBackground', () => {
-  it('renderiza los7 efectos con su marca data-effect', () => {
+  it('renderiza todos los efectos del schema con su marca data-effect', () => {
     for (const effect of INTERACTIVE_BACKGROUND_EFFECTS) {
       const html = renderToStaticMarkup(<InteractiveBackground background={{ ...base, effect }} />);
 

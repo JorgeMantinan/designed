@@ -123,7 +123,7 @@ export interface BackgroundEffectEntry {
   tracksPointer: boolean;
 }
 
-/** The7 interactive backgrounds offered in the builder. */
+/** The12 interactive backgrounds offered in the builder. */
 export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
   {
     id: 'spotlight',
@@ -165,6 +165,36 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     id: 'waves',
     name: 'Ondas',
     description: 'Ondas SVG en movimiento perpetuo.',
+    tracksPointer: false,
+  },
+  {
+    id: 'aurora',
+    name: 'Aurora boreal',
+    description: 'Cintas de luz desenfocadas ondeando por el cielo.',
+    tracksPointer: false,
+  },
+  {
+    id: 'starfield',
+    name: 'Cielo estrellado',
+    description: 'Estrellas que titilan y una estrella fugaz de vez en cuando.',
+    tracksPointer: false,
+  },
+  {
+    id: 'retro-grid',
+    name: 'Cuadrícula retro',
+    description: 'Rejilla synthwave en perspectiva que avanza hacia ti.',
+    tracksPointer: false,
+  },
+  {
+    id: 'ripples',
+    name: 'Ondas expansivas',
+    description: 'Anillos que se expanden desde donde mueves el ratón.',
+    tracksPointer: true,
+  },
+  {
+    id: 'rain',
+    name: 'Lluvia',
+    description: 'Gotas cayendo en diagonal a dos profundidades.',
     tracksPointer: false,
   },
 ];

@@ -1,13 +1,101 @@
 import { describe, expect, it } from 'vitest';
 
+import { parseDesignSpec } from '@designed/schema';
+
 import {
   COMPONENT_FIELDS,
   FOOTER_FIELDS,
   HEADER_MENU_FIELDS,
   createDefaultComponent,
   getPath,
+  reassignIds,
   setPath,
 } from './fields';
+
+describe('reassignIds', () => {
+  it('regenera ids profundamente (incluidos los anidados como botones)', () => {
+    const section = {
+      id: 'seccion-1',
+      kind: 'generic',
+      width: 'contained',
+      rows: [
+        {
+          id: 'fila-1',
+          stackBelow: 'mobile',
+          columns: [
+            {
+              id: 'columna-1',
+              span: 12,
+              hideOn: [],
+              verticalAlign: 'start',
+              contentAlign: 'stretch',
+              components: [
+                {
+                  type: 'buttonGroup',
+                  id: 'botones-1',
+                  align: 'center',
+                  buttons: [
+                    { id: 'cta-1', label: 'Uno', href: '#', variant: 'solid' },
+                    { id: 'cta-2', label: 'Dos', href: '#', variant: 'outline' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    reassignIds(section);
+
+    // Todos los ids cambiaron y siguen siendo kebab-case.
+    expect(section.id).not.toBe('seccion-1');
+    expect(section.rows[0]?.id).not.toBe('fila-1');
+    expect(section.rows[0]?.columns[0]?.id).not.toBe('columna-1');
+    const group = section.rows[0]?.columns[0]?.components[0];
+    expect(group?.id).not.toBe('botones-1');
+    expect(group?.buttons[0]?.id).not.toBe('cta-1');
+    expect(group?.buttons[1]?.id).not.toBe('cta-2');
+    for (const id of [section.id, group?.id, group?.buttons[0]?.id]) {
+      expect(id).toMatch(/^[a-z0-9-]+$/);
+    }
+
+    // El contenido NO cambia (solo los ids).
+    expect(group?.buttons[0]?.label).toBe('Uno');
+
+    // Y la duplicación pasa el validador global de unicidad.
+    const original = {
+      version: 1,
+      meta: { name: 'Test' },
+      theme: {
+        palette: {
+          primary: '#6C5CE7',
+          secondary: '#00CEC9',
+          accent: '#FD79A8',
+          background: '#FFFFFF',
+          surface: '#F5F5F7',
+        },
+      },
+      sections: [section],
+    };
+    const result = parseDesignSpec(original);
+    expect(result.success, result.success ? '' : result.errors.join('\n')).toBe(true);
+  });
+
+  it('es seguro con arrays, null y valores primitivos', () => {
+    const tree: { id: string; nested: unknown[] } = {
+      id: 'a',
+      nested: [{ id: 'b' }, null, 42, 'texto'],
+    };
+    reassignIds(tree);
+
+    expect(tree.id).not.toBe('a');
+    expect((tree.nested[0] as { id: string }).id).not.toBe('b');
+    expect(tree.nested[1]).toBeNull();
+    expect(tree.nested[2]).toBe(42);
+    expect(tree.nested[3]).toBe('texto');
+  });
+});
 
 describe('setPath / getPath', () => {
   it('asigna rutas planas y anidadas', () => {

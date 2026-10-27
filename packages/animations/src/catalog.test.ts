@@ -45,8 +45,8 @@ describe('ANIMATION_CATALOG', () => {
 });
 
 describe('BACKGROUND_EFFECTS', () => {
-  it('tiene los7 efectos interactivos del schema', () => {
-    expect(BACKGROUND_EFFECTS).toHaveLength(7);
+  it('tiene todos los efectos interactivos del schema (sin extras ni faltantes)', () => {
+    expect(BACKGROUND_EFFECTS).toHaveLength(INTERACTIVE_BACKGROUND_EFFECTS.length);
 
     const effectIds = BACKGROUND_EFFECTS.map((entry) => entry.id).sort();
     expect(effectIds).toEqual([...INTERACTIVE_BACKGROUND_EFFECTS].sort());
@@ -55,8 +55,10 @@ describe('BACKGROUND_EFFECTS', () => {
   it('marca correctamente los que siguen al puntero', () => {
     expect(getBackgroundEffect('spotlight')?.tracksPointer).toBe(true);
     expect(getBackgroundEffect('dots')?.tracksPointer).toBe(true);
+    expect(getBackgroundEffect('ripples')?.tracksPointer).toBe(true);
     expect(getBackgroundEffect('particles')?.tracksPointer).toBe(false);
     expect(getBackgroundEffect('waves')?.tracksPointer).toBe(false);
+    expect(getBackgroundEffect('aurora')?.tracksPointer).toBe(false);
   });
 
   it('cada efecto tiene nombre y descripción', () => {

@@ -84,3 +84,51 @@ export function Waves({ effect }: EffectProps) {
     </div>
   );
 }
+
+/** Aurora boreal: three blurred light bands swaying across the sky. */
+export function Aurora({ effect }: EffectProps) {
+  return (
+    <div className={`${s.layer} ${s.aurora}`} data-effect="aurora" style={effectVars(effect)} />
+  );
+}
+
+/** Starry sky with twinkling stars and a periodic shooting star. */
+export function Starfield({ effect }: EffectProps) {
+  return (
+    <div className={`${s.layer} ${s.stars}`} data-effect="starfield" style={effectVars(effect)} />
+  );
+}
+
+/** Retro synthwave grid scrolling in perspective from the horizon. */
+export function RetroGrid({ effect }: EffectProps) {
+  return (
+    <div
+      className={`${s.layer} ${s.retroGrid}`}
+      data-effect="retro-grid"
+      style={effectVars(effect)}
+    />
+  );
+}
+
+/** Rings that expand from the pointer position (uses --spot-x/--spot-y). */
+export function Ripples({ effect, hostRef }: EffectProps) {
+  const layerRef = usePointerVars(hostRef);
+
+  return (
+    <div
+      ref={layerRef}
+      className={`${s.layer} ${s.ripples}`}
+      data-effect="ripples"
+      style={effectVars(effect)}
+    >
+      <span className={s.rippleRing} />
+      <span className={s.rippleRing} />
+      <span className={s.rippleRing} />
+    </div>
+  );
+}
+
+/** Diagonal rain streaks falling at two depths. */
+export function Rain({ effect }: EffectProps) {
+  return <div className={`${s.layer} ${s.rain}`} data-effect="rain" style={effectVars(effect)} />;
+}

@@ -5,7 +5,13 @@ import { SECTION_KINDS } from '@designed/schema';
 import type { DesignSpec, ImageOverlayInput, NavItem } from '@designed/schema';
 import { useState } from 'react';
 
-import { createDefaultComponent, FOOTER_FIELDS, HEADER_MENU_FIELDS, newId } from '../lib/fields';
+import {
+  createDefaultComponent,
+  FOOTER_FIELDS,
+  HEADER_MENU_FIELDS,
+  newId,
+  reassignIds,
+} from '../lib/fields';
 import { mergeDeep, normalizeAnimation, normalizeHover } from '../lib/normalize';
 import { useBuilder } from '../lib/store';
 
@@ -20,6 +26,7 @@ import {
   PresetRow,
   RADIUS_PRESETS,
   SHADOW_PRESETS,
+  ShadowEditor,
   SliderNumberField,
   WEIGHT_OPTIONS,
 } from './controls';
@@ -156,6 +163,7 @@ function GlobalPanel() {
 function DesignSettingsPanel() {
   const { state } = useBuilder();
   const update = useUpdate();
+  const [shadowLevel, setShadowLevel] = useState<'sm' | 'md' | 'lg'>('md');
   const theme = state.spec.theme;
   const typo = theme.typography;
   const spacing = theme.spacing;
@@ -269,14 +277,18 @@ function DesignSettingsPanel() {
           {spacingField('sectionXPx', 16, 'Ancho de secciones', 120)}
         </div>
         <details className={s.advanced}>
-          <summary>Avanzado: escala de espaciado</summary>
+          <summary>Avanzado: escala de huecos (XS…XXL)</summary>
           <div className={s.advancedBody}>
-            {spacingField('xs', 4, 'Separación XS')}
-            {spacingField('sm', 8, 'Separación SM')}
-            {spacingField('md', 16, 'Separación MD')}
-            {spacingField('lg', 24, 'Separación LG')}
-            {spacingField('xl', 40, 'Separación XL')}
-            {spacingField('xxl', 64, 'Separación XXL')}
+            <p className={s.fieldHint}>
+              Tamaños de hueco que usan los bloques por defecto: XS casi invisible, XXL enorme. Si
+              no lo necesitas, ajústalos con la «Densidad» de arriba.
+            </p>
+            {spacingField('xs', 4, 'Hueco mínimo (XS)')}
+            {spacingField('sm', 8, 'Hueco pequeño (SM)')}
+            {spacingField('md', 16, 'Hueco normal (MD)')}
+            {spacingField('lg', 24, 'Hueco grande (LG)')}
+            {spacingField('xl', 40, 'Hueco muy grande (XL)')}
+            {spacingField('xxl', 64, 'Hueco enorme (XXL)')}
           </div>
         </details>
       </PanelSection>
@@ -332,28 +344,21 @@ function DesignSettingsPanel() {
           }}
         />
         <details className={s.advanced}>
-          <summary>Avanzado: valores CSS de sombra</summary>
+          <summary>Avanzado: editar la sombra a tu gusto</summary>
           <div className={s.advancedBody}>
-            <TextField
-              label="Sombra pequeña"
-              value={shadow.sm}
-              onCommit={(value) =>
-                typeof value === 'string' && update((draft) => void (draft.theme.shadow.sm = value))
-              }
+            <SelectField
+              label="Qué sombra editar"
+              value={shadowLevel}
+              options={[
+                { value: 'sm', label: 'Pequeña (elementos sueltos)' },
+                { value: 'md', label: 'Media (tarjetas)' },
+                { value: 'lg', label: 'Grande (bloques destacados)' },
+              ]}
+              onChange={(value) => setShadowLevel((value ?? 'md') as 'sm' | 'md' | 'lg')}
             />
-            <TextField
-              label="Sombra media"
-              value={shadow.md}
-              onCommit={(value) =>
-                typeof value === 'string' && update((draft) => void (draft.theme.shadow.md = value))
-              }
-            />
-            <TextField
-              label="Sombra grande"
-              value={shadow.lg}
-              onCommit={(value) =>
-                typeof value === 'string' && update((draft) => void (draft.theme.shadow.lg = value))
-              }
+            <ShadowEditor
+              value={shadow[shadowLevel]}
+              onChange={(css) => update((draft) => void (draft.theme.shadow[shadowLevel] = css))}
             />
           </div>
         </details>
@@ -587,23 +592,20 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   };
 
   const duplicate = (): void => {
+    let clonedId: string | null = null;
     update((draft) => {
       const index = draft.sections.findIndex((item) => item.id === sectionId);
       const source = draft.sections[index];
       if (!source) return;
       const clone = structuredClone(source);
-      clone.id = newId('seccion');
-      for (const row of clone.rows) {
-        row.id = newId('fila');
-        for (const column of row.columns) {
-          column.id = newId('columna');
-          for (const component of column.components) {
-            component.id = newId(component.type);
-          }
-        }
-      }
+      // Regenera TODOS los ids (incluidos los anidados, p. ej. los botones de
+      // un grupo): sin esto parseDesignSpec rechaza la mutación en silencio.
+      reassignIds(clone);
+      clonedId = clone.id;
       draft.sections.splice(index + 1, 0, clone);
     });
+    // Selecciona la copia para que el usuario vea al instante qué ha duplicado.
+    if (clonedId) dispatch({ type: 'select', selection: { kind: 'section', id: clonedId } });
   };
 
   const remove = (): void => {
@@ -1073,8 +1075,8 @@ function BackgroundEditor({
             />
           </div>
           <ColorField
-            label="Color del efecto"
-            value={background.effectColor}
+            label="Color del efecto (luces, puntos, ondas…)"
+            value={background.effectColor ?? palette.primary}
             onCommit={(v) =>
               typeof v === 'string' &&
               patchBackground((bg) => {
@@ -1083,6 +1085,48 @@ function BackgroundEditor({
               })
             }
           />
+          {background.effectColor !== undefined && (
+            <button
+              type="button"
+              className={s.ghostButton}
+              title="Vuelve al color principal de la paleta, que cambia solo al cambiar de paleta"
+              onClick={() =>
+                patchBackground((bg) => {
+                  if (bg.type !== 'interactive') return;
+                  delete bg.effectColor;
+                })
+              }
+            >
+              ↺ Seguir la paleta (automático)
+            </button>
+          )}
+          <ColorField
+            label="Color de fondo del efecto (detrás de todo)"
+            hint="Pintado bajo el efecto. Útil si el efecto se ve poco sobre el fondo de la página."
+            value={background.baseColor ?? ''}
+            onCommit={(v) =>
+              typeof v === 'string' &&
+              patchBackground((bg) => {
+                if (bg.type !== 'interactive') return;
+                bg.baseColor = v;
+              })
+            }
+          />
+          {background.baseColor !== undefined && (
+            <button
+              type="button"
+              className={s.ghostButton}
+              title="Quita el color de fondo para que se vea el de la página"
+              onClick={() =>
+                patchBackground((bg) => {
+                  if (bg.type !== 'interactive') return;
+                  delete bg.baseColor;
+                })
+              }
+            >
+              ↺ Sin color de fondo (hereda la página)
+            </button>
+          )}
           <PaletteSwatches
             label="Colores de tu paleta"
             colors={quickColors}

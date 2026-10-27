@@ -144,7 +144,7 @@ export function NumberField({ label, value, onCommit, placeholder }: CommitField
   );
 }
 
-export function ColorField({ label, value, onCommit }: CommitFieldProps) {
+export function ColorField({ label, value, onCommit, hint }: CommitFieldProps & { hint?: string }) {
   const hex = typeof value === 'string' ? value : '#000000';
   const [local, setLocal] = useState(hex);
   const [previous, setPrevious] = useState(hex);
@@ -180,6 +180,7 @@ export function ColorField({ label, value, onCommit }: CommitFieldProps) {
           }}
         />
       </span>
+      {hint && <small className={s.fieldHint}>{hint}</small>}
     </FieldRow>
   );
 }
