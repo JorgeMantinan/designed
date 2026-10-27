@@ -392,6 +392,141 @@
   border-color: rgb(108 92 231 / 45%);
 }
 
+// ── Controles visuales (sliders, presets, swatches) ─────────────────────────
+
+.fieldLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sliderValue {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--ui-accent);
+}
+
+.slider {
+  width: 100%;
+  accent-color: var(--ui-accent);
+  cursor: pointer;
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.preset,
+.presetActive {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.72rem;
+  color: var(--ui-text);
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.preset:hover {
+  border-color: #3a3a46;
+}
+
+.presetActive {
+  background: var(--ui-accent-soft);
+  border-color: var(--ui-accent);
+}
+
+.presetLabel {
+  line-height: 1.1;
+  text-align: center;
+}
+
+.presetPreview {
+  display: block;
+  width: 2.4rem;
+  height: 1.5rem;
+  background: #e8e8ee;
+}
+
+.swatchRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.swatchButton {
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 2px solid var(--ui-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.swatchButton:hover {
+  border-color: var(--ui-accent);
+  transform: scale(1.12);
+}
+
+.advanced {
+  margin-top: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px dashed var(--ui-border);
+  border-radius: 6px;
+}
+
+.advanced > summary {
+  font-size: 0.75rem;
+  color: var(--ui-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.advancedBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+}
+
+.rowList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rowListItem {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.35rem 0.5rem;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+}
+
+.rowListItemName {
+  flex: 1;
+  font: inherit;
+  font-size: 0.78rem;
+  text-align: left;
+  color: var(--ui-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.rowListItemName:hover {
+  color: var(--ui-accent);
+}
+
 .chipGrid {
   display: flex;
   flex-wrap: wrap;

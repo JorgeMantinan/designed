@@ -43,7 +43,7 @@ export function PanelSection({ title, children }: { title: string; children: Rea
  * Uses React's "adjusting state during render" pattern (guarded, so no
  * cascading effect renders and no `set-state-in-effect` violation).
  */
-function useLocalValue(value: string | number | undefined): [string, (v: string) => void] {
+export function useLocalValue(value: string | number | undefined): [string, (v: string) => void] {
   const stringified = value == null ? '' : String(value);
   const [local, setLocal] = useState(stringified);
   const [previous, setPrevious] = useState(stringified);
@@ -192,7 +192,7 @@ export function SelectField({
 }: {
   label: string;
   value: string | undefined;
-  options: { value: string; label: string }[];
+  options: readonly { value: string; label: string }[];
   onChange: (value: string | undefined) => void;
 }) {
   return (

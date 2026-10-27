@@ -4,8 +4,9 @@ import { animationsByFamily } from '@designed/animations';
 import type { AnimationInput } from '@designed/schema';
 import { useState } from 'react';
 
+import { SliderNumberField } from './controls';
 import s from './builder.module.scss';
-import { NumberField, PanelSection } from './ui';
+import { PanelSection, SelectField } from './ui';
 
 interface AnimationPickerProps {
   value: AnimationInput | undefined;
@@ -82,42 +83,48 @@ export function AnimationPicker({
 
               {entrance && (
                 <div className={s.paramGrid}>
-                  <NumberField
-                    label="Duración (ms)"
+                  <SliderNumberField
+                    label="Duración"
                     value={entrance.durationMs}
-                    onCommit={(next) =>
+                    min={100}
+                    max={3000}
+                    step={100}
+                    unit=" ms"
+                    onChange={(next) =>
                       onChange({
                         ...value,
                         entrance: { ...entrance, durationMs: Number(next ?? 600) },
                       })
                     }
                   />
-                  <NumberField
-                    label="Retardo (ms)"
+                  <SliderNumberField
+                    label="Retardo"
                     value={entrance.delayMs}
-                    onCommit={(next) =>
+                    min={0}
+                    max={3000}
+                    step={50}
+                    unit=" ms"
+                    onChange={(next) =>
                       onChange({
                         ...value,
                         entrance: { ...entrance, delayMs: Number(next ?? 0) },
                       })
                     }
                   />
-                  <div className={s.field}>
-                    <span className={s.fieldLabel}>Al</span>
-                    <select
-                      className={s.select}
-                      value={entrance.trigger}
-                      onChange={(event) =>
-                        onChange({
-                          ...value,
-                          entrance: { ...entrance, trigger: event.target.value as never },
-                        })
-                      }
-                    >
-                      <option value="scroll">Hacer scroll</option>
-                      <option value="load">Cargar la página</option>
-                    </select>
-                  </div>
+                  <SelectField
+                    label="Al"
+                    value={entrance.trigger}
+                    options={[
+                      { value: 'scroll', label: 'Hacer scroll' },
+                      { value: 'load', label: 'Cargar la página' },
+                    ]}
+                    onChange={(next) =>
+                      onChange({
+                        ...value,
+                        entrance: { ...entrance, trigger: next as 'scroll' | 'load' },
+                      })
+                    }
+                  />
                 </div>
               )}
             </PanelSection>
@@ -150,17 +157,24 @@ export function AnimationPicker({
 
               {hover && hover.type !== 'none' && (
                 <div className={s.paramGrid}>
-                  <NumberField
-                    label="Duración (ms)"
+                  <SliderNumberField
+                    label="Duración"
                     value={hover.durationMs}
-                    onCommit={(next) =>
+                    min={50}
+                    max={1000}
+                    step={50}
+                    unit=" ms"
+                    onChange={(next) =>
                       onChange({ ...value, hover: { ...hover, durationMs: Number(next ?? 200) } })
                     }
                   />
-                  <NumberField
-                    label="Intensidad (0-1)"
+                  <SliderNumberField
+                    label="Intensidad"
                     value={hover.intensity}
-                    onCommit={(next) =>
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    onChange={(next) =>
                       onChange({
                         ...value,
                         hover: { ...hover, intensity: Number(next ?? 0.5) },

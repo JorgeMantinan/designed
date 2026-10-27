@@ -81,6 +81,93 @@ const OVERLAY_FIELDS: FieldDescriptor[] = [
   { key: 'overlay.intensity', kind: 'number', label: 'Intensidad', min: 0, max: 1, step: 0.05 },
 ];
 
+/**
+ * Descriptors for editing the header menu (items + nested submenu) and the
+ * footer (columns with links, social networks) with the generic FieldsForm.
+ */
+export const HEADER_MENU_FIELDS: FieldDescriptor[] = [
+  {
+    key: 'items',
+    kind: 'list',
+    label: 'Elementos del menú',
+    addLabel: 'Añadir elemento',
+    maxItems: 10,
+    createItem: () => ({ id: newId('nav'), label: 'Nuevo enlace', href: '#' }),
+    itemFields: [
+      { key: 'label', kind: 'text', label: 'Texto' },
+      { key: 'href', kind: 'text', label: 'Enlace', placeholder: '#seccion' },
+      {
+        key: 'children',
+        kind: 'list',
+        label: 'Submenú',
+        addLabel: 'Añadir subelemento',
+        maxItems: 8,
+        createItem: () => ({ id: newId('nav-sub'), label: 'Subenlace', href: '#' }),
+        itemFields: [
+          { key: 'label', kind: 'text', label: 'Texto' },
+          { key: 'href', kind: 'text', label: 'Enlace' },
+          { key: 'badge', kind: 'text', label: 'Etiqueta (opcional)' },
+        ],
+      },
+    ],
+  },
+];
+
+export const FOOTER_FIELDS: FieldDescriptor[] = [
+  { key: 'newsletter', kind: 'checkbox', label: 'Mostrar formulario de newsletter' },
+  { key: 'brandText', kind: 'textarea', label: 'Texto de la marca', rows: 2 },
+  { key: 'copyright', kind: 'text', label: 'Copyright', placeholder: '© 2026 Mi web' },
+  {
+    key: 'columns',
+    kind: 'list',
+    label: 'Columnas de enlaces',
+    addLabel: 'Añadir columna',
+    maxItems: 6,
+    createItem: () => ({ id: newId('footer-col'), title: 'Nueva columna', links: [] }),
+    itemFields: [
+      { key: 'title', kind: 'text', label: 'Título' },
+      {
+        key: 'links',
+        kind: 'list',
+        label: 'Enlaces',
+        addLabel: 'Añadir enlace',
+        maxItems: 12,
+        createItem: () => ({ label: 'Enlace', href: '#' }),
+        itemFields: [
+          { key: 'label', kind: 'text', label: 'Texto' },
+          { key: 'href', kind: 'text', label: 'Destino' },
+        ],
+      },
+    ],
+  },
+  {
+    key: 'social',
+    kind: 'list',
+    label: 'Redes sociales',
+    addLabel: 'Añadir red',
+    maxItems: 8,
+    createItem: () => ({ platform: 'github', href: 'https://github.com/' }),
+    itemFields: [
+      {
+        key: 'platform',
+        kind: 'select',
+        label: 'Red',
+        options: [
+          { value: 'x', label: 'X (Twitter)' },
+          { value: 'github', label: 'GitHub' },
+          { value: 'instagram', label: 'Instagram' },
+          { value: 'linkedin', label: 'LinkedIn' },
+          { value: 'youtube', label: 'YouTube' },
+          { value: 'tiktok', label: 'TikTok' },
+          { value: 'discord', label: 'Discord' },
+          { value: 'facebook', label: 'Facebook' },
+        ],
+      },
+      { key: 'href', kind: 'text', label: 'Enlace' },
+    ],
+  },
+];
+
 const BUTTON_ITEM_FIELDS: FieldDescriptor[] = [
   { key: 'label', kind: 'text', label: 'Texto' },
   { key: 'href', kind: 'text', label: 'Enlace', placeholder: '#seccion' },
@@ -400,13 +487,18 @@ let idCounter = 0;
 export function newId(prefix: string): string {
   idCounter += 1;
   const suffix = Math.random().toString(36).slice(2, 7);
-  return `${prefix}-${idCounter}-${suffix}`;
+  // 'buttonGroup' → 'button-group' (los ids deben ser kebab-case).
+  const kebabPrefix = prefix
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[^a-zA-Z0-9-]+/g, '-')
+    .toLowerCase();
+  return `${kebabPrefix}-${idCounter}-${suffix}`;
 }
 
 /** Creates a filled-in instance of any component type (for "add component"). */
 export function createDefaultComponent(type: ComponentType): ComponentSpec {
   const id = newId(type);
-  const base = { id } as Record<string, unknown>;
+  const base = { type, id } as Record<string, unknown>;
 
   const presets: Record<string, Record<string, unknown>> = {
     heading: { level: 2, text: 'Nuevo título' },

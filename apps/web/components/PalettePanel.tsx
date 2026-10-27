@@ -4,6 +4,7 @@ import { PALETTE_TAGS, PALETTES, validatePalette } from '@designed/palettes';
 import type { Palette, PaletteTag } from '@designed/palettes';
 import { useState } from 'react';
 
+import { PaletteSwatches } from './controls';
 import { useBuilder } from '../lib/store';
 
 import s from './builder.module.scss';
@@ -100,8 +101,25 @@ export function PalettePanel() {
         <ColorField label="Primario" value={palette.primary} onCommit={setColor('primary')} />
         <ColorField label="Secundario" value={palette.secondary} onCommit={setColor('secondary')} />
         <ColorField label="Acento" value={palette.accent} onCommit={setColor('accent')} />
-        <ColorField label="Fondo" value={palette.background} onCommit={setColor('background')} />
-        <ColorField label="Superficie" value={palette.surface} onCommit={setColor('surface')} />
+        <ColorField
+          label="Fondo de la página"
+          value={palette.background}
+          onCommit={setColor('background')}
+        />
+        <PaletteSwatches
+          label="Usar un color de la paleta como fondo"
+          colors={[palette.primary, palette.secondary, palette.accent, palette.surface]}
+          onPick={(color) => setColor('background')(color)}
+        />
+        <p className={s.hint}>
+          Cada paleta trae su propio fondo teñido; cámbialo aquí o directamente en el editor de la
+          sección.
+        </p>
+        <ColorField
+          label="Superficie (tarjetas)"
+          value={palette.surface}
+          onCommit={setColor('surface')}
+        />
       </PanelSection>
 
       <PanelSection title="Filtrar por estilo">

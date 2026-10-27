@@ -2,15 +2,28 @@
 
 import { BACKGROUND_EFFECTS } from '@designed/animations';
 import { SECTION_KINDS } from '@designed/schema';
-import type { DesignSpec, ImageOverlayInput } from '@designed/schema';
+import type { DesignSpec, ImageOverlayInput, NavItem } from '@designed/schema';
 import { useState } from 'react';
 
-import { createDefaultComponent, newId } from '../lib/fields';
+import { createDefaultComponent, FOOTER_FIELDS, HEADER_MENU_FIELDS, newId } from '../lib/fields';
 import { mergeDeep, normalizeAnimation, normalizeHover } from '../lib/normalize';
 import { useBuilder } from '../lib/store';
 
 import { AnimationPicker } from './AnimationPicker';
-import { FieldsEditor } from './FieldsEditor';
+import {
+  currentDensityPresetId,
+  currentRadiusPresetId,
+  currentShadowPresetId,
+  DENSITY_PRESETS,
+  FontField,
+  PaletteSwatches,
+  PresetRow,
+  RADIUS_PRESETS,
+  SHADOW_PRESETS,
+  SliderNumberField,
+  WEIGHT_OPTIONS,
+} from './controls';
+import { FieldsEditor, FieldsForm } from './FieldsEditor';
 import { PalettePanel } from './PalettePanel';
 import s from './builder.module.scss';
 import {
@@ -18,10 +31,8 @@ import {
   CheckboxField,
   ColorField,
   DangerButton,
-  NumberField,
   PanelSection,
   SelectField,
-  TextAreaField,
   TextField,
 } from './ui';
 
@@ -105,7 +116,15 @@ function findSection(draft: DesignSpec, id: string): SectionDraft | undefined {
   return draft.sections.find((section) => section.id === id);
 }
 
-// ── Global: diseño + paletas ─────────────────────────────────────────────────
+/** Advances an item inside an array (reorder helper). */
+function moveItem<T>(items: T[], index: number, delta: number): void {
+  const target = index + delta;
+  if (index < 0 || target < 0 || target >= items.length) return;
+  const [moved] = items.splice(index, 1);
+  if (moved) items.splice(target, 0, moved);
+}
+
+// ── Global: diseño visual + paletas ─────────────────────────────────────────
 
 function GlobalPanel() {
   const [tab, setTab] = useState<'diseno' | 'paletas'>('diseno');
@@ -138,33 +157,72 @@ function DesignSettingsPanel() {
   const { state } = useBuilder();
   const update = useUpdate();
   const theme = state.spec.theme;
+  const typo = theme.typography;
+  const spacing = theme.spacing;
+  const radius = theme.radius;
+  const shadow = theme.shadow;
+
+  const number =
+    (key: 'baseFontSizePx' | 'headingWeight' | 'bodyWeight', fallback: number) =>
+    (value: string | number | undefined) =>
+      update((draft) => void (draft.theme.typography[key] = Number(value ?? fallback)));
+
+  const spacingField = (key: keyof typeof spacing, fallback: number, label: string, max = 120) => (
+    <SliderNumberField
+      label={label}
+      value={spacing[key]}
+      min={0}
+      max={max}
+      unit=" px"
+      onChange={(value) =>
+        update((draft) => void (draft.theme.spacing[key] = Number(value ?? fallback)))
+      }
+    />
+  );
+
+  const radiusField = (key: 'sm' | 'md' | 'lg', label: string) => (
+    <SliderNumberField
+      label={label}
+      value={radius[key]}
+      min={0}
+      max={60}
+      unit=" px"
+      onChange={(value) => update((draft) => void (draft.theme.radius[key] = Number(value ?? 8)))}
+    />
+  );
 
   return (
     <>
       <PanelSection title="Tipografía">
-        <TextField
+        <FontField
           label="Fuente de títulos"
-          value={theme.typography.headingFont}
-          onCommit={(value) =>
-            typeof value === 'string' &&
-            update((draft) => void (draft.theme.typography.headingFont = value))
-          }
+          value={typo.headingFont}
+          onChange={(value) => update((draft) => void (draft.theme.typography.headingFont = value))}
         />
-        <TextField
+        <FontField
           label="Fuente de texto"
-          value={theme.typography.bodyFont}
-          onCommit={(value) =>
-            typeof value === 'string' &&
-            update((draft) => void (draft.theme.typography.bodyFont = value))
-          }
+          value={typo.bodyFont}
+          onChange={(value) => update((draft) => void (draft.theme.typography.bodyFont = value))}
+        />
+        <SelectField
+          label="Grosor de títulos"
+          value={String(typo.headingWeight)}
+          options={WEIGHT_OPTIONS.map((option) => ({ value: option.id, label: option.label }))}
+          onChange={(value) => number('headingWeight', 700)(value ?? '700')}
+        />
+        <SelectField
+          label="Grosor de texto"
+          value={String(typo.bodyWeight)}
+          options={WEIGHT_OPTIONS.map((option) => ({ value: option.id, label: option.label }))}
+          onChange={(value) => number('bodyWeight', 400)(value ?? '400')}
         />
         <SelectField
           label="Escala tipográfica"
-          value={theme.typography.scale}
+          value={typo.scale}
           options={[
-            { value: 'compact', label: 'Compacta' },
-            { value: 'normal', label: 'Normal' },
-            { value: 'large', label: 'Amplia' },
+            { value: 'compact', label: 'Compacta (más información)' },
+            { value: 'normal', label: 'Normal (recomendada)' },
+            { value: 'large', label: 'Amplia (más impacto)' },
           ]}
           onChange={(value) =>
             update(
@@ -173,112 +231,132 @@ function DesignSettingsPanel() {
             )
           }
         />
-        <NumberField
-          label="Tamaño base (px)"
-          value={theme.typography.baseFontSizePx}
-          onCommit={(value) =>
-            update((draft) => void (draft.theme.typography.baseFontSizePx = Number(value ?? 16)))
-          }
-        />
-        <NumberField
-          label="Peso de títulos"
-          value={theme.typography.headingWeight}
-          onCommit={(value) =>
-            update((draft) => void (draft.theme.typography.headingWeight = Number(value ?? 700)))
-          }
-        />
-        <NumberField
-          label="Peso de texto"
-          value={theme.typography.bodyWeight}
-          onCommit={(value) =>
-            update((draft) => void (draft.theme.typography.bodyWeight = Number(value ?? 400)))
-          }
+        <SliderNumberField
+          label="Tamaño base del texto"
+          value={typo.baseFontSizePx}
+          min={14}
+          max={22}
+          unit=" px"
+          hint="Punto de partida del que derivan todos los tamaños."
+          onChange={(value) => number('baseFontSizePx', 16)(value)}
         />
       </PanelSection>
 
       <PanelSection title="Espaciado">
+        <PresetRow
+          label="Densidad"
+          options={DENSITY_PRESETS.map((preset) => ({ id: preset.id, label: preset.label }))}
+          value={currentDensityPresetId(spacing)}
+          onSelect={(id) => {
+            const preset = DENSITY_PRESETS.find((item) => item.id === id);
+            if (!preset) return;
+            update((draft) =>
+              Object.assign(draft.theme.spacing, {
+                xs: preset.xs,
+                sm: preset.sm,
+                md: preset.md,
+                lg: preset.lg,
+                xl: preset.xl,
+                xxl: preset.xxl,
+                sectionYPx: preset.sectionYPx,
+                sectionXPx: preset.sectionXPx,
+              }),
+            );
+          }}
+        />
         <div className={s.twoCols}>
-          <NumberField
-            label="XS"
-            value={theme.spacing.xs}
-            onCommit={(v) => update((d) => void (d.theme.spacing.xs = Number(v ?? 4)))}
-          />
-          <NumberField
-            label="SM"
-            value={theme.spacing.sm}
-            onCommit={(v) => update((d) => void (d.theme.spacing.sm = Number(v ?? 8)))}
-          />
-          <NumberField
-            label="MD"
-            value={theme.spacing.md}
-            onCommit={(v) => update((d) => void (d.theme.spacing.md = Number(v ?? 16)))}
-          />
-          <NumberField
-            label="LG"
-            value={theme.spacing.lg}
-            onCommit={(v) => update((d) => void (d.theme.spacing.lg = Number(v ?? 24)))}
-          />
-          <NumberField
-            label="XL"
-            value={theme.spacing.xl}
-            onCommit={(v) => update((d) => void (d.theme.spacing.xl = Number(v ?? 40)))}
-          />
-          <NumberField
-            label="XXL"
-            value={theme.spacing.xxl}
-            onCommit={(v) => update((d) => void (d.theme.spacing.xxl = Number(v ?? 64)))}
-          />
-          <NumberField
-            label="Sección Y"
-            value={theme.spacing.sectionYPx}
-            onCommit={(v) => update((d) => void (d.theme.spacing.sectionYPx = Number(v ?? 64)))}
-          />
-          <NumberField
-            label="Sección X"
-            value={theme.spacing.sectionXPx}
-            onCommit={(v) => update((d) => void (d.theme.spacing.sectionXPx = Number(v ?? 16)))}
-          />
+          {spacingField('sectionYPx', 64, 'Altura de secciones', 240)}
+          {spacingField('sectionXPx', 16, 'Ancho de secciones', 120)}
         </div>
+        <details className={s.advanced}>
+          <summary>Avanzado: escala de espaciado</summary>
+          <div className={s.advancedBody}>
+            {spacingField('xs', 4, 'Separación XS')}
+            {spacingField('sm', 8, 'Separación SM')}
+            {spacingField('md', 16, 'Separación MD')}
+            {spacingField('lg', 24, 'Separación LG')}
+            {spacingField('xl', 40, 'Separación XL')}
+            {spacingField('xxl', 64, 'Separación XXL')}
+          </div>
+        </details>
       </PanelSection>
 
-      <PanelSection title="Esquinas y sombras">
-        <div className={s.twoCols}>
-          <NumberField
-            label="Radio SM"
-            value={theme.radius.sm}
-            onCommit={(v) => update((d) => void (d.theme.radius.sm = Number(v ?? 4)))}
-          />
-          <NumberField
-            label="Radio MD"
-            value={theme.radius.md}
-            onCommit={(v) => update((d) => void (d.theme.radius.md = Number(v ?? 8)))}
-          />
-          <NumberField
-            label="Radio LG"
-            value={theme.radius.lg}
-            onCommit={(v) => update((d) => void (d.theme.radius.lg = Number(v ?? 16)))}
-          />
-          <NumberField
-            label="Radio píldora"
-            value={theme.radius.pill}
-            onCommit={(v) => update((d) => void (d.theme.radius.pill = Number(v ?? 999)))}
-          />
-        </div>
-        <TextField
-          label="Sombra SM"
-          value={theme.shadow.sm}
-          onCommit={(v) => typeof v === 'string' && update((d) => void (d.theme.shadow.sm = v))}
+      <PanelSection title="Esquinas de los elementos">
+        <PresetRow
+          label="Redondeo"
+          options={RADIUS_PRESETS.map((preset) => ({ id: preset.id, label: preset.label }))}
+          value={currentRadiusPresetId(radius)}
+          renderPreview={(id) => {
+            const preset = RADIUS_PRESETS.find((item) => item.id === id);
+            return <span className={s.presetPreview} style={{ borderRadius: preset?.md ?? 8 }} />;
+          }}
+          onSelect={(id) => {
+            const preset = RADIUS_PRESETS.find((item) => item.id === id);
+            if (!preset) return;
+            update((draft) =>
+              Object.assign(draft.theme.radius, {
+                sm: preset.sm,
+                md: preset.md,
+                lg: preset.lg,
+                pill: 999,
+              }),
+            );
+          }}
         />
-        <TextField
-          label="Sombra MD"
-          value={theme.shadow.md}
-          onCommit={(v) => typeof v === 'string' && update((d) => void (d.theme.shadow.md = v))}
+        <details className={s.advanced}>
+          <summary>Avanzado: radios individuales</summary>
+          <div className={s.advancedBody}>
+            {radiusField('sm', 'Radio pequeño')}
+            {radiusField('md', 'Radio medio')}
+            {radiusField('lg', 'Radio grande')}
+          </div>
+        </details>
+      </PanelSection>
+
+      <PanelSection title="Sombras">
+        <PresetRow
+          label="Estilo de sombra"
+          options={SHADOW_PRESETS.map((preset) => ({ id: preset.id, label: preset.label }))}
+          value={currentShadowPresetId(shadow)}
+          renderPreview={(id) => {
+            const preset = SHADOW_PRESETS.find((item) => item.id === id);
+            return <span className={s.presetPreview} style={{ boxShadow: preset?.lg ?? 'none' }} />;
+          }}
+          onSelect={(id) => {
+            const preset = SHADOW_PRESETS.find((item) => item.id === id);
+            if (!preset) return;
+            update(
+              (draft) =>
+                void (draft.theme.shadow = { sm: preset.sm, md: preset.md, lg: preset.lg }),
+            );
+          }}
         />
-        <TextField
-          label="Sombra LG"
-          value={theme.shadow.lg}
-          onCommit={(v) => typeof v === 'string' && update((d) => void (d.theme.shadow.lg = v))}
-        />
+        <details className={s.advanced}>
+          <summary>Avanzado: valores CSS de sombra</summary>
+          <div className={s.advancedBody}>
+            <TextField
+              label="Sombra pequeña"
+              value={shadow.sm}
+              onCommit={(value) =>
+                typeof value === 'string' && update((draft) => void (draft.theme.shadow.sm = value))
+              }
+            />
+            <TextField
+              label="Sombra media"
+              value={shadow.md}
+              onCommit={(value) =>
+                typeof value === 'string' && update((draft) => void (draft.theme.shadow.md = value))
+              }
+            />
+            <TextField
+              label="Sombra grande"
+              value={shadow.lg}
+              onCommit={(value) =>
+                typeof value === 'string' && update((draft) => void (draft.theme.shadow.lg = value))
+              }
+            />
+          </div>
+        </details>
       </PanelSection>
     </>
   );
@@ -331,6 +409,22 @@ function HeaderForm() {
             )
           }
         />
+      </PanelSection>
+
+      <PanelSection title="Elementos del menú">
+        <FieldsForm
+          fields={HEADER_MENU_FIELDS}
+          value={{ items: header.items }}
+          onChange={(next) =>
+            update((draft) => {
+              draft.header.items = (next as { items: NavItem[] }).items;
+            })
+          }
+        />
+        <p className={s.hint}>
+          En cada elemento puedes añadir un <strong>submenú</strong>. Usa enlaces como
+          {' #precios'} para saltos dentro de la página.
+        </p>
       </PanelSection>
 
       <PanelSection title="Marca">
@@ -435,26 +529,22 @@ function HeaderForm() {
 function FooterForm() {
   const { state } = useBuilder();
   const update = useUpdate();
-  const footer = state.spec.footer;
 
   return (
     <PanelSection title="Pie de página">
-      <CheckboxField
-        label="Formulario de newsletter"
-        checked={footer.newsletter}
-        onChange={(checked) => update((d) => void (d.footer.newsletter = checked))}
+      <FieldsForm
+        fields={FOOTER_FIELDS}
+        value={state.spec.footer}
+        onChange={(next) =>
+          update((draft) => {
+            draft.footer = next as typeof draft.footer;
+          })
+        }
       />
-      <TextAreaField
-        label="Texto de marca"
-        value={footer.brandText}
-        rows={2}
-        onCommit={(v) => update((d) => void (d.footer.brandText = v as string | undefined))}
-      />
-      <TextField
-        label="Copyright"
-        value={footer.copyright}
-        onCommit={(v) => update((d) => void (d.footer.copyright = v as string | undefined))}
-      />
+      <p className={s.hint}>
+        Cada columna puede tener varios enlaces; el newsletter usa el email como campo de ejemplo
+        (sin envío hasta conectar un servicio).
+      </p>
     </PanelSection>
   );
 }
@@ -462,7 +552,7 @@ function FooterForm() {
 // ── Section ──────────────────────────────────────────────────────────────────
 
 function SectionForm({ sectionId }: { sectionId: string }) {
-  const { state } = useBuilder();
+  const { state, dispatch } = useBuilder();
   const update = useUpdate();
   const section = state.spec.sections.find((item) => item.id === sectionId);
 
@@ -476,12 +566,23 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   };
 
   const move = (delta: number): void => {
+    update((draft) =>
+      moveItem(
+        draft.sections,
+        draft.sections.findIndex((i) => i.id === sectionId),
+        delta,
+      ),
+    );
+  };
+
+  const moveRow = (index: number, delta: number): void => {
+    patch((target) => moveItem(target.rows, index, delta));
+  };
+
+  const removeRow = (rowId: string): void => {
     update((draft) => {
-      const index = draft.sections.findIndex((item) => item.id === sectionId);
-      const target = index + delta;
-      if (index < 0 || target < 0 || target >= draft.sections.length) return;
-      const [moved] = draft.sections.splice(index, 1);
-      if (moved) draft.sections.splice(target, 0, moved);
+      const target = findSection(draft, sectionId);
+      if (target) target.rows = target.rows.filter((item) => item.id !== rowId);
     });
   };
 
@@ -537,19 +638,26 @@ function SectionForm({ sectionId }: { sectionId: string }) {
           }
         />
         <div className={s.twoCols}>
-          <NumberField
-            label="Padding Y (px)"
+          <SliderNumberField
+            label="Altura interna"
             value={section.padding?.topBottomPx}
-            onCommit={(v) =>
+            min={0}
+            max={240}
+            unit=" px"
+            hint="Vacío = usa el espaciado global."
+            onChange={(v) =>
               patch((target) => {
                 target.padding = { ...target.padding, topBottomPx: v as number | undefined };
               })
             }
           />
-          <NumberField
-            label="Padding X (px)"
+          <SliderNumberField
+            label="Ancho interno"
             value={section.padding?.leftRightPx}
-            onCommit={(v) =>
+            min={0}
+            max={160}
+            unit=" px"
+            onChange={(v) =>
               patch((target) => {
                 target.padding = { ...target.padding, leftRightPx: v as number | undefined };
               })
@@ -570,15 +678,46 @@ function SectionForm({ sectionId }: { sectionId: string }) {
         </ButtonRow>
       </PanelSection>
 
-      <BackgroundEditor section={section} onPatch={patch} />
-
-      <AnimationPicker
-        allowHover={false}
-        value={section.animation}
-        onChange={(next) => patch((target) => void (target.animation = normalizeAnimation(next)))}
-      />
-
-      <PanelSection title="Filas">
+      <PanelSection title={`Filas (${section.rows.length})`}>
+        <div className={s.rowList}>
+          {section.rows.map((row, index) => (
+            <div key={row.id} className={s.rowListItem}>
+              <button
+                type="button"
+                className={s.rowListItemName}
+                onClick={() =>
+                  dispatch({ type: 'select', selection: { kind: 'row', sectionId, id: row.id } })
+                }
+              >
+                Fila {index + 1} · {row.columns.length} col.
+              </button>
+              <button
+                type="button"
+                className={s.treeMini}
+                title="Subir fila"
+                onClick={() => moveRow(index, -1)}
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={s.treeMini}
+                title="Bajar fila"
+                onClick={() => moveRow(index, 1)}
+              >
+                ↓
+              </button>
+              <button
+                type="button"
+                className={s.treeMiniDanger}
+                title="Eliminar fila"
+                onClick={() => removeRow(row.id)}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
         <ButtonRow>
           <button
             type="button"
@@ -604,10 +743,15 @@ function SectionForm({ sectionId }: { sectionId: string }) {
             + Añadir fila
           </button>
         </ButtonRow>
-        <p className={s.hint}>
-          {section.rows.length} fila(s) · selecciona una fila en el árbol para editarla.
-        </p>
       </PanelSection>
+
+      <BackgroundEditor section={section} onPatch={patch} />
+
+      <AnimationPicker
+        allowHover={false}
+        value={section.animation}
+        onChange={(next) => patch((target) => void (target.animation = normalizeAnimation(next)))}
+      />
     </>
   );
 }
@@ -621,6 +765,8 @@ function BackgroundEditor({
   section: SectionDraft;
   onPatch: (mutate: (target: SectionDraft) => void) => void;
 }) {
+  const { state } = useBuilder();
+  const palette = state.spec.theme.palette;
   const background = section.background;
   const type = background?.type ?? '';
 
@@ -636,17 +782,25 @@ function BackgroundEditor({
     });
   };
 
+  const quickColors = [
+    palette.primary,
+    palette.secondary,
+    palette.accent,
+    palette.background,
+    palette.surface,
+  ];
+
   return (
-    <PanelSection title="Fondo">
+    <PanelSection title="Fondo de la sección">
       <SelectField
         label="Tipo de fondo"
         value={type}
         options={[
-          { value: '', label: 'Sin fondo (hereda)' },
+          { value: '', label: 'Heredar de la página' },
           { value: 'color', label: 'Color plano' },
           { value: 'gradient', label: 'Degradado' },
           { value: 'image', label: 'Imagen' },
-          { value: 'interactive', label: 'Interactivo (ratón)' },
+          { value: 'interactive', label: '¡Interactivo con el ratón!' },
         ]}
         onChange={(value) => {
           if (!value) {
@@ -654,14 +808,14 @@ function BackgroundEditor({
             return;
           }
           if (value === 'color') {
-            setBackground({ type: 'color', color: '#000000' });
+            setBackground({ type: 'color', color: palette.surface });
           } else if (value === 'gradient') {
             setBackground({
               type: 'gradient',
               gradient: {
                 type: 'linear',
                 angle: 135,
-                stops: [{ color: '#6C5CE7' }, { color: '#FD79A8', position: 100 }],
+                stops: [{ color: palette.primary }, { color: palette.accent, position: 100 }],
               },
             });
           } else if (value === 'image') {
@@ -684,31 +838,63 @@ function BackgroundEditor({
       />
 
       {background?.type === 'color' && (
-        <ColorField
-          label="Color"
-          value={background.color}
-          onCommit={(v) =>
-            typeof v === 'string' &&
-            patchBackground((bg) => {
-              if (bg.type !== 'color') return;
-              bg.color = v;
-            })
-          }
-        />
+        <>
+          <ColorField
+            label="Color"
+            value={background.color}
+            onCommit={(v) =>
+              typeof v === 'string' &&
+              patchBackground((bg) => {
+                if (bg.type !== 'color') return;
+                bg.color = v;
+              })
+            }
+          />
+          <PaletteSwatches
+            label="Colores de tu paleta"
+            colors={quickColors}
+            onPick={(color) =>
+              patchBackground((bg) => {
+                if (bg.type !== 'color') return;
+                bg.color = color;
+              })
+            }
+          />
+        </>
       )}
 
       {background?.type === 'gradient' && (
         <>
-          <NumberField
-            label="Ángulo (0-360)"
-            value={background.gradient.angle}
-            onCommit={(v) =>
+          <SelectField
+            label="Forma"
+            value={background.gradient.type}
+            options={[
+              { value: 'linear', label: 'Lineal' },
+              { value: 'radial', label: 'Radial (desde el centro)' },
+              { value: 'conic', label: 'Cónica (giratoria)' },
+            ]}
+            onChange={(value) =>
               patchBackground((bg) => {
                 if (bg.type !== 'gradient') return;
-                bg.gradient.angle = Number(v ?? 135);
+                bg.gradient.type = value as 'linear' | 'radial' | 'conic';
               })
             }
           />
+          {background.gradient.type !== 'radial' && (
+            <SliderNumberField
+              label="Ángulo"
+              value={background.gradient.angle}
+              min={0}
+              max={360}
+              unit="°"
+              onChange={(v) =>
+                patchBackground((bg) => {
+                  if (bg.type !== 'gradient') return;
+                  bg.gradient.angle = Number(v ?? 135);
+                })
+              }
+            />
+          )}
           <ColorField
             label="Color inicial"
             value={background.gradient.stops[0]?.color}
@@ -731,6 +917,16 @@ function BackgroundEditor({
               })
             }
           />
+          <PaletteSwatches
+            label="Colores de tu paleta"
+            colors={quickColors}
+            onPick={(color) =>
+              patchBackground((bg) => {
+                if (bg.type !== 'gradient' || !bg.gradient.stops[0]) return;
+                bg.gradient.stops[0].color = color;
+              })
+            }
+          />
         </>
       )}
 
@@ -744,6 +940,49 @@ function BackgroundEditor({
               patchBackground((bg) => {
                 if (bg.type !== 'image') return;
                 bg.src = v;
+              })
+            }
+          />
+          <div className={s.twoCols}>
+            <SelectField
+              label="Encaje"
+              value={background.size}
+              options={[
+                { value: 'cover', label: 'Cubrir (recorta)' },
+                { value: 'contain', label: 'Contener (cabe entera)' },
+              ]}
+              onChange={(value) =>
+                patchBackground((bg) => {
+                  if (bg.type !== 'image') return;
+                  bg.size = value as 'cover' | 'contain';
+                })
+              }
+            />
+            <SelectField
+              label="Posición"
+              value={background.position}
+              options={[
+                { value: 'center', label: 'Centro' },
+                { value: 'top', label: 'Arriba' },
+                { value: 'bottom', label: 'Abajo' },
+                { value: 'left', label: 'Izquierda' },
+                { value: 'right', label: 'Derecha' },
+              ]}
+              onChange={(value) =>
+                patchBackground((bg) => {
+                  if (bg.type !== 'image') return;
+                  bg.position = value ?? 'center';
+                })
+              }
+            />
+          </div>
+          <CheckboxField
+            label="Efecto fijo (parallax)"
+            checked={background.fixed}
+            onChange={(checked) =>
+              patchBackground((bg) => {
+                if (bg.type !== 'image') return;
+                bg.fixed = checked;
               })
             }
           />
@@ -784,20 +1023,26 @@ function BackgroundEditor({
             }
           />
           <div className={s.twoCols}>
-            <NumberField
-              label="Intensidad (0-1)"
+            <SliderNumberField
+              label="Intensidad"
               value={background.intensity}
-              onCommit={(v) =>
+              min={0}
+              max={1}
+              step={0.05}
+              onChange={(v) =>
                 patchBackground((bg) => {
                   if (bg.type !== 'interactive') return;
                   bg.intensity = Number(v ?? 0.5);
                 })
               }
             />
-            <NumberField
-              label="Velocidad (0-1)"
+            <SliderNumberField
+              label="Velocidad"
               value={background.speed}
-              onCommit={(v) =>
+              min={0}
+              max={1}
+              step={0.05}
+              onChange={(v) =>
                 patchBackground((bg) => {
                   if (bg.type !== 'interactive') return;
                   bg.speed = Number(v ?? 0.5);
@@ -813,6 +1058,16 @@ function BackgroundEditor({
               patchBackground((bg) => {
                 if (bg.type !== 'interactive') return;
                 bg.effectColor = v;
+              })
+            }
+          />
+          <PaletteSwatches
+            label="Colores de tu paleta"
+            colors={quickColors}
+            onPick={(color) =>
+              patchBackground((bg) => {
+                if (bg.type !== 'interactive') return;
+                bg.effectColor = color;
               })
             }
           />
@@ -873,10 +1128,13 @@ function OverlayFields({
         value={current.color ?? '#000000'}
         onCommit={(value) => typeof value === 'string' && onChange({ ...current, color: value })}
       />
-      <NumberField
-        label="Intensidad (0-1)"
+      <SliderNumberField
+        label="Intensidad del sombreado"
         value={current.intensity ?? 0.5}
-        onCommit={(value) => onChange({ ...current, intensity: Number(value ?? 0.5) })}
+        min={0}
+        max={1}
+        step={0.05}
+        onChange={(value) => onChange({ ...current, intensity: Number(value ?? 0.5) })}
       />
     </>
   );
@@ -885,7 +1143,7 @@ function OverlayFields({
 // ── Row ──────────────────────────────────────────────────────────────────────
 
 function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
-  const { state } = useBuilder();
+  const { state, dispatch } = useBuilder();
   const update = useUpdate();
   const section = state.spec.sections.find((item) => item.id === sectionId);
   const row = section?.rows.find((item) => item.id === rowId);
@@ -899,28 +1157,72 @@ function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
     });
   };
 
+  const moveColumn = (index: number, delta: number): void => {
+    patch((target) => moveItem(target.columns, index, delta));
+  };
+
   return (
     <>
       <PanelSection title="Fila">
         <div className={s.twoCols}>
-          <NumberField
-            label="Gap (px)"
+          <SliderNumberField
+            label="Separación entre columnas"
             value={row.gapPx}
-            onCommit={(v) => patch((target) => void (target.gapPx = v as number | undefined))}
+            min={0}
+            max={80}
+            unit=" px"
+            hint="Vacío = usa el espaciado global."
+            onChange={(v) => patch((target) => void (target.gapPx = v as number | undefined))}
           />
           <SelectField
-            label="Apilar en"
+            label="Apilar en pantallas"
             value={row.stackBelow}
             options={[
-              { value: 'never', label: 'Nunca' },
-              { value: 'tablet', label: 'Tablet (≤1023px)' },
-              { value: 'mobile', label: 'Móvil (≤639px)' },
+              { value: 'never', label: 'Nunca (siempre en fila)' },
+              { value: 'tablet', label: 'Tablet y móvil' },
+              { value: 'mobile', label: 'Solo móvil' },
             ]}
             onChange={(value) =>
               patch((target) => void (target.stackBelow = value as RowDraft['stackBelow']))
             }
           />
         </div>
+
+        <div className={s.rowList}>
+          {row.columns.map((column, index) => (
+            <div key={column.id} className={s.rowListItem}>
+              <button
+                type="button"
+                className={s.rowListItemName}
+                onClick={() =>
+                  dispatch({
+                    type: 'select',
+                    selection: { kind: 'column', sectionId, id: column.id },
+                  })
+                }
+              >
+                Columna {index + 1} · ancho {column.span}/12
+              </button>
+              <button
+                type="button"
+                className={s.treeMini}
+                title="Subir columna"
+                onClick={() => moveColumn(index, -1)}
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={s.treeMini}
+                title="Bajar columna"
+                onClick={() => moveColumn(index, 1)}
+              >
+                ↓
+              </button>
+            </div>
+          ))}
+        </div>
+
         <ButtonRow>
           <button
             type="button"
@@ -950,7 +1252,6 @@ function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
             Eliminar fila
           </DangerButton>
         </ButtonRow>
-        <p className={s.hint}>{row.columns.length} columna(s) en esta fila.</p>
       </PanelSection>
     </>
   );
@@ -996,25 +1297,26 @@ function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: stri
   return (
     <>
       <PanelSection title="Columna">
-        <div className={s.twoCols}>
-          <NumberField
-            label="Ancho (1-12)"
-            value={column.span}
-            onCommit={(v) => patch((target) => void (target.span = Number(v ?? 12)))}
-          />
-          <SelectField
-            label="Alineación vertical"
-            value={column.verticalAlign}
-            options={[
-              { value: 'start', label: 'Arriba' },
-              { value: 'center', label: 'Centro' },
-              { value: 'end', label: 'Abajo' },
-            ]}
-            onChange={(value) =>
-              patch((target) => void (target.verticalAlign = value as ColumnDraft['verticalAlign']))
-            }
-          />
-        </div>
+        <SliderNumberField
+          label="Ancho de la columna"
+          value={column.span}
+          min={1}
+          max={12}
+          hint="12 = ancho completo · 6 = mitad · 4 = un tercio."
+          onChange={(v) => patch((target) => void (target.span = Number(v ?? 12)))}
+        />
+        <SelectField
+          label="Alineación vertical"
+          value={column.verticalAlign}
+          options={[
+            { value: 'start', label: 'Arriba' },
+            { value: 'center', label: 'Centro' },
+            { value: 'end', label: 'Abajo' },
+          ]}
+          onChange={(value) =>
+            patch((target) => void (target.verticalAlign = value as ColumnDraft['verticalAlign']))
+          }
+        />
         <CheckboxField
           label="Ocultar en tablet"
           checked={column.hideOn.includes('tablet')}
@@ -1089,9 +1391,7 @@ function ComponentForm({ sectionId, componentId }: { sectionId: string; componen
 
   return (
     <>
-      <PanelSection
-        title={`${COMPONENT_TYPE_LABELS[component.type] ?? component.type} · ${component.id}`}
-      >
+      <PanelSection title={`${COMPONENT_TYPE_LABELS[component.type] ?? component.type}`}>
         <ButtonRow>
           <DangerButton
             onClick={() => {

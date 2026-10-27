@@ -85,6 +85,24 @@ describe('PALETTES', () => {
     expect(light.length).toBeGreaterThanOrEqual(15);
     expect(dark.length + light.length).toBe(PALETTES.length);
   });
+
+  it('la mayoría de fondos están TEÑIDOS con color (no blanco/negro puro)', () => {
+    // Amplitud de canal (max-min):0 = gris puro (#FFFFFF/#000000), ≥12 = tinte visible.
+    const channelSpread = (hex: string): number => {
+      const value = parseInt(hex.slice(1), 16);
+      const channels = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+      return Math.max(...channels) - Math.min(...channels);
+    };
+
+    const tinted = PALETTES.filter((palette) => channelSpread(palette.colors.background) >= 12);
+    expect(tinted.length).toBeGreaterThanOrEqual(40);
+
+    // Y las superficies (tarjetas) también llevan color en la mayoría.
+    const tintedSurfaces = PALETTES.filter(
+      (palette) => channelSpread(palette.colors.surface) >= 12,
+    );
+    expect(tintedSurfaces.length).toBeGreaterThanOrEqual(40);
+  });
 });
 
 describe('getPalette', () => {

@@ -1,10 +1,12 @@
 import type { PaletteColors } from './contrast';
 
 /**
- * The palette catalog: 51 curated palettes of exactly 5 colors.
+ * The palette catalog:51 curated palettes of exactly5 colors.
  *
- * Every entry is validated in tests against WCAG (level AA minimum) and
- * tagged by style + light/dark mode so the builder can filter them.
+ * Backgrounds and surfaces are deliberately TINTED with the palette's own
+ * hue (not plain white/black) so choosing a palette visibly changes the
+ * mood of the page. Every entry is validated in tests against WCAG
+ * (level AA minimum) and tagged by style + light/dark mode.
  */
 
 export type PaletteTag =
@@ -39,8 +41,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#1D4ED8',
       secondary: '#0EA5E9',
       accent: '#F59E0B',
-      background: '#FFFFFF',
-      surface: '#F1F5F9',
+      background: '#EFF6FF',
+      surface: '#DBEAFE',
     },
   },
   {
@@ -51,8 +53,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#2563EB',
       secondary: '#38BDF8',
       accent: '#F43F5E',
-      background: '#F8FAFC',
-      surface: '#FFFFFF',
+      background: '#F0F9FF',
+      surface: '#E0F2FE',
     },
   },
   {
@@ -63,8 +65,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#1E40AF',
       secondary: '#60A5FA',
       accent: '#FBBF24',
-      background: '#EFF6FF',
-      surface: '#FFFFFF',
+      background: '#EEF2FF',
+      surface: '#E0E7FF',
     },
   },
   {
@@ -75,8 +77,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#334155',
       secondary: '#64748B',
       accent: '#0EA5E9',
-      background: '#FFFFFF',
-      surface: '#F8FAFC',
+      background: '#F8FAFC',
+      surface: '#FFFFFF',
     },
   },
   {
@@ -88,7 +90,7 @@ export const PALETTES: readonly Palette[] = [
       secondary: '#06B6D4',
       accent: '#FB923C',
       background: '#F0F9FF',
-      surface: '#FFFFFF',
+      surface: '#E0F2FE',
     },
   },
   {
@@ -99,8 +101,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#9F1239',
       secondary: '#E11D48',
       accent: '#F59E0B',
-      background: '#FFF1F2',
-      surface: '#FFFFFF',
+      background: '#FFF0F4',
+      surface: '#FFE4E6',
     },
   },
 
@@ -113,8 +115,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#C2410C',
       secondary: '#F97316',
       accent: '#FACC15',
-      background: '#FFFBF5',
-      surface: '#FFF1E6',
+      background: '#FFF7ED',
+      surface: '#FFEDD5',
     },
   },
   {
@@ -125,8 +127,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#B45309',
       secondary: '#F59E0B',
       accent: '#FB7185',
-      background: '#FFFBF5',
-      surface: '#FFF7ED',
+      background: '#FFF4E6',
+      surface: '#FFEAD5',
     },
   },
   {
@@ -137,8 +139,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#B91C1C',
       secondary: '#EF4444',
       accent: '#FBBF24',
-      background: '#FFF5F5',
-      surface: '#FEF2F2',
+      background: '#FEF2F2',
+      surface: '#FEE2E2',
     },
   },
 
@@ -152,7 +154,7 @@ export const PALETTES: readonly Palette[] = [
       secondary: '#14B8A6',
       accent: '#3B82F6',
       background: '#F0FDFA',
-      surface: '#FFFFFF',
+      surface: '#CCFBF1',
     },
   },
   {
@@ -164,7 +166,7 @@ export const PALETTES: readonly Palette[] = [
       secondary: '#10B981',
       accent: '#F59E0B',
       background: '#F0FDF4',
-      surface: '#FFFFFF',
+      surface: '#DCFCE7',
     },
   },
   {
@@ -176,7 +178,7 @@ export const PALETTES: readonly Palette[] = [
       secondary: '#06B6D4',
       accent: '#F472B6',
       background: '#ECFEFF',
-      surface: '#FFFFFF',
+      surface: '#CFFAFE',
     },
   },
 
@@ -189,8 +191,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#7C3AED',
       secondary: '#DB2777',
       accent: '#22D3EE',
-      background: '#FFFFFF',
-      surface: '#F5F3FF',
+      background: '#FAF5FF',
+      surface: '#F3E8FF',
     },
   },
   {
@@ -201,8 +203,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#BE185D',
       secondary: '#EC4899',
       accent: '#8B5CF6',
-      background: '#FFF5F8',
-      surface: '#FFFFFF',
+      background: '#FDF2F8',
+      surface: '#FCE7F3',
     },
   },
   {
@@ -213,8 +215,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#6D28D9',
       secondary: '#A855F7',
       accent: '#22D3EE',
-      background: '#FAF5FF',
-      surface: '#FFFFFF',
+      background: '#F3E8FF',
+      surface: '#E9D5FF',
     },
   },
 
@@ -227,8 +229,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#3F6212',
       secondary: '#65A30D',
       accent: '#CA8A04',
-      background: '#FAFAF7',
-      surface: '#F0F2EB',
+      background: '#F7FEE7',
+      surface: '#ECFCCB',
     },
   },
   {
@@ -239,8 +241,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#166534',
       secondary: '#22C55E',
       accent: '#EA580C',
-      background: '#F7FDF9',
-      surface: '#ECFDF5',
+      background: '#EFFDF5',
+      surface: '#D1FAE5',
     },
   },
   {
@@ -251,8 +253,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#92400E',
       secondary: '#D97706',
       accent: '#0D9488',
-      background: '#FFFBF5',
-      surface: '#F5F0E6',
+      background: '#FFF8ED',
+      surface: '#FEF3C7',
     },
   },
 
@@ -277,8 +279,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#713F12',
       secondary: '#A16207',
       accent: '#D97706',
-      background: '#FFFDF7',
-      surface: '#F7F3EA',
+      background: '#FFFBEB',
+      surface: '#FEF3C7',
     },
   },
   {
@@ -303,8 +305,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#C2600F',
       secondary: '#F59E0B',
       accent: '#EC4899',
-      background: '#FFFDF7',
-      surface: '#FFF7ED',
+      background: '#FFFBEB',
+      surface: '#FEF3C7',
     },
   },
   {
@@ -315,7 +317,7 @@ export const PALETTES: readonly Palette[] = [
       primary: '#EA580C',
       secondary: '#F43F5E',
       accent: '#22D3EE',
-      background: '#FFF7F5',
+      background: '#FFF4EF',
       surface: '#FFEDEA',
     },
   },
@@ -327,8 +329,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#9333EA',
       secondary: '#F472B6',
       accent: '#22D3EE',
-      background: '#FAF5FF',
-      surface: '#FFFFFF',
+      background: '#FDF4FF',
+      surface: '#FAE8FF',
     },
   },
 
@@ -341,8 +343,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#0891B2',
       secondary: '#06B6D4',
       accent: '#8B5CF6',
-      background: '#ECFEFF',
-      surface: '#FFFFFF',
+      background: '#F0FFFB',
+      surface: '#CFFAFE',
     },
   },
   {
@@ -353,8 +355,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#4F46E5',
       secondary: '#7C3AED',
       accent: '#06B6D4',
-      background: '#EEF2FF',
-      surface: '#FFFFFF',
+      background: '#F0F3FF',
+      surface: '#C7D2FE',
     },
   },
   {
@@ -379,8 +381,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#60A5FA',
       secondary: '#38BDF8',
       accent: '#FBBF24',
-      background: '#0B1120',
-      surface: '#111827',
+      background: '#0B1B3A',
+      surface: '#12274F',
     },
   },
   {
@@ -391,8 +393,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#3B82F6',
       secondary: '#22D3EE',
       accent: '#F472B6',
-      background: '#0A0F1E',
-      surface: '#131A2E',
+      background: '#0A1633',
+      surface: '#12224B',
     },
   },
   {
@@ -403,8 +405,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#818CF8',
       secondary: '#38BDF8',
       accent: '#34D399',
-      background: '#0D1117',
-      surface: '#161B22',
+      background: '#101A33',
+      surface: '#1A2748',
     },
   },
 
@@ -417,8 +419,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#F87171',
       secondary: '#FB923C',
       accent: '#FACC15',
-      background: '#1C0A0A',
-      surface: '#2A1212',
+      background: '#2E0C0C',
+      surface: '#451515',
     },
   },
   {
@@ -429,8 +431,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#FBBF24',
       secondary: '#FB923C',
       accent: '#F472B6',
-      background: '#1A1206',
-      surface: '#26190A',
+      background: '#2B1C05',
+      surface: '#402C0B',
     },
   },
   {
@@ -441,8 +443,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#FB923C',
       secondary: '#F472B6',
       accent: '#FBBF24',
-      background: '#1F0F0A',
-      surface: '#2E1810',
+      background: '#33150B',
+      surface: '#4A2312',
     },
   },
 
@@ -455,8 +457,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#34D399',
       secondary: '#22D3EE',
       accent: '#FBBF24',
-      background: '#05201A',
-      surface: '#0B2B23',
+      background: '#04321F',
+      surface: '#0A4A2F',
     },
   },
   {
@@ -467,8 +469,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#2DD4BF',
       secondary: '#60A5FA',
       accent: '#FB7185',
-      background: '#071A17',
-      surface: '#0E2622',
+      background: '#053A35',
+      surface: '#0B5049',
     },
   },
   {
@@ -479,8 +481,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#7DD3FC',
       secondary: '#A5B4FC',
       accent: '#34D399',
-      background: '#071522',
-      surface: '#0E2133',
+      background: '#0C2748',
+      surface: '#14355C',
     },
   },
 
@@ -493,8 +495,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#A855F7',
       secondary: '#EC4899',
       accent: '#22D3EE',
-      background: '#12081F',
-      surface: '#1B1030',
+      background: '#22103F',
+      surface: '#331B5C',
     },
   },
   {
@@ -505,8 +507,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#F472B6',
       secondary: '#A78BFA',
       accent: '#34D399',
-      background: '#1A0A1E',
-      surface: '#27122B',
+      background: '#330F2E',
+      surface: '#4A1B43',
     },
   },
   {
@@ -517,8 +519,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#818CF8',
       secondary: '#E879F9',
       accent: '#22D3EE',
-      background: '#0B0A1F',
-      surface: '#141230',
+      background: '#171445',
+      surface: '#221D66',
     },
   },
 
@@ -531,8 +533,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#4ADE80',
       secondary: '#2DD4BF',
       accent: '#FBBF24',
-      background: '#0A1A0F',
-      surface: '#12261A',
+      background: '#07381B',
+      surface: '#0C4A26',
     },
   },
   {
@@ -543,8 +545,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#A3E635',
       secondary: '#FBBF24',
       accent: '#FB923C',
-      background: '#14180C',
-      surface: '#1F2514',
+      background: '#23300A',
+      surface: '#334512',
     },
   },
   {
@@ -555,8 +557,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#86EFAC',
       secondary: '#67E8F9',
       accent: '#FDBA74',
-      background: '#0C1512',
-      surface: '#14211D',
+      background: '#0C3A2C',
+      surface: '#134D3B',
     },
   },
 
@@ -581,8 +583,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#EAB308',
       secondary: '#A16207',
       accent: '#EC4899',
-      background: '#12100A',
-      surface: '#1E1B12',
+      background: '#2B2410',
+      surface: '#3E351A',
     },
   },
   {
@@ -593,8 +595,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#F43F5E',
       secondary: '#A855F7',
       accent: '#FBBF24',
-      background: '#180A0E',
-      surface: '#241016',
+      background: '#300D16',
+      surface: '#481724',
     },
   },
 
@@ -607,8 +609,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#F472B6',
       secondary: '#A855F7',
       accent: '#FDE047',
-      background: '#1A0F1F',
-      surface: '#271730',
+      background: '#30113A',
+      surface: '#461E54',
     },
   },
   {
@@ -619,8 +621,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#FB923C',
       secondary: '#F472B6',
       accent: '#A3E635',
-      background: '#1C1108',
-      surface: '#2A1A0D',
+      background: '#331C08',
+      surface: '#4A2B0F',
     },
   },
   {
@@ -631,8 +633,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#60A5FA',
       secondary: '#F472B6',
       accent: '#FDE047',
-      background: '#0C1024',
-      surface: '#151B33',
+      background: '#141C4A',
+      surface: '#1F2A66',
     },
   },
 
@@ -645,8 +647,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#22D3EE',
       secondary: '#818CF8',
       accent: '#F472B6',
-      background: '#05070F',
-      surface: '#0B1021',
+      background: '#063442',
+      surface: '#0B4A5E',
     },
   },
   {
@@ -657,8 +659,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#38BDF8',
       secondary: '#A78BFA',
       accent: '#34D399',
-      background: '#060B18',
-      surface: '#0E1526',
+      background: '#072240',
+      surface: '#0E3159',
     },
   },
   {
@@ -669,8 +671,8 @@ export const PALETTES: readonly Palette[] = [
       primary: '#4ADE80',
       secondary: '#22D3EE',
       accent: '#FDE047',
-      background: '#07130B',
-      surface: '#0E2015',
+      background: '#063D1A',
+      surface: '#0B5224',
     },
   },
 ];
