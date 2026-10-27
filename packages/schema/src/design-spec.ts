@@ -37,6 +37,8 @@ export const designSpecSchema = z.object({
 });
 
 export type DesignSpec = z.infer<typeof designSpecSchema>;
+/** Partial-friendly shape accepted by `parseDesignSpec` (defaults filled by Zod). */
+export type DesignSpecInput = z.input<typeof designSpecSchema>;
 export type DesignMeta = z.infer<typeof designMetaSchema>;
 
 /**

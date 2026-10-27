@@ -8,16 +8,21 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
+    "@designed/animations": "workspace:*",
+    "@designed/components": "workspace:*",
+    "@designed/palettes": "workspace:*",
+    "@designed/schema": "workspace:*",
+    "@designed/tokens": "workspace:*",
     "next": "^16.4.3",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "sass": "^1.106.1"
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "sass": "^1"
   }
 }
