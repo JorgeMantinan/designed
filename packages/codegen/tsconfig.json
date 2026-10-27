@@ -1,4 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Explicit: node builtins (node:fs, process...) must resolve in this package.
+    "types": ["node"]
+  },
   "include": ["src"]
 }

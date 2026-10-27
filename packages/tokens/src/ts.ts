@@ -10,5 +10,5 @@ import { flattenTokens } from './build';
 export function toTsConstants(theme: ThemeSpec): string {
   const tokens = flattenTokens(theme);
   const body = JSON.stringify(tokens, null, 2);
-  return `// Generado por @designed/tokens — no editar a mano.\n\nexport const tokens = ${body} as const;\n`;
+  return `// Generado por designed — no editar a mano.\n\nexport const tokens = ${body} as const;\n`;
 }

@@ -15,9 +15,7 @@ export interface DesignRendererProps {
  * Injects the theme as CSS custom properties on the root element, so the
  * preview restyles instantly when the user changes palette or tokens.
  *
- * Load the global styles once in the app:
- *   import '@designed/animations/styles.css';
- *   import '@designed/components/styles.css';
+ * Load the global stylesheets once in the app entry (tokens, base y motion).
  */
 export function DesignRenderer({ spec }: DesignRendererProps) {
   const tokens = flattenTokens(spec.theme);

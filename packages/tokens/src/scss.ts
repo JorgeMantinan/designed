@@ -23,7 +23,7 @@ export function toScssVariables(theme: ThemeSpec): string {
   });
 
   return [
-    '// Generado por @designed/tokens — no editar a mano.',
+    '// Generado por designed — no editar a mano.',
     '',
     ...scssLines,
     '',

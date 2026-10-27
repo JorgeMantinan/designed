@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Global styles for rendered designs — loaded once per app:
-//   import '@designed/components/styles.css';
+// Global styles for rendered designs — loaded once per app entry:
+//   tokens.scss · global.scss (este archivo) · motion.scss
 //
 // Contains: the .dsg-root base, image overlays (lateral/diagonal/vertical...)
 // and accessibility helpers. Component styles live in *.module.scss files.

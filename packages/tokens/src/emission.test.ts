@@ -49,7 +49,7 @@ describe('toScssVariables', () => {
   });
 
   it('documenta que es un archivo generado', () => {
-    expect(scss).toContain('Generado por @designed/tokens');
+    expect(scss).toContain('Generado por designed');
   });
 
   it('genera las mismas variables que el emisor CSS', () => {

@@ -1,7 +1,6 @@
 /**
- * Codegen: emisor que transforma un DesignSpec en un proyecto Vite + React +
- * TypeScript completo y funcional (estructura real de carpetas, SCSS con
- * tokens, hooks, README en español), listo para empaquetar en un ZIP.
+ * @designed/codegen — DesignSpec → proyecto Vite + React + TypeScript
+ * exportable en ZIP.
  *
  * En el futuro, el mismo spec podrá emitirse a Angular u HTML estático
  * añadiendo un emisor nuevo sin tocar el resto del sistema.
@@ -17,3 +16,8 @@ export interface ExportedFile {
 
 /** Estructura completa de un proyecto exportado. */
 export type ExportedProject = ExportedFile[];
+
+export { generateProject } from './generate';
+export { slugify } from './static-files';
+export { rewriteSource, copyComponentSources } from './copy';
+export { relativeImport, repoRoot, findRepoRoot } from './paths';

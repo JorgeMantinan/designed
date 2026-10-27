@@ -86,11 +86,48 @@ function EditorShell({ onGallery }: { onGallery: () => void }) {
     [dispatch],
   );
 
-  const handleExport = useCallback(() => downloadJson(state.spec), [state.spec]);
+  const handleExportJson = useCallback(() => downloadJson(state.spec), [state.spec]);
+
+  const handleExportZip = useCallback(async () => {
+    try {
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state.spec),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as { errors?: string[] } | null;
+        const detail = data?.errors?.slice(0, 5).join('\n') ?? `HTTP ${response.status}`;
+        window.alert(`No se pudo generar el ZIP:\n${detail}`);
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      const slug =
+        state.spec.meta.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'mi-web';
+      anchor.href = url;
+      anchor.download = `${slug}.zip`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      window.alert('Error de red al generar el ZIP. Inténtalo de nuevo.');
+    }
+  }, [state.spec]);
 
   return (
     <div className={s.builder}>
-      <TopBar onGallery={onGallery} onImport={handleImport} onExport={handleExport} />
+      <TopBar
+        onGallery={onGallery}
+        onImport={handleImport}
+        onExportJson={handleExportJson}
+        onExportZip={handleExportZip}
+      />
       <div className={s.body}>
         <aside className={s.leftPanel}>
           <LayersTree />

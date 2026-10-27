@@ -10,11 +10,12 @@ import { TextField } from './ui';
 interface TopBarProps {
   onGallery: () => void;
   onImport: (file: File) => void;
-  onExport: () => void;
+  onExportJson: () => void;
+  onExportZip: () => void;
 }
 
 /** Builder chrome: back, design name, undo/redo, replay, import/export. */
-export function TopBar({ onGallery, onImport, onExport }: TopBarProps) {
+export function TopBar({ onGallery, onImport, onExportJson, onExportZip }: TopBarProps) {
   const { state, dispatch } = useBuilder();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -83,11 +84,11 @@ export function TopBar({ onGallery, onImport, onExport }: TopBarProps) {
           event.target.value = '';
         }}
       />
-      <button type="button" className={s.primaryButton} onClick={onExport}>
-        Exportar JSON
+      <button type="button" className={s.ghostButton} onClick={onExportJson}>
+        JSON
       </button>
-      <button type="button" className={s.disabledButton} disabled title="Disponible en la Fase 6">
-        Exportar ZIP
+      <button type="button" className={s.primaryButton} onClick={onExportZip}>
+        ↓ Exportar ZIP
       </button>
     </header>
   );

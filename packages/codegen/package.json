@@ -13,6 +13,10 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@designed/schema": "workspace:*"
+    "@designed/schema": "workspace:*",
+    "@designed/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5"
   }
 }

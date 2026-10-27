@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Motion engine — global classes loaded once per app:
-//   import '@designed/animations/styles.css';
+// Motion engine — global classes loaded once per app entry:
+//   tokens.scss · global.scss · motion.scss (este archivo)
 //
 // Entrance: elements opt in with `dsg-reveal dsg-entrance--<type>`; the
 //   `is-revealed` class (added by useMotion) plays the keyframe.
