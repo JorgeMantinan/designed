@@ -2,7 +2,8 @@ export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
     'header-max-length': [2, 'always', 100],
-    'subject-case': [2, 'always', 'lower-case'],
+    // Solo prohíbe TODO en mayúsculas; permite términos tipo "DesignSpec" o "Zod"
+    'subject-case': [2, 'never', ['upper-case']],
     'type-enum': [
       2,
       'always',

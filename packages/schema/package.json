@@ -5,11 +5,15 @@
   "type": "module",
   "description": "DesignSpec: DSL en Zod que describe el diseño completo (layout, tokens, animaciones, overlays)",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./fixtures": "./src/fixtures/index.ts"
   },
   "scripts": {
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
   }
 }
