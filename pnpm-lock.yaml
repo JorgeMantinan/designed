@@ -73,7 +73,18 @@ importers:
         specifier: ^1.106.1
         version: 1.106.1
 
-  packages/animations: {}
+  packages/animations:
+    dependencies:
+      '@designed/schema':
+        specifier: workspace:*
+        version: link:../schema
+    devDependencies:
+      '@types/react':
+        specifier: ^19
+        version: 19.3.0
+      react:
+        specifier: ^19
+        version: 19.3.1
 
   packages/codegen:
     dependencies:
@@ -82,13 +93,29 @@ importers:
         version: link:../schema
 
   packages/components:
+    dependencies:
+      '@designed/animations':
+        specifier: workspace:*
+        version: link:../animations
+      '@designed/schema':
+        specifier: workspace:*
+        version: link:../schema
+      '@designed/tokens':
+        specifier: workspace:*
+        version: link:../tokens
     devDependencies:
       '@types/react':
         specifier: ^19
         version: 19.3.0
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.3.0(@types/react@19.3.0)
       react:
         specifier: ^19
         version: 19.3.1
+      react-dom:
+        specifier: ^19
+        version: 19.3.1(react@19.3.1)
 
   packages/palettes: {}
 

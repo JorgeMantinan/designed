@@ -1,4 +1,4 @@
-import { deriveTextColors } from '@designed/palettes';
+import { bestTextColor, contrastRatio, deriveTextColors } from '@designed/palettes';
 import type { PaletteSpec, ThemeSpec } from '@designed/schema';
 import { themeSchema } from '@designed/schema';
 
@@ -84,6 +84,14 @@ export function flattenTokens(theme: ThemeSpec): Record<string, string> {
     'color-surface': palette.surface,
     'color-text': palette.text ?? derived.text,
     'color-text-muted': palette.textMuted ?? derived.textMuted,
+    // Guaranteed-readable label color ON the primary color (WCAG by construction).
+    'color-on-primary': bestTextColor(palette.primary),
+    // Primary color for text/links only when it is legible on the page
+    // background (AA), otherwise falls back to the regular text color.
+    'color-primary-text':
+      contrastRatio(palette.primary, palette.background) >= 4.5
+        ? palette.primary
+        : (palette.text ?? derived.text),
     'font-heading': typography.headingFont,
     'font-body': typography.bodyFont,
     'weight-heading': String(typography.headingWeight),

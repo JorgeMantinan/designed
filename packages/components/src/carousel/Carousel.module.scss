@@ -1,0 +1,116 @@
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+.viewport {
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--radius-lg);
+}
+
+.track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 100%;
+  overflow: hidden;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--space-lg);
+  color: #ffffff;
+}
+
+.captionTitle {
+  margin: 0;
+  font-size: var(--text-h3);
+}
+
+.captionText {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 0;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.arrow:hover {
+  background-color: color-mix(in srgb, var(--color-surface) 85%, var(--color-primary));
+}
+
+.arrowLeft {
+  left: var(--space-md);
+}
+
+.arrowRight {
+  right: var(--space-md);
+}
+
+.dots {
+  position: absolute;
+  bottom: var(--space-md);
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+  transform: translateX(-50%);
+}
+
+.dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  padding: 0;
+  background-color: rgb(255 255 255 / 45%);
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dot:hover {
+  transform: scale(1.25);
+}
+
+.dotActive {
+  background-color: #ffffff;
+  transform: scale(1.3);
+}

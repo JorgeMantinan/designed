@@ -1,0 +1,228 @@
+.header {
+  z-index: 40;
+  width: 100%;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+.transparent {
+  background-color: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+.menuOpen {
+  background-color: var(--color-surface);
+}
+
+.inner {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  width: 100%;
+  max-width: var(--container-max);
+  min-height: 4.5rem;
+  margin-inline: auto;
+  padding: var(--space-sm) var(--space-section-x);
+}
+
+.brand {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.logo {
+  max-height: 2.25rem;
+}
+
+.brandName {
+  color: var(--color-text);
+}
+
+.nav {
+  display: none;
+}
+
+.navHidden {
+  display: none !important;
+}
+
+.list {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+}
+
+.link {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  display: none;
+  min-width: 13rem;
+  margin: 0;
+  padding: var(--space-xs);
+  background-color: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+}
+
+.item:hover .dropdown,
+.item:focus-within .dropdown {
+  display: block;
+}
+
+.dropdownLink {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.dropdownLink:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.dropdownBadge {
+  padding: 0.05rem 0.45rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-on-primary);
+  background-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+
+.ctaWrap {
+  margin-inline-start: auto;
+}
+
+.burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-inline-start: auto;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+// ── Mobile menu panel ────────────────────────────────────────────────────────
+
+@media (max-width: 1023px) {
+  .menuOpen .nav[data-open='true'] {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: block;
+    padding: var(--space-md) var(--space-section-x) var(--space-lg);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .menuOpen .list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .menuOpen .dropdown {
+    position: static;
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    display: block;
+    margin-inline: auto;
+  }
+
+  .burger {
+    display: none;
+  }
+}
+
+// ── Angled layout: diagonal items that expand on hover ──────────────────────
+
+.itemAngled > .link {
+  margin-inline: 0.25rem;
+  padding-inline: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  background-color: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  clip-path: polygon(0.7rem 0, 100% 0, calc(100% - 0.7rem) 100%, 0 100%);
+  transition:
+    padding 0.25s ease,
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.itemAngled > .link:hover,
+.itemAngled > .link:focus-visible {
+  padding-inline: 2rem;
+  color: var(--color-on-primary);
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background-color: var(--color-primary);
+}
+
+// ── Sidebar / minimal variants ──────────────────────────────────────────────
+
+.sidebar .inner {
+  flex-wrap: wrap;
+}
+
+.sidebar .list {
+  width: 100%;
+  gap: var(--space-sm);
+}
+
+.minimal .brandName {
+  font-size: 1.1rem;
+}

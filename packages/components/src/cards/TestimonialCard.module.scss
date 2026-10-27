@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  height: 100%;
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-radius: var(--radius-lg);
+}
+
+.stars {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.starOn {
+  color: var(--color-accent);
+}
+
+.starOff {
+  color: color-mix(in srgb, var(--color-text) 25%, transparent);
+}
+
+.quote {
+  flex: 1;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.author {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.avatar,
+.avatarFallback {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-pill);
+}
+
+.avatar {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.role {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,22 @@
+.stat {
+  text-align: center;
+}
+
+.value {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-display);
+  font-weight: var(--weight-heading);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-primary-text);
+}
+
+.suffix {
+  font-size: var(--text-h2);
+}
+
+.label {
+  margin: var(--space-sm) 0 0;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,59 @@
+.section {
+  position: relative;
+  padding: var(--space-section-y) var(--space-section-x);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+
+.full .inner {
+  max-width: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+// Stacking: rows collapse to a single column below their breakpoint.
+@media (max-width: 1023px) {
+  .row[data-stack='tablet'] {
+    grid-template-columns: 1fr;
+  }
+
+  .row[data-stack='tablet'] > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  .column[data-hide~='tablet'] {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .row[data-stack='mobile'] {
+    grid-template-columns: 1fr;
+  }
+
+  .row[data-stack='mobile'] > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  .column[data-hide~='mobile'] {
+    display: none;
+  }
+}

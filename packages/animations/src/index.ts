@@ -1,11 +1,10 @@
 /**
- * Catálogo de animaciones: transiciones de botones, menús, entradas de
- * sección, estados hover y fondos interactivos (spotlight, malla de gradiente,
- * partículas, parallax...).
+ * @designed/animations — motion engine: entrance + hover slots for every
+ * component, plus (in the next phase) interactive backgrounds and the
+ * animation catalog for the picker UI.
  *
- * Se divide en dos familias:
- *  - CSS: keyframes + clases exportadas al proyecto del cliente (portables).
- *  - JS: hooks React con Motion/canvas para efectos interactivos.
+ * Load the global styles once per app:
+ *   import '@designed/animations/styles.css';
  */
 
 /** Familias de animación del catálogo. */
@@ -18,3 +17,5 @@ export const ANIMATION_FAMILIES = [
 ] as const;
 
 export type AnimationFamily = (typeof ANIMATION_FAMILIES)[number];
+
+export * from './motion';

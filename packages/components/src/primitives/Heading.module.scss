@@ -1,0 +1,53 @@
+.heading {
+  margin: 0;
+  font-size: var(--text-h2);
+}
+
+.display {
+  font-size: var(--text-display);
+  letter-spacing: -0.03em;
+}
+
+.xl {
+  font-size: var(--text-h1);
+}
+
+.lg {
+  font-size: var(--text-h2);
+}
+
+.md {
+  font-size: var(--text-h3);
+}
+
+.sm {
+  font-size: var(--text-h4);
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.default {
+  color: var(--color-text);
+}
+
+.primary {
+  color: var(--color-primary-text);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.inverse {
+  color: var(--color-on-primary);
+}

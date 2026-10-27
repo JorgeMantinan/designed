@@ -224,6 +224,8 @@ export const componentSchema = z.discriminatedUnion('type', [
 ]);
 
 export type ButtonSpec = z.infer<typeof buttonSchema>;
+/** Partial-friendly input variant (labels + href are enough to start). */
+export type ButtonInput = z.input<typeof buttonSchema>;
 export type ComponentSpec = z.infer<typeof componentSchema>;
 export type ComponentType = ComponentSpec['type'];
 export type HeadingSpec = z.infer<typeof headingSchema>;

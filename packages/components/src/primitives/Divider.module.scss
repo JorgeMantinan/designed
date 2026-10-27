@@ -1,0 +1,29 @@
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background-color: color-mix(in srgb, var(--color-text) 15%, transparent);
+}
+
+.animated {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    var(--color-accent),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: divider-shimmer 3s linear infinite;
+}
+
+@keyframes divider-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}

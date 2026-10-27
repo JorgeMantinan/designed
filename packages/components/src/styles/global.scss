@@ -1,0 +1,123 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Global styles for rendered designs — loaded once per app:
+//   import '@designed/components/styles.css';
+//
+// Contains: the .dsg-root base, image overlays (lateral/diagonal/vertical...)
+// and accessibility helpers. Component styles live in *.module.scss files.
+//
+// Responsive breakpoints (project convention):
+//   tablet ≤ 1023px · mobile ≤ 639px
+// ─────────────────────────────────────────────────────────────────────────────
+
+.dsg-root {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-body);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dsg-root h1,
+.dsg-root h2,
+.dsg-root h3,
+.dsg-root h4,
+.dsg-root h5,
+.dsg-root h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.dsg-root img {
+  max-width: 100%;
+}
+
+.dsg-root a {
+  color: inherit;
+}
+
+.dsg-root :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.dsg-main {
+  display: block;
+}
+
+.dsg-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ── Image overlays ───────────────────────────────────────────────────────────
+// Applied over photos, carousels and image backgrounds:
+//   <span class="dsg-overlay dsg-overlay--to-bottom-right" style="
+//        --overlay-color: #0B0B10; --overlay-intensity: .55" />
+// Intensity maps to the element opacity; directions are CSS gradients.
+
+.dsg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--overlay-intensity, 0.5);
+}
+
+.dsg-overlay--to-right {
+  background: linear-gradient(to right, var(--overlay-color, #000), transparent);
+}
+
+.dsg-overlay--to-left {
+  background: linear-gradient(to left, var(--overlay-color, #000), transparent);
+}
+
+.dsg-overlay--to-bottom {
+  background: linear-gradient(to bottom, var(--overlay-color, #000), transparent);
+}
+
+.dsg-overlay--to-top {
+  background: linear-gradient(to top, var(--overlay-color, #000), transparent);
+}
+
+.dsg-overlay--to-bottom-right {
+  background: linear-gradient(135deg, var(--overlay-color, #000) 10%, transparent 75%);
+}
+
+.dsg-overlay--to-bottom-left {
+  background: linear-gradient(225deg, var(--overlay-color, #000) 10%, transparent 75%);
+}
+
+.dsg-overlay--to-top-right {
+  background: linear-gradient(45deg, var(--overlay-color, #000) 10%, transparent 75%);
+}
+
+.dsg-overlay--to-top-left {
+  background: linear-gradient(315deg, var(--overlay-color, #000) 10%, transparent 75%);
+}
+
+.dsg-overlay--center {
+  background: radial-gradient(circle at center, transparent 40%, var(--overlay-color, #000) 100%);
+}
+
+.dsg-overlay--duotone {
+  background: linear-gradient(
+    var(--overlay-color, #000),
+    var(--overlay-color-to, var(--overlay-color, #000))
+  );
+  mix-blend-mode: color;
+}
+
+.dsg-overlay--vignette {
+  background: radial-gradient(circle at center, transparent 45%, var(--overlay-color, #000) 100%);
+}

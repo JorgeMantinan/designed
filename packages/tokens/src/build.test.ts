@@ -13,7 +13,9 @@ const palette = {
 const EXPECTED_KEYS = [
   'color-accent',
   'color-background',
+  'color-on-primary',
   'color-primary',
+  'color-primary-text',
   'color-secondary',
   'color-surface',
   'color-text',
@@ -59,7 +61,7 @@ describe('createTheme', () => {
 });
 
 describe('flattenTokens', () => {
-  it('genera los34 tokens esperados', () => {
+  it('genera los36 tokens esperados', () => {
     const theme = createTheme(palette);
     expect(Object.keys(flattenTokens(theme)).sort()).toEqual(EXPECTED_KEYS);
   });
@@ -80,6 +82,20 @@ describe('flattenTokens', () => {
     expect(tokens['color-text']).toBe('#000000');
     expect(tokens['color-text-muted']).toBe('#404040');
     expect(tokens['color-text']).not.toBe(tokens['color-text-muted']);
+  });
+
+  it('garantiza etiquetas legibles sobre el primario y texto primario legible', () => {
+    const tokens = flattenTokens(createTheme(palette));
+
+    // #6C5CE7 on white is ~5:1 → primary is usable as text
+    expect(tokens['color-on-primary']).toBe('#FFFFFF');
+    expect(tokens['color-primary-text']).toBe('#6C5CE7');
+
+    // A pastel primary on white fails AA as text → falls back to text color
+    const pastel = flattenTokens(
+      createTheme({ ...palette, primary: '#FDE68A', background: '#FFFFFF' }),
+    );
+    expect(pastel['color-primary-text']).toBe('#000000');
   });
 
   it('respeta los overrides explícitos de texto', () => {

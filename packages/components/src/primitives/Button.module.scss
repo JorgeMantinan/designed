@@ -1,0 +1,75 @@
+.button {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.md {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.lg {
+  padding: 1rem 2rem;
+  font-size: 1.0625rem;
+}
+
+.solid {
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+}
+
+.solid:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+}
+
+.outline {
+  color: var(--color-primary-text);
+  border-color: var(--color-primary);
+  background-color: transparent;
+}
+
+.outline:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+.ghost {
+  color: var(--color-text);
+  background-color: transparent;
+}
+
+.ghost:hover {
+  background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.gradient {
+  color: var(--color-on-primary);
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
+.gradient:hover {
+  filter: brightness(1.08);
+}
+
+.label {
+  display: inline-block;
+}
+
+.icon {
+  flex-shrink: 0;
+}

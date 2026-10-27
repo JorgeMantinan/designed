@@ -38,3 +38,5 @@ export const imageOverlaySchema = z.object({
 export type ImageOverlaySpec = z.infer<typeof imageOverlaySchema>;
 export type OverlayDirection = (typeof OVERLAY_DIRECTIONS)[number];
 export type OverlayType = z.infer<typeof imageOverlaySchema>['type'];
+/** Partial-friendly input variant for hand-built overlays. */
+export type ImageOverlayInput = z.input<typeof imageOverlaySchema>;

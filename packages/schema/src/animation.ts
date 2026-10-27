@@ -63,3 +63,8 @@ export type HoverAnimationSpec = z.infer<typeof hoverAnimationSchema>;
 export type AnimationSpec = z.infer<typeof animationSchema>;
 export type EntranceAnimationType = (typeof ENTRANCE_ANIMATION_TYPES)[number];
 export type HoverAnimationType = (typeof HOVER_ANIMATION_TYPES)[number];
+
+/** Input variants (partial-friendly) for building animations by hand. */
+export type EntranceAnimationInput = z.input<typeof entranceAnimationSchema>;
+export type HoverAnimationInput = z.input<typeof hoverAnimationSchema>;
+export type AnimationInput = z.input<typeof animationSchema>;

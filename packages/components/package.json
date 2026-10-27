@@ -5,18 +5,26 @@
   "type": "module",
   "description": "Primitivas headless: Button, Card, Header, Nav, Section, Carousel, Footer, Panel...",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles/global.scss"
   },
   "scripts": {
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
+  "dependencies": {
+    "@designed/animations": "workspace:*",
+    "@designed/schema": "workspace:*",
+    "@designed/tokens": "workspace:*"
+  },
   "peerDependencies": {
     "react": ">=19"
   },
   "devDependencies": {
     "@types/react": "^19",
-    "react": "^19"
+    "@types/react-dom": "^19",
+    "react": "^19",
+    "react-dom": "^19"
   }
 }

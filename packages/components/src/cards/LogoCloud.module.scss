@@ -1,0 +1,32 @@
+.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+}
+
+.logo {
+  width: auto;
+  max-height: 2.75rem;
+}
+
+.grayscale {
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.grayscale:hover {
+  filter: grayscale(0);
+  opacity: 1;
+}

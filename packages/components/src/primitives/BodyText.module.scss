@@ -1,0 +1,32 @@
+.text {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.default {
+  color: var(--color-text);
+}
+
+.primary {
+  color: var(--color-primary-text);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.inverse {
+  color: var(--color-on-primary);
+}
