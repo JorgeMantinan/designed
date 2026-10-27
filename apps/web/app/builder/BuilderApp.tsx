@@ -22,14 +22,30 @@ import {
 import { BuilderProvider, useBuilder } from '../../lib/store';
 import { buildBlankDesign, buildTemplate } from '../../lib/templates';
 
-function downloadJson(spec: DesignSpec): void {
-  const blob = new Blob([JSON.stringify(spec, null, 2)], { type: 'application/json' });
+function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = `${spec.meta.name.toLowerCase().replace(/\s+/g, '-') || 'diseno'}.json`;
+  anchor.download = filename;
   anchor.click();
   URL.revokeObjectURL(url);
+}
+
+/** Ascii-safe slug shared by the JSON and ZIP downloads. */
+function downloadSlug(name: string): string {
+  return (
+    name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'mi-web'
+  );
+}
+
+function downloadJson(spec: DesignSpec): void {
+  const blob = new Blob([JSON.stringify(spec, null, 2)], { type: 'application/json' });
+  downloadBlob(blob, `${downloadSlug(spec.meta.name)}.json`);
 }
 
 /** Runs inside the provider: autosave, keyboard shortcuts, import/export. */
@@ -104,17 +120,7 @@ function EditorShell({ onGallery }: { onGallery: () => void }) {
       }
 
       const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      const slug =
-        state.spec.meta.name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '') || 'mi-web';
-      anchor.href = url;
-      anchor.download = `${slug}.zip`;
-      anchor.click();
-      URL.revokeObjectURL(url);
+      downloadBlob(blob, `${downloadSlug(state.spec.meta.name)}.zip`);
     } catch {
       window.alert('Error de red al generar el ZIP. Inténtalo de nuevo.');
     }

@@ -9,6 +9,10 @@ build/
 .turbo/
 coverage/
 
+# Playwright
+playwright-report/
+test-results/
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts

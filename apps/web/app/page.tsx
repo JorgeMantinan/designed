@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import { repoUrl, siteDescription, siteUrl } from '../lib/site';
+
 const FEATURES = [
   {
     icon: '🧩',
@@ -23,9 +25,38 @@ const FEATURES = [
   },
 ];
 
+/** Structured data for search engines and AI answer cards (schema.org). */
+const softwareJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'designed',
+  applicationCategory: 'DesignApplication',
+  operatingSystem: 'Web',
+  description: siteDescription,
+  url: siteUrl,
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'es',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'EUR',
+  },
+  featureList: [
+    'Galería de plantillas filtrables',
+    '51 paletas con validación WCAG AA/AAA',
+    '16 animaciones y 7 fondos interactivos',
+    'Export a ZIP: proyecto Vite + React + TypeScript autónomo',
+  ],
+  codeRepository: repoUrl,
+};
+
 export default function HomePage() {
   return (
     <main className="landing">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
       <header className="landing__nav">
         <span className="landing__brand">designed</span>
         <Link className="landing__cta" href="/builder">
