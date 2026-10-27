@@ -46,3 +46,33 @@ test('OpenGraph: la imagen dinámica responde PNG', async ({ request }) => {
   expect(response.status()).toBe(200);
   expect(response.headers()['content-type']).toContain('image');
 });
+
+test('seguridad: cabeceras HTTP duras y sin framework expuesto', async ({ request }) => {
+  const response = await request.get('/');
+  const headers = response.headers();
+
+  expect(headers['content-security-policy']).toContain("default-src 'self'");
+  expect(headers['content-security-policy']).toContain("frame-ancestors 'none'");
+  expect(headers['x-content-type-options']).toBe('nosniff');
+  expect(headers['x-frame-options']).toBe('DENY');
+  expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
+  expect(headers['permissions-policy']).toContain('camera=()');
+  expect(headers['x-powered-by']).toBeUndefined();
+});
+
+test('export: valida tamaño y devuelve errores estructurados', async ({ request }) => {
+  const tooBig = await request.post('/api/export', {
+    headers: { 'Content-Type': 'application/json' },
+    data: JSON.stringify({ junk: 'x'.repeat(3 * 1024 * 1024) }),
+  });
+  expect(tooBig.status()).toBe(413);
+
+  const invalid = await request.post('/api/export', {
+    headers: { 'Content-Type': 'application/json' },
+    data: JSON.stringify({ version: 1 }),
+  });
+  expect(invalid.status()).toBe(422);
+  const body = (await invalid.json()) as { errors: string[] };
+  expect(Array.isArray(body.errors)).toBe(true);
+  expect(body.errors.length).toBeGreaterThan(0);
+});

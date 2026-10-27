@@ -55,7 +55,10 @@ export default function HomePage() {
     <main className="landing">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+        dangerouslySetInnerHTML={{
+          // Escape '<' so no injected string can close the script tag.
+          __html: JSON.stringify(softwareJsonLd).replace(/</g, '\\u003c'),
+        }}
       />
       <header className="landing__nav">
         <span className="landing__brand">designed</span>

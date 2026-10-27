@@ -222,6 +222,15 @@ Los componentes usan CSS custom properties (\`var(--color-primary)\`...), así q
 cambiar un token en \`:root\` repinta toda la web. Cada componente tiene su
 \`*.module.scss\` junto al \`.tsx\` para ajustes finos.
 
+## 🔒 Seguridad al desplegar
+
+Al publicar, añade cabeceras HTTP de seguridad en tu servidor o CDN:
+Content-Security-Policy, \`X-Content-Type-Options: nosniff\`,
+\`X-Frame-Options: DENY\`, \`Referrer-Policy\` y HSTS (https).
+El repositorio de designed incluye un ejemplo completo en \`next.config.ts\`.
+
+## 🎨 Personalización
+
 MIT · Generado con designed.
 `;
 }
