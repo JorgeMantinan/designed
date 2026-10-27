@@ -1,9 +1,10 @@
 /**
- * Design tokens: variables centralizadas del diseño (colores, espaciados,
- * radios, sombras, gradientes, tipografía).
+ * @designed/tokens — design tokens pipeline: ThemeSpec → CSS variables,
+ * SCSS partial and TS constants.
  *
- * NOTA: "tokens" aquí NO significa IA. Son las variables de diseño al estilo
- * Material/Shopify/Figma, que se compilan a SCSS + CSS custom properties.
+ * NOTE: "tokens" here does NOT mean AI. These are design variables
+ * (colors, typography, spacing, radii, shadows) in the Material/Shopify/Figma
+ * sense, centralized so a single change restyles the whole exported website.
  */
 
 /** Categorías de tokens que soporta el sistema. */
@@ -19,3 +20,8 @@ export const TOKEN_CATEGORIES = [
 ] as const;
 
 export type TokenCategory = (typeof TOKEN_CATEGORIES)[number];
+
+export * from './build';
+export * from './css';
+export * from './scss';
+export * from './ts';

@@ -1,11 +1,11 @@
 /**
- * Catálogo de paletas de 5 colores con validación de contraste WCAG.
+ * @designed/palettes — catalog of 5-color palettes + WCAG contrast engine.
  *
- * Cada paleta define 5 roles semánticos y se valida automáticamente para
- * garantizar legibilidad AA/AAA antes de ofrecerla en el builder.
+ * Every palette is validated in tests (level AA minimum) so the builder can
+ * offer an accessibility semaphore next to each swatch.
  */
 
-/** Roles semánticos de una paleta de 5 colores. */
+// Roles of a 5-color palette (product decision).
 export const PALETTE_ROLES = [
   'primary', // Color principal: botones, enlaces, acentos
   'secondary', // Color secundario: apoyos, badges
@@ -16,5 +16,8 @@ export const PALETTE_ROLES = [
 
 export type PaletteRole = (typeof PALETTE_ROLES)[number];
 
-/** Número de colores por paleta (decisión de producto: 5). */
+/** Number of colors per palette. */
 export const PALETTE_SIZE = PALETTE_ROLES.length;
+
+export * from './contrast';
+export * from './catalog';

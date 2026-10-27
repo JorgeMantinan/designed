@@ -11,5 +11,9 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
+  },
+  "dependencies": {
+    "@designed/palettes": "workspace:*",
+    "@designed/schema": "workspace:*"
   }
 }
