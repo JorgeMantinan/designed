@@ -26,7 +26,13 @@ export function FaqList({ id, items, animation, className }: FaqListProps) {
   const motion = useMotion(animation, ref);
 
   return (
-    <div id={id} ref={ref} className={cx(s.list, motion.className, className)} style={motion.style}>
+    <div
+      id={id}
+      ref={ref}
+      className={cx(s.list, motion.className, className)}
+      data-hover={motion.hoverType}
+      style={motion.style}
+    >
       {items.map((item) => (
         <details key={item.question} className={s.item}>
           <summary className={s.question}>

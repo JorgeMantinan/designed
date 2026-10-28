@@ -12,6 +12,7 @@ import {
   newId,
   reassignIds,
 } from '../lib/fields';
+import { BUTTON_VARIANT_OPTIONS } from '../lib/fields';
 import { mergeDeep, normalizeAnimation, normalizeHover } from '../lib/normalize';
 import { useBuilder } from '../lib/store';
 
@@ -373,6 +374,7 @@ function HeaderForm() {
   const { state } = useBuilder();
   const update = useUpdate();
   const header = state.spec.header;
+  const palette = state.spec.theme.palette;
 
   return (
     <>
@@ -396,7 +398,8 @@ function HeaderForm() {
           onChange={(checked) => update((draft) => void (draft.header.sticky = checked))}
         />
         <CheckboxField
-          label="Transparente al inicio"
+          label="Transparente al principio de la página"
+          hint="El menú empieza sin fondo (se ve el hero por detrás) y gana fondo sólido al hacer el primer scroll."
           checked={header.transparentOnTop}
           onChange={(checked) => update((draft) => void (draft.header.transparentOnTop = checked))}
         />
@@ -471,12 +474,10 @@ function HeaderForm() {
             <SelectField
               label="Estilo"
               value={header.cta.variant}
-              options={[
-                { value: 'solid', label: 'Sólido' },
-                { value: 'outline', label: 'Contorno' },
-                { value: 'ghost', label: 'Fantasma' },
-                { value: 'gradient', label: 'Degradado' },
-              ]}
+              options={BUTTON_VARIANT_OPTIONS.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
               onChange={(value) =>
                 update(
                   (d) =>
@@ -487,6 +488,47 @@ function HeaderForm() {
                 )
               }
             />
+            <ColorField
+              label="Color del botón (opcional)"
+              hint="Vacío = usa el color de tu paleta. Pasa por los colores de abajo para combinar."
+              value={header.cta.color}
+              onCommit={(v) =>
+                update((d) => d.header.cta && void (d.header.cta.color = v as string | undefined))
+              }
+            />
+            <ColorField
+              label="Color al pasar el ratón"
+              hint="Vacío = oscurece el color del botón automáticamente."
+              value={header.cta.hoverColor}
+              onCommit={(v) =>
+                update(
+                  (d) => d.header.cta && void (d.header.cta.hoverColor = v as string | undefined),
+                )
+              }
+            />
+            <PaletteSwatches
+              label="Colores de tu paleta para el botón"
+              colors={[palette.primary, palette.secondary, palette.accent]}
+              onPick={(color) => update((d) => d.header.cta && void (d.header.cta.color = color))}
+            />
+            {(header.cta.color || header.cta.hoverColor) && (
+              <ButtonRow>
+                <button
+                  type="button"
+                  className={s.ghostButton}
+                  title="Vuelve a los colores de la paleta"
+                  onClick={() =>
+                    update((d) => {
+                      if (!d.header.cta) return;
+                      delete d.header.cta.color;
+                      delete d.header.cta.hoverColor;
+                    })
+                  }
+                >
+                  ↺ Restablecer colores (paleta)
+                </button>
+              </ButtonRow>
+            )}
             <ButtonRow>
               <DangerButton onClick={() => update((d) => void (d.header.cta = undefined))}>
                 Quitar botón
@@ -586,6 +628,12 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   };
 
   const removeRow = (rowId: string): void => {
+    if (section.rows.length <= 1) {
+      window.alert(
+        'No se puede eliminar: la sección necesita al menos una fila. Si quieres eliminarla, usa «Eliminar» en la propia sección.',
+      );
+      return;
+    }
     update((draft) => {
       const target = findSection(draft, sectionId);
       if (target) target.rows = target.rows.filter((item) => item.id !== rowId);
@@ -1377,12 +1425,13 @@ function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: stri
         />
         <SelectField
           label="Alineación del contenido horizontal"
-          hint="«Centro» deja el contenido en medio de la pantalla aunque la columna ocupe poco ancho."
+          hint="«Centro» deja el contenido en el centro de la columna: si la columna ocupa poco ancho, el contenido se queda en el centro de esa columna, no de la página."
+          hintStrong
           value={column.contentAlign}
           options={[
             { value: 'stretch', label: 'Estirado (rellena la columna)' },
             { value: 'start', label: 'Izquierda' },
-            { value: 'center', label: '★ Centro en medio de la pantalla' },
+            { value: 'center', label: '★ Centro de la columna' },
             { value: 'end', label: 'Derecha' },
           ]}
           onChange={(value) =>
@@ -1416,14 +1465,20 @@ function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: stri
         />
         <ButtonRow>
           <DangerButton
-            onClick={() =>
+            onClick={() => {
+              if (row.columns.length <= 1) {
+                window.alert(
+                  'No se puede eliminar: la fila necesita al menos una columna. Puedes cambiar su ancho o su contenido en su lugar.',
+                );
+                return;
+              }
               update((draft) => {
                 const target = findSection(draft, sectionId)?.rows.find(
                   (item) => item.id === row.id,
                 );
                 if (target) target.columns = target.columns.filter((item) => item.id !== columnId);
-              })
-            }
+              });
+            }}
           >
             Eliminar columna
           </DangerButton>
@@ -1482,6 +1537,12 @@ function ComponentForm({ sectionId, componentId }: { sectionId: string; componen
         <ButtonRow>
           <DangerButton
             onClick={() => {
+              if (column.components.length <= 1) {
+                window.alert(
+                  'No se puede eliminar: la columna necesita al menos un componente. Cambia el componente por el que quieras, o elimina la columna o la sección entera.',
+                );
+                return;
+              }
               update((draft) => {
                 const target = draft.sections
                   .find((item) => item.id === sectionId)

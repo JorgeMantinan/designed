@@ -14,9 +14,12 @@ export const PALETTE_TAGS: readonly PaletteTag[] = [
   'divertida',
   'elegante',
   'fria',
+  'metalizado',
   'natural',
+  'neon',
   'neutra',
   'oscura',
+  'pastel',
   'tecnologica',
   'vibrante',
 ];

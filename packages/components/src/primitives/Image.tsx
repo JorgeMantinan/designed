@@ -47,6 +47,7 @@ export function Image({
         motion.className,
         className,
       )}
+      data-hover={motion.hoverType}
       style={motion.style}
     >
       <div className={s.frame} style={aspectRatio ? { aspectRatio } : undefined}>

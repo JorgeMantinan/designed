@@ -19,6 +19,9 @@ export type PaletteTag =
   | 'divertida'
   | 'tecnologica'
   | 'neutra'
+  | 'pastel'
+  | 'neon'
+  | 'metalizado'
   | 'clara'
   | 'oscura';
 
@@ -673,6 +676,230 @@ export const PALETTES: readonly Palette[] = [
       accent: '#FDE047',
       background: '#063D1A',
       surface: '#0B5224',
+    },
+  },
+
+  // ── Pastel (colores suaves con primarios legibles) ───────────────────
+  {
+    id: 'pastel-lavanda',
+    name: 'Pastel lavanda',
+    tags: ['pastel', 'divertida', 'clara'],
+    colors: {
+      primary: '#6D28D9',
+      secondary: '#C4B5FD',
+      accent: '#F9A8D4',
+      background: '#F5F3FF',
+      surface: '#EDE9FE',
+    },
+  },
+  {
+    id: 'pastel-melocoton',
+    name: 'Pastel melocotón',
+    tags: ['pastel', 'calida', 'clara'],
+    colors: {
+      primary: '#C2410C',
+      secondary: '#FDBA74',
+      accent: '#FCA5A5',
+      background: '#FFF7ED',
+      surface: '#FFEDD5',
+    },
+  },
+  {
+    id: 'pastel-menta',
+    name: 'Pastel menta',
+    tags: ['pastel', 'natural', 'clara'],
+    colors: {
+      primary: '#047857',
+      secondary: '#A7F3D0',
+      accent: '#99F6E4',
+      background: '#ECFDF5',
+      surface: '#D1FAE5',
+    },
+  },
+  {
+    id: 'pastel-rosa',
+    name: 'Pastel rosa',
+    tags: ['pastel', 'divertida', 'clara'],
+    colors: {
+      primary: '#BE185D',
+      secondary: '#FBCFE8',
+      accent: '#FDE68A',
+      background: '#FDF2F8',
+      surface: '#FCE7F3',
+    },
+  },
+  {
+    id: 'pastel-cielo',
+    name: 'Pastel cielo',
+    tags: ['pastel', 'fria', 'clara'],
+    colors: {
+      primary: '#0369A1',
+      secondary: '#BAE6FD',
+      accent: '#C7D2FE',
+      background: '#F0F9FF',
+      surface: '#E0F2FE',
+    },
+  },
+  {
+    id: 'pastel-lima',
+    name: 'Pastel lima',
+    tags: ['pastel', 'natural', 'clara'],
+    colors: {
+      primary: '#4D7C0F',
+      secondary: '#D9F99D',
+      accent: '#FDE68A',
+      background: '#F7FEE7',
+      surface: '#ECFCCB',
+    },
+  },
+
+  // ── Neón (fondos muy oscuros + colores fluorescentes) ────────────────
+  {
+    id: 'neon-fucsia',
+    name: 'Neón fucsia',
+    tags: ['neon', 'vibrante', 'oscura'],
+    colors: {
+      primary: '#FF2D9B',
+      secondary: '#A855F7',
+      accent: '#22D3EE',
+      background: '#12061F',
+      surface: '#1E0B33',
+    },
+  },
+  {
+    id: 'neon-verde',
+    name: 'Neón verde',
+    tags: ['neon', 'vibrante', 'oscura'],
+    colors: {
+      primary: '#2EF573',
+      secondary: '#00E5FF',
+      accent: '#FDE047',
+      background: '#03130A',
+      surface: '#0A2417',
+    },
+  },
+  {
+    id: 'neon-cian',
+    name: 'Neón cian',
+    tags: ['neon', 'tecnologica', 'oscura'],
+    colors: {
+      primary: '#00E5FF',
+      secondary: '#7C3AED',
+      accent: '#FF2D9B',
+      background: '#041418',
+      surface: '#0A262E',
+    },
+  },
+  {
+    id: 'neon-naranja',
+    name: 'Neón naranja',
+    tags: ['neon', 'calida', 'oscura'],
+    colors: {
+      primary: '#FF6A00',
+      secondary: '#FF2D9B',
+      accent: '#FFE600',
+      background: '#1A0A03',
+      surface: '#2B1206',
+    },
+  },
+
+  // ── Metalizado (grises, oro, cobre, platino) ──────────────────────────
+  {
+    id: 'metalizado-acero',
+    name: 'Metalizado acero',
+    tags: ['metalizado', 'corporativa', 'clara'],
+    colors: {
+      primary: '#475569',
+      secondary: '#94A3B8',
+      accent: '#A16207',
+      background: '#F1F5F9',
+      surface: '#E2E8F0',
+    },
+  },
+  {
+    id: 'metalizado-oro',
+    name: 'Metalizado oro',
+    tags: ['metalizado', 'elegante', 'clara'],
+    colors: {
+      primary: '#A16207',
+      secondary: '#D4A017',
+      accent: '#78350F',
+      background: '#FAF7F0',
+      surface: '#F3EDD9',
+    },
+  },
+  {
+    id: 'metalizado-cobre',
+    name: 'Metalizado cobre',
+    tags: ['metalizado', 'calida', 'clara'],
+    colors: {
+      primary: '#9A3412',
+      secondary: '#D97706',
+      accent: '#78350F',
+      background: '#FBF3EE',
+      surface: '#F5E6DC',
+    },
+  },
+  {
+    id: 'metalizado-platino',
+    name: 'Metalizado platino',
+    tags: ['metalizado', 'elegante', 'clara'],
+    colors: {
+      primary: '#334155',
+      secondary: '#94A3B8',
+      accent: '#64748B',
+      background: '#F8FAFC',
+      surface: '#EEF2F7',
+    },
+  },
+
+  // ── Extra (tonalidades varias) ────────────────────────────────────────
+  {
+    id: 'ambar-profundo',
+    name: 'Ámbar profundo',
+    tags: ['calida', 'vibrante', 'oscura'],
+    colors: {
+      primary: '#F59E0B',
+      secondary: '#D97706',
+      accent: '#FCD34D',
+      background: '#1C1206',
+      surface: '#2A1B0A',
+    },
+  },
+  {
+    id: 'bosque-hondo',
+    name: 'Bosque hondo',
+    tags: ['natural', 'fria', 'oscura'],
+    colors: {
+      primary: '#34D399',
+      secondary: '#A3E635',
+      accent: '#22D3EE',
+      background: '#06170D',
+      surface: '#0C2718',
+    },
+  },
+  {
+    id: 'tinta-noche',
+    name: 'Tinta de noche',
+    tags: ['elegante', 'fria', 'oscura'],
+    colors: {
+      primary: '#818CF8',
+      secondary: '#C7D2FE',
+      accent: '#F0ABFC',
+      background: '#0B0D1A',
+      surface: '#151830',
+    },
+  },
+  {
+    id: 'verano-atajo',
+    name: 'Verano',
+    tags: ['vibrante', 'calida', 'clara'],
+    colors: {
+      primary: '#EA580C',
+      secondary: '#0891B2',
+      accent: '#65A30D',
+      background: '#FFFBF5',
+      surface: '#FDF0E3',
     },
   },
 ];

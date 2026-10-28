@@ -193,12 +193,14 @@ export function SelectField({
   options,
   onChange,
   hint,
+  hintStrong,
 }: {
   label: string;
   value: string | undefined;
   options: readonly { value: string; label: string }[];
   onChange: (value: string | undefined) => void;
   hint?: string;
+  hintStrong?: boolean;
 }) {
   return (
     <FieldRow label={label}>
@@ -213,7 +215,7 @@ export function SelectField({
           </option>
         ))}
       </select>
-      {hint && <small className={s.fieldHint}>{hint}</small>}
+      {hint && <small className={hintStrong ? s.fieldHintStrong : s.fieldHint}>{hint}</small>}
     </FieldRow>
   );
 }
@@ -222,10 +224,12 @@ export function CheckboxField({
   label,
   checked,
   onChange,
+  hint,
 }: {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  hint?: string;
 }) {
   return (
     <label className={s.checkboxRow}>
@@ -234,7 +238,10 @@ export function CheckboxField({
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
       />
-      <span>{label}</span>
+      <span>
+        {label}
+        {hint && <small className={s.fieldHint}>{hint}</small>}
+      </span>
     </label>
   );
 }

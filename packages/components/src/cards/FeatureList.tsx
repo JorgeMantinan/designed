@@ -34,6 +34,7 @@ export function FeatureList({ id, items, columns = 3, animation, className }: Fe
       id={id}
       ref={ref}
       className={cx(s.grid, motion.className, className)}
+      data-hover={motion.hoverType}
       style={{ '--feature-columns': columns, ...motion.style } as CSSProperties}
     >
       {items.map((item, index) => (

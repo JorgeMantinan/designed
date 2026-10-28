@@ -35,6 +35,7 @@ export function BodyText({
       id={id}
       ref={ref}
       className={cx(s.text, s[tone], s[align], motion.className, className)}
+      data-hover={motion.hoverType}
       style={{
         maxWidth: maxWidthPx != null ? `${maxWidthPx}px` : undefined,
         ...motion.style,

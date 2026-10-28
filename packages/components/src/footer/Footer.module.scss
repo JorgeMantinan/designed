@@ -41,6 +41,27 @@
   min-width: 9rem;
 }
 
+// Alineación del contenido de la columna (título + enlaces).
+.columnCenter {
+  text-align: center;
+}
+
+.columnCenter .linkList {
+  align-items: center;
+}
+
+.columnCenter .link {
+  justify-content: center;
+}
+
+.columnEnd {
+  text-align: end;
+}
+
+.columnEnd .linkList {
+  align-items: flex-end;
+}
+
 .columnTitle {
   margin: 0 0 var(--space-sm);
   font-size: 0.9375rem;

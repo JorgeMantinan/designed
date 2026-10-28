@@ -55,6 +55,8 @@ export function Section({
       className={cx(s.section, width === 'full' && s.full, motion.className, className)}
       data-kind={kind}
       data-effect={interactiveEffect}
+      data-node="section"
+      data-id={id}
       style={{
         ...backgroundToStyle(background as BackgroundSpec),
         ...paddingStyle(padding),
@@ -71,6 +73,9 @@ export function Section({
           <div
             key={row.id}
             className={s.row}
+            data-node="row"
+            data-id={row.id}
+            data-section={id}
             data-stack={row.stackBelow === 'never' ? undefined : row.stackBelow}
             style={row.gapPx != null ? { gap: `${row.gapPx}px` } : undefined}
           >
@@ -78,6 +83,9 @@ export function Section({
               <div
                 key={column.id}
                 className={s.column}
+                data-node="column"
+                data-id={column.id}
+                data-section={id}
                 data-hide={column.hideOn.length > 0 ? column.hideOn.join(' ') : undefined}
                 style={{
                   gridColumn: `span ${column.span}`,
@@ -98,7 +106,17 @@ export function Section({
                 }}
               >
                 {column.components.map((component) => (
-                  <SpecRenderer key={component.id} spec={component} />
+                  // display:contents ⇒ el wrapper no altera el layout pero
+                  // permite clic-selección y guías en el preview del builder.
+                  <div
+                    key={component.id}
+                    data-node="component"
+                    data-id={component.id}
+                    data-section={id}
+                    style={{ display: 'contents' }}
+                  >
+                    <SpecRenderer spec={component} />
+                  </div>
                 ))}
               </div>
             ))}

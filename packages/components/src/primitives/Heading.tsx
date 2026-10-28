@@ -50,6 +50,7 @@ export function Heading({
         motion.className,
         className,
       )}
+      data-hover={motion.hoverType}
       style={motion.style}
     >
       {text}

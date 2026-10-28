@@ -1,6 +1,6 @@
 'use client';
 
-import { PALETTE_TAGS, PALETTES, validatePalette } from '@designed/palettes';
+import { PALETTES, validatePalette } from '@designed/palettes';
 import type { Palette, PaletteTag } from '@designed/palettes';
 import { useState } from 'react';
 
@@ -21,7 +21,28 @@ const FILTERABLE_TAGS: PaletteTag[] = [
   'elegante',
   'divertida',
   'tecnologica',
+  'pastel',
+  'neon',
+  'metalizado',
 ];
+
+/** Spanish display names for every style tag (raw ids are jargon). */
+const TAG_LABELS: Record<PaletteTag, string> = {
+  clara: 'Clara',
+  oscura: 'Oscura',
+  corporativa: 'Corporativa',
+  calida: 'Cálida',
+  fria: 'Fría',
+  vibrante: 'Vibrante',
+  natural: 'Natural',
+  elegante: 'Elegante',
+  divertida: 'Divertida',
+  tecnologica: 'Tecnológica',
+  neutra: 'Neutra',
+  pastel: 'Pastel',
+  neon: 'Neón',
+  metalizado: 'Metalizado',
+};
 
 /**
  * Palette tab: filterable grid of the51 palettes with their WCAG level
@@ -131,7 +152,7 @@ export function PalettePanel() {
               className={activeTags.includes(tag) ? s.chipActive : s.chip}
               onClick={() => toggleTag(tag)}
             >
-              {PALETTE_TAGS.includes(tag) ? tag : tag}
+              {TAG_LABELS[tag] ?? tag}
             </button>
           ))}
           {activeTags.length > 0 && (

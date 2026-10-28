@@ -58,10 +58,20 @@ export interface ButtonInput {
   id: string;
   label: string;
   href?: string;
-  variant?: 'solid' | 'outline' | 'ghost' | 'gradient';
+  variant?:
+    | 'solid'
+    | 'outline'
+    | 'ghost'
+    | 'gradient'
+    | 'soft'
+    | 'glass'
+    | 'neon'
+    | 'brutal';
   size?: 'sm' | 'md' | 'lg';
   icon?: string;
   newTab?: boolean;
+  color?: string;
+  hoverColor?: string;
   animation?: AnimationInput;
 }
 
@@ -287,7 +297,12 @@ export type SocialPlatform =
   | 'facebook';
 
 export interface FooterSpec {
-  columns: { id: string; title: string; links: { label: string; href?: string }[] }[];
+  columns: {
+    id: string;
+    title: string;
+    links: { label: string; href?: string }[];
+    contentAlign?: 'start' | 'center' | 'end';
+  }[];
   brandText?: string;
   social: { platform: SocialPlatform; href: string }[];
   newsletter?: boolean;

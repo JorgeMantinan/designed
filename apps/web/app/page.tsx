@@ -10,7 +10,7 @@ const FEATURES = [
   },
   {
     icon: '🎨',
-    title: '51 paletas con WCAG',
+    title: '69 paletas con WCAG',
     text: 'Paletas de 5 colores validadas en contraste AA/AAA, con semáforo visible.',
   },
   {
@@ -43,7 +43,7 @@ const softwareJsonLd = {
   },
   featureList: [
     'Galería de plantillas filtrables',
-    '51 paletas con validación WCAG AA/AAA',
+    '69 paletas con validación WCAG AA/AAA',
     '16 animaciones y 18 fondos interactivos',
     'Export a ZIP: proyecto Vite + React + TypeScript autónomo',
   ],

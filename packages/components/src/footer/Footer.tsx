@@ -34,7 +34,15 @@ export function Footer({
             {columns.length > 0 && (
               <div className={s.columns}>
                 {columns.map((column) => (
-                  <nav key={column.id} className={s.column} aria-label={column.title}>
+                  <nav
+                    key={column.id}
+                    className={cx(
+                      s.column,
+                      column.contentAlign === 'center' && s.columnCenter,
+                      column.contentAlign === 'end' && s.columnEnd,
+                    )}
+                    aria-label={column.title}
+                  >
                     <h3 className={s.columnTitle}>{column.title}</h3>
                     <ul className={s.linkList}>
                       {column.links.map((link) => (

@@ -130,6 +130,17 @@ export const FOOTER_FIELDS: FieldDescriptor[] = [
     itemFields: [
       { key: 'title', kind: 'text', label: 'Título' },
       {
+        key: 'contentAlign',
+        kind: 'select',
+        label: 'Alineación del contenido',
+        hint: 'Cómo se coloca el título y los enlaces dentro de esta columna.',
+        options: [
+          { value: 'start', label: 'Izquierda' },
+          { value: 'center', label: 'Centro' },
+          { value: 'end', label: 'Derecha' },
+        ],
+      },
+      {
         key: 'links',
         kind: 'list',
         label: 'Enlaces',
@@ -171,6 +182,17 @@ export const FOOTER_FIELDS: FieldDescriptor[] = [
   },
 ];
 
+export const BUTTON_VARIANT_OPTIONS: SelectOption[] = [
+  { value: 'solid', label: 'Sólido (relleno de color)' },
+  { value: 'outline', label: 'Contorno (solo borde)' },
+  { value: 'ghost', label: 'Fantasma (transparente)' },
+  { value: 'gradient', label: 'Degradado' },
+  { value: 'soft', label: 'Suave (tinte ligero)' },
+  { value: 'glass', label: 'Cristal (esmerilado)' },
+  { value: 'neon', label: 'Neón (brillo de borde)' },
+  { value: 'brutal', label: 'Brutalista (sombra dura)' },
+];
+
 const BUTTON_ITEM_FIELDS: FieldDescriptor[] = [
   { key: 'label', kind: 'text', label: 'Texto' },
   { key: 'href', kind: 'text', label: 'Enlace', placeholder: '#seccion' },
@@ -178,13 +200,10 @@ const BUTTON_ITEM_FIELDS: FieldDescriptor[] = [
     key: 'variant',
     kind: 'select',
     label: 'Estilo',
-    options: [
-      { value: 'solid', label: 'Sólido' },
-      { value: 'outline', label: 'Contorno' },
-      { value: 'ghost', label: 'Fantasma' },
-      { value: 'gradient', label: 'Degradado' },
-    ],
+    options: BUTTON_VARIANT_OPTIONS,
   },
+  { key: 'color', kind: 'color', label: 'Color del botón (opcional)' },
+  { key: 'hoverColor', kind: 'color', label: 'Color al pasar el ratón (opcional)' },
   { key: 'icon', kind: 'text', label: 'Icono (p. ej. arrow-right)' },
 ];
 

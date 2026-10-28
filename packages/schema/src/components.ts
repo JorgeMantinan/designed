@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { animationSchema } from './animation';
-import { alignSchema, cssUrlSchema, idSchema, pxSchema } from './common';
+import { alignSchema, cssUrlSchema, hexColorSchema, idSchema, pxSchema } from './common';
 import { imageOverlaySchema } from './overlay';
 
 /**
@@ -12,7 +12,16 @@ import { imageOverlaySchema } from './overlay';
  * Every component carries a unique `id` and an optional animation slot.
  */
 
-export const buttonVariantSchema = z.enum(['solid', 'outline', 'ghost', 'gradient']);
+export const buttonVariantSchema = z.enum([
+  'solid',
+  'outline',
+  'ghost',
+  'gradient',
+  'soft',
+  'glass',
+  'neon',
+  'brutal',
+]);
 export const buttonSizeSchema = z.enum(['sm', 'md', 'lg']);
 export const toneSchema = z.enum(['default', 'primary', 'muted', 'inverse']);
 export const radiusSizeSchema = z.enum(['none', 'sm', 'md', 'lg', 'pill']);
@@ -28,6 +37,10 @@ export const buttonSchema = z.object({
   /** Icon name from the icon set (e.g. "arrow-right"). */
   icon: z.string().min(1).max(40).optional(),
   newTab: z.boolean().default(false),
+  /** Custom color; overrides the variant's palette color. */
+  color: hexColorSchema.optional(),
+  /** Custom color on hover; falls back to a darker mix of the color. */
+  hoverColor: hexColorSchema.optional(),
   animation: animationSchema.optional(),
 });
 

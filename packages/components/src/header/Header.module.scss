@@ -105,6 +105,17 @@
   display: block;
 }
 
+// Puente invisible: cubre el hueco entre el enlace y el desplegable para
+// que el ratón no "se salga" del .item al bajar hacia los submenús.
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -0.55rem;
+  right: 0;
+  left: 0;
+  height: 0.6rem;
+}
+
 .dropdownLink {
   display: flex;
   gap: var(--space-sm);
@@ -179,6 +190,19 @@
 }
 
 @media (min-width: 1024px) {
+  // Grid de3 columnas: la marca ancla a la izquierda, el menú queda
+  // EXACTAMENTE centrado en la página y el botón a la derecha (antes el
+  // CTA descolocaba el menú porque ambos usaban margin auto).
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--space-lg);
+  }
+
+  .brand {
+    justify-self: start;
+  }
+
   .nav {
     display: block;
     margin-inline: auto;
@@ -186,6 +210,11 @@
 
   .burger {
     display: none;
+  }
+
+  .ctaWrap {
+    justify-self: end;
+    margin-inline-start: 0;
   }
 }
 

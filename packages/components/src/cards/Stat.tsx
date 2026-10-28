@@ -22,7 +22,13 @@ export function Stat({ id, value, label, suffix, animation, className }: StatPro
   const motion = useMotion(animation, ref);
 
   return (
-    <div id={id} ref={ref} className={cx(s.stat, motion.className, className)} style={motion.style}>
+    <div
+      id={id}
+      ref={ref}
+      className={cx(s.stat, motion.className, className)}
+      data-hover={motion.hoverType}
+      style={motion.style}
+    >
       <p className={s.value}>
         {value}
         {suffix && <span className={s.suffix}>{suffix}</span>}

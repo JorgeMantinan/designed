@@ -56,6 +56,8 @@ export const footerColumnSchema = z.object({
   id: idSchema,
   title: z.string().min(1).max(40),
   links: z.array(footerLinkSchema).max(12).default([]),
+  /** Horizontal alignment of the column content (title + links). */
+  contentAlign: z.enum(['start', 'center', 'end']).default('start'),
 });
 
 export const SOCIAL_PLATFORMS = [
@@ -89,14 +91,38 @@ export const DEFAULT_HEADER = {
   sticky: true,
   transparentOnTop: true,
   brand: { name: 'My site', href: '/' },
-  items: [],
+  // Example items so an empty menu is never mistaken for a broken editor.
+  items: [
+    { id: 'nav-inicio', label: 'Inicio', href: '#', children: [] },
+    { id: 'nav-servicios', label: 'Servicios', href: '#servicios', children: [] },
+    { id: 'nav-contacto', label: 'Contacto', href: '#contacto', children: [] },
+  ],
   itemAnimation: { type: 'underline', durationMs: 200, easing: 'ease', intensity: 0.5 },
   mobileMenu: 'hamburger-overlay',
 } as const satisfies z.input<typeof headerSchema>;
 
 /** Default footer used when a design spec does not define one. */
 export const DEFAULT_FOOTER = {
-  columns: [],
+  columns: [
+    {
+      id: 'footer-producto',
+      title: 'Producto',
+      contentAlign: 'start',
+      links: [
+        { label: 'Funciones', href: '#funciones' },
+        { label: 'Precios', href: '#precios' },
+      ],
+    },
+    {
+      id: 'footer-empresa',
+      title: 'Empresa',
+      contentAlign: 'start',
+      links: [
+        { label: 'Sobre nosotros', href: '#' },
+        { label: 'Contacto', href: '#contacto' },
+      ],
+    },
+  ],
   social: [],
   newsletter: false,
 } as const satisfies z.input<typeof footerSchema>;

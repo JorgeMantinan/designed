@@ -168,6 +168,33 @@
   box-shadow: 0 24px 60px rgb(0 0 0 / 45%);
 }
 
+// ── Guías de edición: cada nodo modificable muestra su contorno al
+// pasar el ratón y selecciona su panel al hacer clic (ver Preview.tsx).
+.previewFrame [data-node] {
+  cursor: pointer;
+}
+
+.previewFrame [data-node='component']:hover > * {
+  outline: 2px dashed color-mix(in srgb, var(--ui-accent) 65%, transparent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.previewFrame [data-node='column']:hover {
+  outline: 1.5px dotted color-mix(in srgb, var(--ui-accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.previewFrame [data-node='row']:hover {
+  outline: 1.5px dotted color-mix(in srgb, var(--ui-accent) 30%, transparent);
+  outline-offset: 2px;
+}
+
+.previewFrame [data-node='section']:hover {
+  outline: 1px dotted color-mix(in srgb, var(--ui-accent) 22%, transparent);
+  outline-offset: -1px;
+}
+
 // ── Layers tree ──────────────────────────────────────────────────────────────
 
 .tree {
@@ -292,6 +319,14 @@
 .fieldHint {
   font-size: 0.7rem;
   color: var(--ui-muted);
+}
+
+// Insinuación destacada: para avisos de uso que el cliente debe leer.
+.fieldHintStrong {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ui-text);
 }
 
 .hint {

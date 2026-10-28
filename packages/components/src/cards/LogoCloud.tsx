@@ -26,7 +26,13 @@ export function LogoCloud({ id, logos, grayscale = true, animation, className }:
   const motion = useMotion(animation, ref);
 
   return (
-    <ul id={id} ref={ref} className={cx(s.cloud, motion.className, className)} style={motion.style}>
+    <ul
+      id={id}
+      ref={ref}
+      className={cx(s.cloud, motion.className, className)}
+      data-hover={motion.hoverType}
+      style={motion.style}
+    >
       {logos.map((logo, index) => (
         <li key={`${logo.src}-${index}`} className={s.item}>
           <img
