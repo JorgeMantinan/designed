@@ -161,6 +161,9 @@
 .previewFrame {
   // overflow: clip (no hidden) — hidden rompe position:sticky del menú.
   overflow: clip;
+  // translateZ convierte el marco en containing block de position:fixed,
+  // así el menú lateral/inferior no se escapa al viewport del builder.
+  transform: translateZ(0);
   max-width: 72rem;
   margin-inline: auto;
   background: #ffffff;
@@ -944,22 +947,22 @@
 
 .paletteGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem;
+  // Compacto: varias paletas por fila para evitar scroll largo.
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.4rem;
 }
 
 .paletteCard,
 .paletteCardActive {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.35rem;
-  padding: 0.55rem;
+  gap: 0.25rem;
+  padding: 0.35rem;
   font: inherit;
   text-align: left;
   color: var(--ui-text);
   background: var(--ui-panel-2);
   border: 1px solid var(--ui-border);
-  border-radius: 8px;
+  border-radius: 7px;
   cursor: pointer;
 }
 
@@ -971,8 +974,7 @@
 .paletteCardBars {
   display: flex;
   overflow: hidden;
-  grid-column: 1 / -1;
-  height: 1.4rem;
+  height: 1.1rem;
   border-radius: 4px;
 }
 
@@ -981,7 +983,10 @@
 }
 
 .paletteCardName {
-  font-size: 0.8rem;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .levelAA,

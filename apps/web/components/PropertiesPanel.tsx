@@ -472,6 +472,34 @@ function HeaderForm() {
           value={header.brand.logoUrl}
           onCommit={(v) => update((d) => void (d.header.brand.logoUrl = v as string | undefined))}
         />
+        <ColorField
+          label="Color de fondo del menú"
+          hint="Así se ve hoy. Vacío = superficie de la paleta."
+          value={header.backgroundColor ?? palette.surface}
+          onCommit={(v) =>
+            typeof v === 'string' && update((d) => void (d.header.backgroundColor = v))
+          }
+        />
+        <ColorField
+          label="Color de los enlaces"
+          hint="Así se ve hoy. Vacío = color normal del texto."
+          value={header.linkColor ?? palette.text ?? '#111827'}
+          onCommit={(v) => typeof v === 'string' && update((d) => void (d.header.linkColor = v))}
+        />
+        <ButtonRow>
+          <button
+            type="button"
+            className={s.ghostButton}
+            onClick={() =>
+              update((d) => {
+                delete d.header.backgroundColor;
+                delete d.header.linkColor;
+              })
+            }
+          >
+            ↺ Restablecer colores (paleta)
+          </button>
+        </ButtonRow>
       </PanelSection>
 
       <PanelSection title="Botón de acción">
@@ -639,6 +667,7 @@ function HeaderForm() {
 function FooterForm() {
   const { state } = useBuilder();
   const update = useUpdate();
+  const footer = state.spec.footer;
 
   return (
     <PanelSection title="Pie de página">
@@ -651,6 +680,55 @@ function FooterForm() {
           })
         }
       />
+      <ColorField
+        label="Color de los títulos"
+        hint="Así se ve hoy. Vacío = color normal del texto."
+        value={footer.titleColor ?? ''}
+        onCommit={(v) =>
+          update((draft) => {
+            if (typeof v === 'string') draft.footer.titleColor = v;
+            else delete draft.footer.titleColor;
+          })
+        }
+      />
+      <ColorField
+        label="Color de los enlaces"
+        hint="Así se ve hoy. Vacío = color atenuado de la paleta."
+        value={footer.linkColor ?? ''}
+        onCommit={(v) =>
+          update((draft) => {
+            if (typeof v === 'string') draft.footer.linkColor = v;
+            else delete draft.footer.linkColor;
+          })
+        }
+      />
+      <PaletteSwatches
+        label="Colores de tu paleta"
+        colors={[
+          state.spec.theme.palette.primary,
+          state.spec.theme.palette.secondary,
+          state.spec.theme.palette.accent,
+        ]}
+        onPick={(color) =>
+          update((draft) => {
+            draft.footer.linkColor = color;
+          })
+        }
+      />
+      <ButtonRow>
+        <button
+          type="button"
+          className={s.ghostButton}
+          onClick={() =>
+            update((draft) => {
+              delete draft.footer.titleColor;
+              delete draft.footer.linkColor;
+            })
+          }
+        >
+          ↺ Restablecer colores (paleta)
+        </button>
+      </ButtonRow>
       <p className={s.hint}>
         Cada columna puede tener varios enlaces; el newsletter usa el email como campo de ejemplo
         (sin envío hasta conectar un servicio).

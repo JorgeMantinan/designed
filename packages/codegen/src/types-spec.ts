@@ -298,6 +298,8 @@ export interface HeaderSpec {
   cta?: ButtonInput;
   itemAnimation?: HoverAnimationInput;
   mobileMenu: 'hamburger-overlay' | 'dropdown' | 'hidden';
+  backgroundColor?: string;
+  linkColor?: string;
 }
 
 export type SocialPlatform =
@@ -321,6 +323,8 @@ export interface FooterSpec {
   social: { platform: SocialPlatform; href: string }[];
   newsletter?: boolean;
   copyright?: string;
+  titleColor?: string;
+  linkColor?: string;
   itemAnimation?: HoverAnimationInput;
   background?: BackgroundSpec;
 }

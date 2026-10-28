@@ -420,14 +420,22 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         [
           makeRow([
             makeColumn(
+              [featureCard('Ana Ruiz', 'Diseño de producto y dirección de arte.', 'users')],
+              4,
+            ),
+            makeColumn(
               [
-                featureCard('Ana Ruiz', 'Diseño de producto y dirección de arte.', 'users'),
                 comp('featureCard', newId('persona'), {
                   icon: 'users',
                   title: 'Luis Gómez',
                   text: 'Desarrollo front-end y animación.',
                   animation: { hover: { type: 'scale', intensity: 0.5 } },
                 }),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
                 comp('featureCard', newId('persona'), {
                   icon: 'users',
                   title: 'Marta López',
@@ -461,6 +469,11 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
                   href: '#',
                   animation: { hover: { type: 'lift', intensity: 0.6 } },
                 }),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
                 comp('featureCard', newId('articulo'), {
                   icon: 'sparkles',
                   title: 'Animaciones con criterio',
@@ -468,6 +481,11 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
                   href: '#',
                   animation: { hover: { type: 'lift', intensity: 0.6 } },
                 }),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
                 comp('featureCard', newId('articulo'), {
                   icon: 'code',
                   title: 'Exportar sin sorpresas',

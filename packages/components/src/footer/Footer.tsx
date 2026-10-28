@@ -20,6 +20,8 @@ export function Footer({
   social,
   newsletter,
   copyright,
+  titleColor,
+  linkColor,
   itemAnimation,
   background,
   className,
@@ -51,7 +53,9 @@ export function Footer({
                     )}
                     aria-label={column.title}
                   >
-                    <h3 className={s.columnTitle}>{column.title}</h3>
+                    <h3 className={s.columnTitle} style={{ color: titleColor || undefined }}>
+                      {column.title}
+                    </h3>
                     <ul className={s.linkList}>
                       {column.links.map((link) => (
                         <li key={link.label}>
@@ -59,7 +63,7 @@ export function Footer({
                             className={s.link}
                             href={link.href}
                             data-hover={linkHover ?? 'underline'}
-                            style={linkStyle}
+                            style={{ color: linkColor || undefined, ...linkStyle }}
                           >
                             {link.label}
                           </a>

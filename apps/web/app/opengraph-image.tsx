@@ -72,7 +72,7 @@ export default async function OpengraphImage() {
             padding: '14px 36px',
           }}
         >
-          81 paletas WCAG · 16 animaciones · 18 fondos interactivos
+          93 paletas WCAG · 16 animaciones · 18 fondos interactivos
         </div>
       </div>,
       {

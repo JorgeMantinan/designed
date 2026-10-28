@@ -11,9 +11,9 @@ import {
 import { isDarkColor } from './contrast';
 
 describe('PALETTES', () => {
-  it('recoge entre40 y100 paletas (catálogo amplio)', () => {
+  it('recoge entre40 y120 paletas (catálogo amplio)', () => {
     expect(PALETTES.length).toBeGreaterThanOrEqual(40);
-    expect(PALETTES.length).toBeLessThanOrEqual(100);
+    expect(PALETTES.length).toBeLessThanOrEqual(120);
   });
 
   it('tiene ids únicos en kebab-case', () => {

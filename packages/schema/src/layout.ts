@@ -55,7 +55,7 @@ export const rowSchema = z.object({
   /** Gap between columns (px). Falls back to theme spacing when omitted. */
   gapPx: pxSchema.optional(),
   /** Breakpoint below which columns stack vertically. */
-  stackBelow: z.enum(['never', 'tablet', 'mobile']).default('mobile'),
+  stackBelow: z.enum(['never', 'tablet', 'mobile']).default('tablet'),
 });
 
 export const sectionPaddingSchema = z.object({

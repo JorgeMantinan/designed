@@ -2,6 +2,7 @@
 
 import { hoverAttribute, motionStyle } from '@designed/animations';
 import type { ButtonInput, HeaderSpec, HoverAnimationInput } from '@designed/schema';
+import type { CSSProperties } from 'react';
 import { useEffect, useState } from 'react';
 
 import { cx } from '../cx';
@@ -33,6 +34,8 @@ export function Header({
   cta,
   itemAnimation,
   mobileMenu,
+  backgroundColor,
+  linkColor,
   className,
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,6 +66,12 @@ export function Header({
       data-layout={layout}
       data-mobile={mobileMenu}
       data-node="header"
+      style={
+        {
+          backgroundColor: backgroundColor || undefined,
+          '--header-link-color': linkColor || undefined,
+        } as CSSProperties
+      }
     >
       <div className={s.inner}>
         <a className={s.brand} href={brand.href}>
@@ -107,7 +116,12 @@ export function Header({
           <ul className={s.list}>
             {items.map((item) => (
               <li key={item.id} className={cx(s.item, layout === 'angled' && s.itemAngled)}>
-                <a className={s.link} href={item.href} data-hover={itemHover} style={itemStyle}>
+                <a
+                  className={s.link}
+                  href={item.href}
+                  data-hover={itemHover}
+                  style={{ color: linkColor || undefined, ...itemStyle }}
+                >
                   {item.label}
                 </a>
                 {item.children.length > 0 && (

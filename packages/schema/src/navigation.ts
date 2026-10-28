@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { hoverAnimationSchema } from './animation';
 import { backgroundSchema } from './background';
 import { buttonSchema } from './components';
-import { cssUrlSchema, idSchema } from './common';
+import { cssUrlSchema, hexColorSchema, idSchema } from './common';
 
 /**
  * Navigation chrome: header (top / angled / sidebar / minimal) and footer.
@@ -49,6 +49,10 @@ export const headerSchema = z.object({
   /** Hover animation applied to every menu item. */
   itemAnimation: hoverAnimationSchema.optional(),
   mobileMenu: z.enum(['hamburger-overlay', 'dropdown', 'hidden']).default('hamburger-overlay'),
+  /** Custom background color; overrides the palette surface. */
+  backgroundColor: hexColorSchema.optional(),
+  /** Custom link color; defaults to the text color. */
+  linkColor: hexColorSchema.optional(),
 });
 
 export const footerLinkSchema = z.object({
@@ -86,6 +90,10 @@ export const footerSchema = z.object({
   social: z.array(socialLinkSchema).max(8).default([]),
   newsletter: z.boolean().default(false),
   copyright: z.string().max(140).optional(),
+  /** Custom color for the column titles; defaults to text color. */
+  titleColor: hexColorSchema.optional(),
+  /** Custom color for the links; defaults to muted text. */
+  linkColor: hexColorSchema.optional(),
   /** Hover animation applied to links and social icons. */
   itemAnimation: hoverAnimationSchema.optional(),
   background: backgroundSchema.optional(),

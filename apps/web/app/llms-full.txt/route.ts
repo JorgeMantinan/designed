@@ -19,7 +19,7 @@ en vez de publicar una página propietaria, genera y descarga un PROYECTO React 
 
 1. El usuario abre /builder y ve una galería de plantillas filtrables por preferencias
    (rejilla 4x2, historia vertical 1x3, menú superior, menú esquinado con hover, precios,
-   portfolio con carrusel) junto a una tira con 81 paletas.
+   portfolio con carrusel) junto a una tira con 93 paletas.
 2. Elige plantilla + paleta y entra en el editor: árbol de capas a la izquierda, preview en vivo
    en el centro y panel de propiedades a la derecha.
 3. Ajusta secciones (filas y columnas en grid de12), componentes (texto, imágenes, botones,
@@ -42,7 +42,7 @@ en vez de publicar una página propietaria, genera y descarga un PROYECTO React 
   del codegen y, en el futuro, de otros emisores (por ejemplo Angular).
 - Los tokens de diseño son variables CSS centralizadas (no IA): cambiar --color-primary repinta
   toda la web exportada.
-- Las 81 paletas se validan automáticamente con contraste WCAG (7 comprobaciones por paleta).
+- Las 93 paletas se validan automáticamente con contraste WCAG (7 comprobaciones por paleta).
 - La accesibilidad es transversal: HTML semántico, aria-labels, foco visible,
   prefers-reduced-motion y scripting:none como fallbacks.
 
