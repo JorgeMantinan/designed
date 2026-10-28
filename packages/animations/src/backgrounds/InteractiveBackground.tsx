@@ -3,13 +3,19 @@ import type { CSSProperties, RefObject } from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
 import { Dots, RetroGrid, Ripples, Spotlight, Waves } from './CssEffects';
+import { AuroraCurtains } from './AuroraCurtains';
 import { Confetti } from './Confetti';
 import { Constellation } from './Constellation';
+import { Equalizer } from './Equalizer';
+import { Fire } from './Fire';
 import { GridGlow } from './GridGlow';
 import { Matrix } from './Matrix';
 import { Particles } from './Particles';
 import { Rain } from './Rain';
+import { Shapes } from './Shapes';
+import { ShootingStars } from './ShootingStars';
 import { Snow } from './Snow';
+import { Sparks } from './Sparks';
 
 export interface EffectProps {
   effect: InteractiveBackgroundSpec;
@@ -102,6 +108,18 @@ export function InteractiveBackground({ background, hostRef }: InteractiveBackgr
       return <Confetti {...props} />;
     case 'snow':
       return <Snow {...props} />;
+    case 'aurora-curtains':
+      return <AuroraCurtains {...props} />;
+    case 'fire':
+      return <Fire {...props} />;
+    case 'sparks':
+      return <Sparks {...props} />;
+    case 'shooting-stars':
+      return <ShootingStars {...props} />;
+    case 'equalizer':
+      return <Equalizer {...props} />;
+    case 'shapes':
+      return <Shapes {...props} />;
     default:
       return null;
   }

@@ -197,6 +197,42 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     description: 'Copos de nieve cayendo despacio con balanceo.',
     tracksPointer: false,
   },
+  {
+    id: 'aurora-curtains',
+    name: 'Cortinas de luz',
+    description: 'Bandas de luz vertical que ondean como una aurora.',
+    tracksPointer: false,
+  },
+  {
+    id: 'fire',
+    name: 'Llamas',
+    description: 'Llamas subiendo y enfriándose desde el borde inferior.',
+    tracksPointer: false,
+  },
+  {
+    id: 'sparks',
+    name: 'Chispas',
+    description: 'Chispas que estallan al mover el ratón por la sección.',
+    tracksPointer: true,
+  },
+  {
+    id: 'shooting-stars',
+    name: 'Estrellas fugaces',
+    description: 'Estrellas cruzando el cielo con estela luminosa.',
+    tracksPointer: false,
+  },
+  {
+    id: 'equalizer',
+    name: 'Ecualizador',
+    description: 'Barras redondeadas que bailan como un visualizador de audio.',
+    tracksPointer: false,
+  },
+  {
+    id: 'shapes',
+    name: 'Formas flotantes',
+    description: 'Triángulos, cuadrados y círculos que flotan y giran.',
+    tracksPointer: false,
+  },
 ];
 
 /** Catalog entries for one family (entrance | hover). */

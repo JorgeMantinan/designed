@@ -40,6 +40,12 @@ export const INTERACTIVE_BACKGROUND_EFFECTS = [
   'matrix',
   'confetti',
   'snow',
+  'aurora-curtains',
+  'fire',
+  'sparks',
+  'shooting-stars',
+  'equalizer',
+  'shapes',
 ] as const;
 
 export const backgroundSchema = z.discriminatedUnion('type', [

@@ -96,7 +96,13 @@ export type BackgroundSpec =
         | 'grid-glow'
         | 'matrix'
         | 'confetti'
-        | 'snow';
+        | 'snow'
+        | 'aurora-curtains'
+        | 'fire'
+        | 'sparks'
+        | 'shooting-stars'
+        | 'equalizer'
+        | 'shapes';
       baseColor?: string;
       effectColor?: string;
       intensity: number;
