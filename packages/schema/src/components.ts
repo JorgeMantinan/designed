@@ -183,6 +183,10 @@ export const faqListSchema = z.object({
   type: z.literal('faqList'),
   id: idSchema,
   items: z.array(faqItemSchema).min(1).max(20),
+  /** Corner radius of each item. */
+  radius: z.enum(['sm', 'md', 'lg', 'pill']).default('md'),
+  /** Accent color for the question rows (text + hover tint). */
+  color: hexColorSchema.optional(),
   animation: animationSchema.optional(),
 });
 
@@ -223,6 +227,10 @@ export const dividerSchema = z.object({
   type: z.literal('divider'),
   id: idSchema,
   thicknessPx: z.number().int().min(1).max(10).default(1),
+  /** Line style: solid / dashed / dotted / double / gradient. */
+  style: z.enum(['solid', 'dashed', 'dotted', 'double', 'gradient']).default('solid'),
+  /** Custom line color; defaults to a subtle text mix. */
+  color: hexColorSchema.optional(),
   animated: z.boolean().default(false),
 });
 

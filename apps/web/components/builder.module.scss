@@ -159,7 +159,8 @@
 }
 
 .previewFrame {
-  overflow: hidden;
+  // overflow: clip (no hidden) — hidden rompe position:sticky del menú.
+  overflow: clip;
   max-width: 72rem;
   margin-inline: auto;
   background: #ffffff;

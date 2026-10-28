@@ -127,6 +127,21 @@ export const HEADER_MENU_FIELDS: FieldDescriptor[] = [
 
 export const FOOTER_FIELDS: FieldDescriptor[] = [
   { key: 'newsletter', kind: 'checkbox', label: 'Mostrar formulario de newsletter' },
+  {
+    key: 'itemAnimation.type',
+    kind: 'select',
+    label: 'Animación de los enlaces (al pasar el ratón)',
+    options: [
+      { value: 'none', label: 'Ninguna' },
+      { value: 'lift', label: 'Elevación' },
+      { value: 'scale', label: 'Escala' },
+      { value: 'glow', label: 'Resplandor' },
+      { value: 'tilt', label: 'Inclinación 3D' },
+      { value: 'shine', label: 'Destello' },
+      { value: 'underline', label: 'Subrayado creciente' },
+      { value: 'border-draw', label: 'Borde de acento' },
+    ],
+  },
   { key: 'brandText', kind: 'textarea', label: 'Texto de la marca', rows: 2 },
   { key: 'copyright', kind: 'text', label: 'Copyright', placeholder: '© 2026 Mi web' },
   {
@@ -366,7 +381,7 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
     ...OVERLAY_FIELDS,
   ],
   featureCard: [
-    { key: 'icon', kind: 'text', label: 'Icono (p. ej. zap)' },
+    { key: 'icon', kind: 'icon', label: 'Icono' },
     { key: 'title', kind: 'text', label: 'Título' },
     { key: 'text', kind: 'textarea', label: 'Descripción', rows: 3 },
     { key: 'align', kind: 'select', label: 'Alineación', options: ALIGN_OPTIONS },
@@ -415,7 +430,7 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
       kind: 'list',
       label: 'Elementos',
       itemFields: [
-        { key: 'icon', kind: 'text', label: 'Icono' },
+        { key: 'icon', kind: 'icon', label: 'Icono' },
         { key: 'title', kind: 'text', label: 'Título' },
         { key: 'text', kind: 'textarea', label: 'Texto', rows: 2 },
       ],
@@ -425,6 +440,18 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
     },
   ],
   faqList: [
+    {
+      key: 'radius',
+      kind: 'select',
+      label: 'Forma de las preguntas',
+      options: [
+        { value: 'sm', label: 'Poco redondeado' },
+        { value: 'md', label: 'Redondeado' },
+        { value: 'lg', label: 'Muy redondeado' },
+        { value: 'pill', label: 'Píldora' },
+      ],
+    },
+    { key: 'color', kind: 'color', label: 'Color de las preguntas (opcional)' },
     {
       key: 'items',
       kind: 'list',
@@ -493,7 +520,20 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
   ],
   divider: [
     { key: 'thicknessPx', kind: 'number', label: 'Grosor (px)', min: 1, max: 10, step: 1 },
-    { key: 'animated', kind: 'checkbox', label: 'Animado' },
+    {
+      key: 'style',
+      kind: 'select',
+      label: 'Estilo de línea',
+      options: [
+        { value: 'solid', label: 'Continua' },
+        { value: 'dashed', label: 'Discontinua (guiones)' },
+        { value: 'dotted', label: 'Punteada (puntos)' },
+        { value: 'double', label: 'Doble (dos líneas)' },
+        { value: 'gradient', label: 'Degradado (se desvanece)' },
+      ],
+    },
+    { key: 'color', kind: 'color', label: 'Color de la línea (opcional)' },
+    { key: 'animated', kind: 'checkbox', label: 'Animado (brillo que cruza)' },
   ],
   spacer: [
     {

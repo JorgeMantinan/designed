@@ -35,7 +35,11 @@ export const brandSchema = z.object({
 
 export const headerSchema = z.object({
   /** `angled` = diagonal items that expand on hover (flagship menu). */
-  layout: z.enum(['top', 'angled', 'sidebar', 'minimal', 'corner']).default('top'),
+  layout: z
+    .enum(['top', 'angled', 'sidebar', 'minimal', 'corner', 'floating', 'bottom'])
+    .default('top'),
+  /** Side of the fixed sidebar layout (left or right). */
+  sidebarPosition: z.enum(['left', 'right']).default('left'),
   sticky: z.boolean().default(true),
   /** Transparent over the hero, solid background once the user scrolls. */
   transparentOnTop: z.boolean().default(true),
@@ -82,12 +86,15 @@ export const footerSchema = z.object({
   social: z.array(socialLinkSchema).max(8).default([]),
   newsletter: z.boolean().default(false),
   copyright: z.string().max(140).optional(),
+  /** Hover animation applied to links and social icons. */
+  itemAnimation: hoverAnimationSchema.optional(),
   background: backgroundSchema.optional(),
 });
 
 /** Default header used when a design spec does not define one. */
 export const DEFAULT_HEADER = {
   layout: 'top',
+  sidebarPosition: 'left',
   sticky: true,
   transparentOnTop: true,
   brand: { name: 'My site', href: '/' },

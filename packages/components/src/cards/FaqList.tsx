@@ -16,12 +16,15 @@ export interface FaqItem {
 export interface FaqListProps {
   id?: string;
   items: FaqItem[];
+  radius?: 'sm' | 'md' | 'lg' | 'pill';
+  /** Accent color for the question rows (text + hover tint). */
+  color?: string;
   animation?: AnimationInput;
   className?: string;
 }
 
 /** Accessible accordion built on native <details>/<summary> (no JS needed). */
-export function FaqList({ id, items, animation, className }: FaqListProps) {
+export function FaqList({ id, items, radius = 'md', color, animation, className }: FaqListProps) {
   const ref = useRef<HTMLDivElement>(null);
   const motion = useMotion(animation, ref);
 
@@ -29,13 +32,13 @@ export function FaqList({ id, items, animation, className }: FaqListProps) {
     <div
       id={id}
       ref={ref}
-      className={cx(s.list, motion.className, className)}
+      className={cx(s.list, s[radius], motion.className, className)}
       data-hover={motion.hoverType}
       style={motion.style}
     >
       {items.map((item) => (
         <details key={item.question} className={s.item}>
-          <summary className={s.question}>
+          <summary className={s.question} style={color ? { color } : undefined}>
             <span>{item.question}</span>
             <Icon name="chevron-down" size={20} className={s.chevron} />
           </summary>

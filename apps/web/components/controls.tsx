@@ -135,23 +135,23 @@ export const SHADOW_PRESETS: readonly ShadowPreset[] = [
   {
     id: 'sutil',
     label: 'Sutil',
-    sm: '0 1px 2px rgb(0 0 0 / 0.06)',
-    md: '0 2px 6px rgb(0 0 0 / 0.08)',
-    lg: '0 8px 24px rgb(0 0 0 / 0.10)',
+    sm: '0 1px 2px rgb(0 0 0 / 0.10)',
+    md: '0 2px 6px rgb(0 0 0 / 0.12)',
+    lg: '0 6px 16px rgb(0 0 0 / 0.14)',
   },
   {
     id: 'equilibrada',
     label: 'Equilibrada',
-    sm: '0 1px 2px rgb(0 0 0 / 0.08)',
-    md: '0 4px 12px rgb(0 0 0 / 0.10)',
-    lg: '0 12px 32px rgb(0 0 0 / 0.14)',
+    sm: '0 2px 4px rgb(0 0 0 / 0.12)',
+    md: '0 8px 20px rgb(0 0 0 / 0.18)',
+    lg: '0 20px 48px rgb(0 0 0 / 0.22)',
   },
   {
     id: 'profunda',
     label: 'Profunda',
-    sm: '0 2px 4px rgb(0 0 0 / 0.12)',
-    md: '0 8px 20px rgb(0 0 0 / 0.16)',
-    lg: '0 20px 48px rgb(0 0 0 / 0.22)',
+    sm: '0 4px 8px rgb(0 0 0 / 0.16)',
+    md: '0 14px 32px rgb(0 0 0 / 0.26)',
+    lg: '0 32px 72px rgb(0 0 0 / 0.34)',
   },
 ];
 

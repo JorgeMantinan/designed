@@ -17,6 +17,52 @@
   color: var(--color-text);
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
+  // Scrollbars modernas teñidas con la paleta del diseño.
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 55%, transparent) transparent;
+}
+
+.dsg-root ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dsg-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dsg-root ::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+.dsg-root ::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  background-clip: padding-box;
+}
+
+// ── Compensaciones de layout según la posición del menú ─────────────────────
+
+// Sidebar fijo: reserva el ancho del panel para que el contenido no quede debajo.
+.dsg-nav-sidebar {
+  --dsg-sidebar-width: 16rem;
+}
+
+@media (min-width: 1024px) {
+  .dsg-nav-sidebar-left {
+    padding-inline-start: var(--dsg-sidebar-width);
+  }
+
+  .dsg-nav-sidebar-right {
+    padding-inline-end: var(--dsg-sidebar-width);
+  }
+}
+
+// Barra inferior fija: reserva su altura.
+.dsg-nav-bottom {
+  padding-bottom: 3.75rem;
 }
 
 .dsg-root h1,

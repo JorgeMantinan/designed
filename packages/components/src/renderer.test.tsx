@@ -42,7 +42,7 @@ describe('DesignRenderer', () => {
   const html = renderToStaticMarkup(<DesignRenderer spec={exampleSpec} />);
 
   it('renderiza la página completa: header + secciones + footer', () => {
-    expect(html).toContain('class="dsg-root"');
+    expect(html).toContain('dsg-root');
     expect((html.match(/<section/g) ?? []).length).toBe(8);
     expect(html).toContain('<header');
     expect(html).toContain('<footer');

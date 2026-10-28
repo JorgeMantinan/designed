@@ -4,6 +4,7 @@ import { animationsByFamily } from '@designed/animations';
 import type { AnimationInput } from '@designed/schema';
 import { useState } from 'react';
 
+import { useBuilder } from '../lib/store';
 import { SliderNumberField } from './controls';
 import s from './builder.module.scss';
 import { PanelSection, SelectField } from './ui';
@@ -26,6 +27,7 @@ export function AnimationPicker({
   allowHover = true,
 }: AnimationPickerProps) {
   const [open, setOpen] = useState(false);
+  const { dispatch } = useBuilder();
   const entrance = value?.entrance;
   const hover = value?.hover;
 
@@ -80,6 +82,16 @@ export function AnimationPicker({
                   </button>
                 ))}
               </div>
+
+              {/* Repite la animación de entrada en la vista previa. */}
+              <button
+                type="button"
+                className={s.ghostButton}
+                onClick={() => dispatch({ type: 'replay' })}
+                title="Vuelve a ejecutar la animación de entrada en la vista previa"
+              >
+                ▶ Probar la entrada
+              </button>
 
               {entrance && (
                 <div className={s.paramGrid}>

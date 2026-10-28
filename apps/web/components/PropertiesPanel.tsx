@@ -385,15 +385,34 @@ function HeaderForm() {
           value={header.layout}
           options={[
             { value: 'top', label: 'Superior horizontal' },
+            { value: 'floating', label: 'Barra flotante (tipo app)' },
             { value: 'angled', label: 'Esquinado (hover)' },
             { value: 'corner', label: 'Esquina (menú que se despliega)' },
-            { value: 'sidebar', label: 'Lateral' },
+            { value: 'sidebar', label: 'Lateral fijo' },
+            { value: 'bottom', label: 'Inferior (estilo barra del sistema)' },
             { value: 'minimal', label: 'Mínimo' },
           ]}
           onChange={(value) =>
             update((draft) => void (draft.header.layout = value as typeof draft.header.layout))
           }
         />
+        {header.layout === 'sidebar' && (
+          <SelectField
+            label="Posición del lateral"
+            value={header.sidebarPosition}
+            options={[
+              { value: 'left', label: 'Izquierda' },
+              { value: 'right', label: 'Derecha' },
+            ]}
+            onChange={(value) =>
+              update(
+                (draft) =>
+                  void (draft.header.sidebarPosition =
+                    value as typeof draft.header.sidebarPosition),
+              )
+            }
+          />
+        )}
         <CheckboxField
           label="Pegajoso al hacer scroll"
           checked={header.sticky}

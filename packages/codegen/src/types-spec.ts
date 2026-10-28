@@ -215,6 +215,8 @@ export type ComponentSpec =
       type: 'faqList';
       id: string;
       items: { question: string; answer: string }[];
+      radius?: 'sm' | 'md' | 'lg' | 'pill';
+      color?: string;
       animation?: AnimationInput;
     }
   | {
@@ -236,7 +238,14 @@ export type ComponentSpec =
       ratio?: '16:9' | '4:3' | '3:2' | '21:9';
       animation?: AnimationInput;
     }
-  | { type: 'divider'; id: string; thicknessPx?: number; animated?: boolean }
+  | {
+      type: 'divider';
+      id: string;
+      thicknessPx?: number;
+      style?: 'solid' | 'dashed' | 'dotted' | 'double' | 'gradient';
+      color?: string;
+      animated?: boolean;
+    }
   | { type: 'spacer'; id: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' };
 
 export interface RowSpec {
@@ -280,7 +289,8 @@ export interface NavItem {
 }
 
 export interface HeaderSpec {
-  layout: 'top' | 'angled' | 'sidebar' | 'minimal' | 'corner';
+  layout: 'top' | 'angled' | 'sidebar' | 'minimal' | 'corner' | 'floating' | 'bottom';
+  sidebarPosition?: 'left' | 'right';
   sticky: boolean;
   transparentOnTop: boolean;
   brand: { name: string; logoUrl?: string; href: string };
@@ -311,6 +321,7 @@ export interface FooterSpec {
   social: { platform: SocialPlatform; href: string }[];
   newsletter?: boolean;
   copyright?: string;
+  itemAnimation?: HoverAnimationInput;
   background?: BackgroundSpec;
 }
 

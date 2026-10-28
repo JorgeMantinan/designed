@@ -140,14 +140,9 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
         'features',
         [
           makeRow([
-            makeColumn(
-              [
-                featureCard('Velocidad', 'Carga inmediata y scroll suave.', 'zap'),
-                featureCard('Seguridad', 'Prácticas seguras por defecto.', 'shield'),
-                featureCard('Diseño', 'Componentes cuidados al píxel.', 'palette'),
-              ],
-              4,
-            ),
+            makeColumn([featureCard('Velocidad', 'Carga inmediata y scroll suave.', 'zap')], 4),
+            makeColumn([featureCard('Seguridad', 'Prácticas seguras por defecto.', 'shield')], 4),
+            makeColumn([featureCard('Diseño', 'Componentes cuidados al píxel.', 'palette')], 4),
           ]),
         ],
         { animation: { entrance: { type: 'slide-up' } } },
@@ -219,9 +214,15 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
                   'Ana Ruiz',
                   'Founder',
                 ),
-                testimonial('El mejor equipo con el que hemos trabajado.', 'Luis Gómez', 'CTO'),
-                testimonial('Entregaron antes de lo prometido.', 'Marta López', 'Marketing'),
               ],
+              4,
+            ),
+            makeColumn(
+              [testimonial('El mejor equipo con el que hemos trabajado.', 'Luis Gómez', 'CTO')],
+              4,
+            ),
+            makeColumn(
+              [testimonial('Entregaron antes de lo prometido.', 'Marta López', 'Marketing')],
               4,
             ),
           ]),

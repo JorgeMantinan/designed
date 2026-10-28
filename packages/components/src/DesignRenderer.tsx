@@ -2,6 +2,7 @@ import { flattenTokens } from '@designed/tokens';
 import type { DesignSpec } from '@designed/schema';
 import type { CSSProperties } from 'react';
 
+import { cx } from './cx';
 import { Footer } from './footer/Footer';
 import { Header } from './header/Header';
 import { Section } from './sections/Section';
@@ -23,8 +24,14 @@ export function DesignRenderer({ spec }: DesignRendererProps) {
     Object.entries(tokens).map(([name, value]) => [`--${name}`, value]),
   ) as CSSProperties;
 
+  // Layout-aware root classes: fixed sidebars/bottom bar reserve space.
+  const layoutClasses = cx(
+    `dsg-nav-${spec.header.layout}`,
+    spec.header.layout === 'sidebar' && `dsg-nav-sidebar-${spec.header.sidebarPosition ?? 'left'}`,
+  );
+
   return (
-    <div className="dsg-root" style={cssVariables}>
+    <div className={cx('dsg-root', layoutClasses)} style={cssVariables}>
       <Header {...spec.header} />
       <main className="dsg-main">
         {spec.sections.map((section) => (

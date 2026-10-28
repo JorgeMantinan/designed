@@ -25,6 +25,7 @@ export interface HeaderProps extends Omit<HeaderSpec, 'cta' | 'itemAnimation'> {
  */
 export function Header({
   layout,
+  sidebarPosition = 'left',
   sticky,
   transparentOnTop,
   brand,
@@ -53,6 +54,7 @@ export function Header({
       className={cx(
         s.header,
         s[layout],
+        layout === 'sidebar' && (sidebarPosition === 'right' ? s.sideRight : s.sideLeft),
         sticky && s.sticky,
         transparentOnTop && !scrolled && s.transparent,
         menuOpen && s.menuOpen,
@@ -68,7 +70,9 @@ export function Header({
           <span className={s.brandName}>{brand.name}</span>
         </a>
 
-        {mobileMenu !== 'hidden' && (
+        {/* El menú en esquina lleva SU propio botón (nunca la hamburguesa:
+            antes se renderizaban los dos y parecían dos menús). */}
+        {mobileMenu !== 'hidden' && layout !== 'corner' && (
           <button
             type="button"
             className={s.burger}

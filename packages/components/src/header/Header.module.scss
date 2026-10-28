@@ -217,6 +217,11 @@
     justify-self: end;
     margin-inline-start: 0;
   }
+
+  // Esquina: el menú inline NO se muestra (solo el panel desplegable).
+  .corner .nav:not([data-open='true']) {
+    display: none;
+  }
 }
 
 // ── Angled layout: diagonal items that expand on hover ──────────────────────
@@ -306,5 +311,107 @@
   to {
     opacity: 1;
     transform: scale(1) translate(0, 0);
+  }
+}
+
+// ── Floating: barra flotante tipo app (centrada, redondeada) ────────────────
+
+.floating {
+  background: transparent;
+  border-bottom: 0;
+}
+
+.floating .inner {
+  min-height: 3.5rem;
+  max-width: 60rem;
+  margin-top: 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  padding-inline: var(--space-lg);
+}
+
+// ── Bottom: barra inferior estilo Windows11 ─────────────────────────────────
+
+.bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-bottom: 0;
+}
+
+.bottom .inner {
+  justify-content: center;
+  min-height: 3.5rem;
+}
+
+.bottom .ctaWrap {
+  margin-inline-start: var(--space-md);
+}
+
+// ── Sidebar real: panel fijo a izquierda o derecha ──────────────────────────
+
+@media (min-width: 1024px) {
+  .sideLeft,
+  .sideRight {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 16rem;
+    z-index: 50;
+    border-bottom: 0;
+  }
+
+  .sideLeft {
+    inset-inline-start: 0;
+    border-inline-end: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .sideRight {
+    inset-inline-end: 0;
+    border-inline-start: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .sideLeft .inner,
+  .sideRight .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+    max-width: none;
+    padding: var(--space-lg);
+  }
+
+  .sideLeft .list,
+  .sideRight .list {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .sideLeft .ctaWrap,
+  .sideRight .ctaWrap,
+  .sideLeft .cornerToggle,
+  .sideRight .cornerToggle {
+    margin-inline-start: 0;
+    margin-top: var(--space-md);
+  }
+
+  // El menú inline del lateral se gestiona con el mismo estado abierto.
+  .sideLeft .nav:not([data-open='true']),
+  .sideRight .nav:not([data-open='true']) {
+    display: none;
+  }
+
+  .sideLeft .burger,
+  .sideRight .burger {
+    display: inline-flex;
+    margin-inline-start: 0;
+    margin-top: var(--space-md);
+    align-self: flex-start;
   }
 }

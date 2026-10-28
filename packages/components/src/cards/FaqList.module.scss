@@ -12,6 +12,25 @@
   box-shadow: var(--shadow-sm);
 }
 
+// ── Radios de ítem (shape) ───────────────────────────────────────────────────
+
+.sm .item {
+  border-radius: var(--radius-sm);
+}
+
+.lg .item {
+  border-radius: var(--radius-lg);
+}
+
+.pill .item {
+  border-radius: var(--radius-pill);
+}
+
+// Tinte de color en las preguntas al pasar el ratón.
+.question:hover {
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+
 .question {
   display: flex;
   gap: var(--space-md);

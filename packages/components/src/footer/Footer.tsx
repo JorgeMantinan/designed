@@ -1,5 +1,6 @@
 'use client';
 
+import { hoverAttribute, motionStyle } from '@designed/animations';
 import type { FooterSpec } from '@designed/schema';
 
 import { backgroundToStyle } from '../background-style';
@@ -19,10 +20,13 @@ export function Footer({
   social,
   newsletter,
   copyright,
+  itemAnimation,
   background,
   className,
 }: FooterProps) {
   const hasTop = columns.length > 0 || Boolean(brandText) || newsletter;
+  const linkHover = hoverAttribute({ hover: itemAnimation ?? undefined });
+  const linkStyle = motionStyle({ hover: itemAnimation ?? undefined });
 
   return (
     <footer
@@ -51,7 +55,12 @@ export function Footer({
                     <ul className={s.linkList}>
                       {column.links.map((link) => (
                         <li key={link.label}>
-                          <a className={s.link} href={link.href} data-hover="underline">
+                          <a
+                            className={s.link}
+                            href={link.href}
+                            data-hover={linkHover ?? 'underline'}
+                            style={linkStyle}
+                          >
                             {link.label}
                           </a>
                         </li>
@@ -98,7 +107,8 @@ export function Footer({
                     className={s.socialLink}
                     href={link.href}
                     aria-label={link.platform}
-                    data-hover="scale"
+                    data-hover={linkHover ?? 'scale'}
+                    style={linkStyle}
                   >
                     <Icon name={link.platform === 'x' ? 'x_social' : link.platform} size={18} />
                   </a>
