@@ -32,12 +32,15 @@ export function DesignRenderer({ spec }: DesignRendererProps) {
 
   return (
     <div className={cx('dsg-root', layoutClasses)} style={cssVariables}>
-      <Header {...spec.header} />
+      {/* El menú inferior se renderiza DESPUÉS del contenido: así
+          position:sticky funciona (anclado al final del flujo). */}
+      {spec.header.layout !== 'bottom' && <Header {...spec.header} />}
       <main className="dsg-main">
         {spec.sections.map((section) => (
           <Section key={section.id} {...section} />
         ))}
       </main>
+      {spec.header.layout === 'bottom' && <Header {...spec.header} />}
       <Footer {...spec.footer} />
     </div>
   );

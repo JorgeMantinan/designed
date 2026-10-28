@@ -3,7 +3,7 @@
 import { hoverAttribute, motionStyle } from '@designed/animations';
 import type { ButtonInput, HeaderSpec, HoverAnimationInput } from '@designed/schema';
 import type { CSSProperties } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { cx } from '../cx';
 import { Icon } from '../icons';
@@ -36,17 +36,37 @@ export function Header({
   mobileMenu,
   backgroundColor,
   linkColor,
+  brandColor,
   className,
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!transparentOnTop) return;
-    const onScroll = (): void => setScrolled(window.scrollY > 8);
+    // El scroll puede ocurrir en el window O en un contenedor propio (el
+    // preview del builder scrollea dentro de .previewArea): buscamos el
+    // ancestro scrollable real para que el efecto cristal funcione allí.
+    let scroller: Element | Window = window;
+    const el = headerRef.current;
+    if (el) {
+      let parent = el.parentElement;
+      while (parent) {
+        const overflowY = getComputedStyle(parent).overflowY;
+        if (overflowY === 'auto' || overflowY === 'scroll') {
+          scroller = parent;
+          break;
+        }
+        parent = parent.parentElement;
+      }
+    }
+    const readScroll = (): number =>
+      scroller === window ? window.scrollY : (scroller as Element).scrollTop;
+    const onScroll = (): void => setScrolled(readScroll() > 8);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    return () => scroller.removeEventListener('scroll', onScroll);
   }, [transparentOnTop]);
 
   const itemHover = hoverAttribute({ hover: itemAnimation ?? undefined });
@@ -54,6 +74,7 @@ export function Header({
 
   return (
     <header
+      ref={headerRef}
       className={cx(
         s.header,
         s[layout],
@@ -76,7 +97,9 @@ export function Header({
       <div className={s.inner}>
         <a className={s.brand} href={brand.href}>
           {brand.logoUrl && <img className={s.logo} src={brand.logoUrl} alt="" />}
-          <span className={s.brandName}>{brand.name}</span>
+          <span className={s.brandName} style={{ color: brandColor || undefined }}>
+            {brand.name}
+          </span>
         </a>
 
         {/* El menú en esquina lleva SU propio botón (nunca la hamburguesa:

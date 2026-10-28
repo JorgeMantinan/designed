@@ -159,10 +159,9 @@
 }
 
 .previewFrame {
-  // overflow: clip (no hidden) — hidden rompe position:sticky del menú.
-  overflow: clip;
-  // translateZ convierte el marco en containing block de position:fixed,
-  // así el menú lateral/inferior no se escapa al viewport del builder.
+  // Sin overflow (hidden/clip rompen position:sticky del menú). Para que
+  // position:fixed (menú lateral/inferior) no se escape al viewport del
+  // builder, translateZ convierte el marco en su containing block.
   transform: translateZ(0);
   max-width: 72rem;
   margin-inline: auto;
@@ -501,6 +500,18 @@
   border-radius: 10px;
   background: #fff;
   border: 1px dashed var(--ui-border);
+}
+
+// Vista previa del botón del menú (muestra el hover real al pasar el ratón).
+.ctaPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4rem;
+  padding: 0.5rem;
+  background: var(--ui-panel-2);
+  border: 1px dashed var(--ui-border);
+  border-radius: 8px;
 }
 
 .swatchRow {

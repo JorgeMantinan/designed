@@ -126,6 +126,16 @@ export const HEADER_MENU_FIELDS: FieldDescriptor[] = [
 ];
 
 export const FOOTER_FIELDS: FieldDescriptor[] = [
+  {
+    key: 'layout',
+    kind: 'select',
+    label: 'Diseño del pie',
+    options: [
+      { value: 'classic', label: 'Clásico (marca + columnas)' },
+      { value: 'centered', label: 'Centrado (todo al centro)' },
+      { value: 'minimal', label: 'Mínimo (solo redes y copyright)' },
+    ],
+  },
   { key: 'newsletter', kind: 'checkbox', label: 'Mostrar formulario de newsletter' },
   {
     key: 'itemAnimation.type',

@@ -18,6 +18,37 @@
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+// ── Diseños alternativos del pie ────────────────────────────────────────────
+
+// Centrado: todo el contenido del pie alineado al centro.
+.layoutCentered .top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.layoutCentered .columns {
+  justify-content: center;
+}
+
+.layoutCentered .column {
+  text-align: center;
+}
+
+.layoutCentered .linkList {
+  align-items: center;
+}
+
+.layoutCentered .newsletter {
+  max-width: 26rem;
+}
+
+// Mínimo: solo la fila inferior (redes + copyright).
+.layoutMinimal .top {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .top {
     grid-template-columns: 1fr;

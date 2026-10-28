@@ -300,6 +300,7 @@ export interface HeaderSpec {
   mobileMenu: 'hamburger-overlay' | 'dropdown' | 'hidden';
   backgroundColor?: string;
   linkColor?: string;
+  brandColor?: string;
 }
 
 export type SocialPlatform =
@@ -323,6 +324,7 @@ export interface FooterSpec {
   social: { platform: SocialPlatform; href: string }[];
   newsletter?: boolean;
   copyright?: string;
+  layout?: 'classic' | 'centered' | 'minimal';
   titleColor?: string;
   linkColor?: string;
   itemAnimation?: HoverAnimationInput;

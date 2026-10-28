@@ -53,6 +53,8 @@ export const headerSchema = z.object({
   backgroundColor: hexColorSchema.optional(),
   /** Custom link color; defaults to the text color. */
   linkColor: hexColorSchema.optional(),
+  /** Custom color for the brand name/logo text. */
+  brandColor: hexColorSchema.optional(),
 });
 
 export const footerLinkSchema = z.object({
@@ -90,6 +92,8 @@ export const footerSchema = z.object({
   social: z.array(socialLinkSchema).max(8).default([]),
   newsletter: z.boolean().default(false),
   copyright: z.string().max(140).optional(),
+  /** Overall visual layout of the footer. */
+  layout: z.enum(['classic', 'centered', 'minimal']).default('classic'),
   /** Custom color for the column titles; defaults to text color. */
   titleColor: hexColorSchema.optional(),
   /** Custom color for the links; defaults to muted text. */
@@ -140,6 +144,7 @@ export const DEFAULT_FOOTER = {
   ],
   social: [],
   newsletter: false,
+  layout: 'classic',
 } as const satisfies z.input<typeof footerSchema>;
 
 export type NavChild = z.infer<typeof navChildSchema>;

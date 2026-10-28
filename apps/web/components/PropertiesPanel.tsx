@@ -1,6 +1,7 @@
 'use client';
 
 import { BACKGROUND_EFFECTS } from '@designed/animations';
+import { Button } from '@designed/components';
 import { SECTION_KINDS } from '@designed/schema';
 import type { DesignSpec, ImageOverlayInput, NavItem } from '@designed/schema';
 import { useState } from 'react';
@@ -425,6 +426,32 @@ function HeaderForm() {
           onChange={(checked) => update((draft) => void (draft.header.transparentOnTop = checked))}
         />
         <SelectField
+          label="Animación de los enlaces (al pasar el ratón)"
+          value={header.itemAnimation?.type ?? 'none'}
+          options={[
+            { value: 'none', label: 'Ninguna' },
+            { value: 'lift', label: 'Elevación' },
+            { value: 'scale', label: 'Escala' },
+            { value: 'glow', label: 'Resplandor' },
+            { value: 'tilt', label: 'Inclinación 3D' },
+            { value: 'shine', label: 'Destello' },
+            { value: 'underline', label: 'Subrayado creciente' },
+            { value: 'border-draw', label: 'Borde de acento' },
+          ]}
+          onChange={(value) =>
+            update((draft) => {
+              if (!value || value === 'none') delete draft.header.itemAnimation;
+              else
+                draft.header.itemAnimation = {
+                  type: value as never,
+                  durationMs: 200,
+                  easing: 'ease',
+                  intensity: 0.5,
+                };
+            })
+          }
+        />
+        <SelectField
           label="Menú móvil"
           value={header.mobileMenu}
           options={[
@@ -473,6 +500,12 @@ function HeaderForm() {
           onCommit={(v) => update((d) => void (d.header.brand.logoUrl = v as string | undefined))}
         />
         <ColorField
+          label="Color de la marca"
+          hint="Así se ve hoy. Vacío = color del texto."
+          value={header.brandColor ?? palette.text ?? '#111827'}
+          onCommit={(v) => typeof v === 'string' && update((d) => void (d.header.brandColor = v))}
+        />
+        <ColorField
           label="Color de fondo del menú"
           hint="Así se ve hoy. Vacío = superficie de la paleta."
           value={header.backgroundColor ?? palette.surface}
@@ -494,6 +527,7 @@ function HeaderForm() {
               update((d) => {
                 delete d.header.backgroundColor;
                 delete d.header.linkColor;
+                delete d.header.brandColor;
               })
             }
           >
@@ -619,6 +653,12 @@ function HeaderForm() {
               value={header.cta.icon}
               onChange={(v) => update((d) => d.header.cta && void (d.header.cta.icon = v))}
             />
+            <div className={s.field}>
+              <span className={s.fieldLabel}>Así se ve (pasa el ratón para probar el hover)</span>
+              <div className={s.ctaPreview}>
+                <Button {...header.cta} />
+              </div>
+            </div>
             <ButtonRow>
               <DangerButton onClick={() => update((d) => void (d.header.cta = undefined))}>
                 Quitar botón

@@ -25,6 +25,11 @@ export function Preview() {
         const target = event.target as HTMLElement;
         if (target.closest('a')) event.preventDefault();
 
+        // Los controles interactivos (burger del menú, flechas del carrusel,
+        // preguntas del FAQ...) conservan SU clic: el click-to-select no los
+        // intercepta (antes les robaba el evento y no abrían nada).
+        if (target.closest('button, input, select, textarea, summary, label')) return;
+
         // Click-to-edit: map the closest data-node to a builder selection.
         const node = target.closest('[data-node]');
         if (!node) return;

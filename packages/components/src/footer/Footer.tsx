@@ -20,6 +20,7 @@ export function Footer({
   social,
   newsletter,
   copyright,
+  layout = 'classic',
   titleColor,
   linkColor,
   itemAnimation,
@@ -32,7 +33,12 @@ export function Footer({
 
   return (
     <footer
-      className={cx(s.footer, className)}
+      className={cx(
+        s.footer,
+        layout === 'centered' && s.layoutCentered,
+        layout === 'minimal' && s.layoutMinimal,
+        className,
+      )}
       style={backgroundToStyle(background)}
       data-node="footer"
     >

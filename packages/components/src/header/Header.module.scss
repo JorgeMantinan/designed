@@ -169,7 +169,7 @@
     right: 0;
     left: 0;
     display: block;
-    padding: var(--space-md) var(--space-section-x) var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
     background-color: var(--color-surface);
     border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
     box-shadow: var(--shadow-lg);
@@ -178,6 +178,13 @@
   .menuOpen .list {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.15rem;
+  }
+
+  .menuOpen .link {
+    display: block;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.9rem;
   }
 
   .menuOpen .dropdown {
@@ -333,12 +340,11 @@
 }
 
 // ── Bottom: barra inferior estilo Windows11 ─────────────────────────────────
-
+// sticky (no fixed): DesignRenderer la coloca al FINAL del flujo, así se
+// ancla al fondo del viewport durante el scroll y reposa al llegar al final.
 .bottom {
-  position: fixed;
-  right: 0;
+  position: sticky;
   bottom: 0;
-  left: 0;
   z-index: 50;
   border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
   border-bottom: 0;

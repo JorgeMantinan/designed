@@ -60,10 +60,8 @@
   }
 }
 
-// Barra inferior fija: reserva su altura.
-.dsg-nav-bottom {
-  padding-bottom: 3.75rem;
-}
+// Barra inferior fija: con sticky en el flujo no hace falta compensar nada
+// (la barra ocupa su propio hueco al final del contenido).
 
 .dsg-root h1,
 .dsg-root h2,

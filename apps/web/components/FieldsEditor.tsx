@@ -105,12 +105,22 @@ export function FieldsForm({
 
       case 'color':
         return (
-          <ColorField
-            key={field.key}
-            label={field.label}
-            value={current as string | undefined}
-            onCommit={(next) => change(field.key, next)}
-          />
+          <span key={field.key} className={s.field}>
+            <ColorField
+              label={field.label}
+              value={current as string | undefined}
+              onCommit={(next) => change(field.key, next)}
+            />
+            {current != null && (
+              <button
+                type="button"
+                className={s.ghostButton}
+                onClick={() => change(field.key, undefined)}
+              >
+                ↺ Quitar color (vuelve al original)
+              </button>
+            )}
+          </span>
         );
 
       case 'icon':
@@ -318,11 +328,22 @@ function ItemField({
       );
     case 'color':
       return (
-        <ColorField
-          label={field.label}
-          value={current as string | undefined}
-          onCommit={(next) => onChange({ ...item, [field.key]: next })}
-        />
+        <span className={s.field}>
+          <ColorField
+            label={field.label}
+            value={current as string | undefined}
+            onCommit={(next) => onChange({ ...item, [field.key]: next })}
+          />
+          {current != null && (
+            <button
+              type="button"
+              className={s.ghostButton}
+              onClick={() => onChange({ ...item, [field.key]: undefined })}
+            >
+              ↺ Quitar color (vuelve al original)
+            </button>
+          )}
+        </span>
       );
     case 'icon':
       return (
