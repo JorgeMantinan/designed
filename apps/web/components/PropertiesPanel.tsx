@@ -23,6 +23,7 @@ import {
   currentShadowPresetId,
   DENSITY_PRESETS,
   FontField,
+  IconField,
   PaletteSwatches,
   PresetRow,
   RADIUS_PRESETS,
@@ -385,6 +386,7 @@ function HeaderForm() {
           options={[
             { value: 'top', label: 'Superior horizontal' },
             { value: 'angled', label: 'Esquinado (hover)' },
+            { value: 'corner', label: 'Esquina (menú que se despliega)' },
             { value: 'sidebar', label: 'Lateral' },
             { value: 'minimal', label: 'Mínimo' },
           ]}
@@ -488,22 +490,59 @@ function HeaderForm() {
                 )
               }
             />
+            <SelectField
+              label="Forma"
+              value={header.cta.shape ?? 'theme'}
+              options={[
+                { value: 'theme', label: 'Del tema (radio global)' },
+                { value: 'rect', label: 'Rectangular' },
+                { value: 'rounded', label: 'Redondeado' },
+                { value: 'pill', label: 'Píldora' },
+                { value: 'circle', label: 'Circular (ideal con icono)' },
+                { value: 'tag', label: 'Etiqueta' },
+                { value: 'bubble', label: 'Burbuja' },
+              ]}
+              onChange={(value) =>
+                update(
+                  (d) =>
+                    d.header.cta &&
+                    void (d.header.cta.shape = value as NonNullable<typeof d.header.cta>['shape']),
+                )
+              }
+            />
             <ColorField
-              label="Color del botón (opcional)"
-              hint="Vacío = usa el color de tu paleta. Pasa por los colores de abajo para combinar."
-              value={header.cta.color}
+              label="Color del botón"
+              hint="Así se ve hoy. Vacío = color de tu paleta (sigue los cambios automáticamente)."
+              value={header.cta.color ?? palette.primary}
               onCommit={(v) =>
-                update((d) => d.header.cta && void (d.header.cta.color = v as string | undefined))
+                typeof v === 'string' &&
+                update((d) => d.header.cta && void (d.header.cta.color = v))
               }
             />
             <ColorField
               label="Color al pasar el ratón"
-              hint="Vacío = oscurece el color del botón automáticamente."
-              value={header.cta.hoverColor}
+              hint="Así se ve hoy. Vacío = oscurece el color del botón automáticamente."
+              value={header.cta.hoverColor ?? header.cta.color ?? palette.primary}
               onCommit={(v) =>
-                update(
-                  (d) => d.header.cta && void (d.header.cta.hoverColor = v as string | undefined),
-                )
+                typeof v === 'string' &&
+                update((d) => d.header.cta && void (d.header.cta.hoverColor = v))
+              }
+            />
+            <SliderNumberField
+              label="Opacidad del color al pasar el ratón"
+              hint="100% = color sólido; menos = se ve el fondo a través del hover."
+              value={Math.round((header.cta.hoverOpacity ?? 1) * 100)}
+              min={10}
+              max={100}
+              step={5}
+              unit=" %"
+              onChange={(v) =>
+                update((d) => {
+                  if (!d.header.cta) return;
+                  const pct = Number(v ?? 100);
+                  if (pct >= 100) delete d.header.cta.hoverOpacity;
+                  else d.header.cta.hoverOpacity = Math.round(pct) / 100;
+                })
               }
             />
             <PaletteSwatches
@@ -511,24 +550,28 @@ function HeaderForm() {
               colors={[palette.primary, palette.secondary, palette.accent]}
               onPick={(color) => update((d) => d.header.cta && void (d.header.cta.color = color))}
             />
-            {(header.cta.color || header.cta.hoverColor) && (
-              <ButtonRow>
-                <button
-                  type="button"
-                  className={s.ghostButton}
-                  title="Vuelve a los colores de la paleta"
-                  onClick={() =>
-                    update((d) => {
-                      if (!d.header.cta) return;
-                      delete d.header.cta.color;
-                      delete d.header.cta.hoverColor;
-                    })
-                  }
-                >
-                  ↺ Restablecer colores (paleta)
-                </button>
-              </ButtonRow>
-            )}
+            <ButtonRow>
+              <button
+                type="button"
+                className={s.ghostButton}
+                title="Vuelve a los colores de la paleta"
+                onClick={() =>
+                  update((d) => {
+                    if (!d.header.cta) return;
+                    delete d.header.cta.color;
+                    delete d.header.cta.hoverColor;
+                    delete d.header.cta.hoverOpacity;
+                  })
+                }
+              >
+                ↺ Restablecer colores (paleta)
+              </button>
+            </ButtonRow>
+            <IconField
+              label="Icono del botón"
+              value={header.cta.icon}
+              onChange={(v) => update((d) => d.header.cta && void (d.header.cta.icon = v))}
+            />
             <ButtonRow>
               <DangerButton onClick={() => update((d) => void (d.header.cta = undefined))}>
                 Quitar botón
@@ -549,6 +592,7 @@ function HeaderForm() {
                       href: '#',
                       variant: 'solid',
                       size: 'md',
+                      shape: 'theme',
                       newTab: false,
                     }),
                 )
@@ -1431,7 +1475,7 @@ function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: stri
           options={[
             { value: 'stretch', label: 'Estirado (rellena la columna)' },
             { value: 'start', label: 'Izquierda' },
-            { value: 'center', label: '★ Centro de la columna' },
+            { value: 'center', label: 'Centro de la columna' },
             { value: 'end', label: 'Derecha' },
           ]}
           onChange={(value) =>

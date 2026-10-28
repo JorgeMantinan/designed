@@ -25,7 +25,11 @@ export function Footer({
   const hasTop = columns.length > 0 || Boolean(brandText) || newsletter;
 
   return (
-    <footer className={cx(s.footer, className)} style={backgroundToStyle(background)}>
+    <footer
+      className={cx(s.footer, className)}
+      style={backgroundToStyle(background)}
+      data-node="footer"
+    >
       <div className={s.inner}>
         {hasTop && (
           <div className={s.top}>

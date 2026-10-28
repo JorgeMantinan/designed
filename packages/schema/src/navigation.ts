@@ -35,7 +35,7 @@ export const brandSchema = z.object({
 
 export const headerSchema = z.object({
   /** `angled` = diagonal items that expand on hover (flagship menu). */
-  layout: z.enum(['top', 'angled', 'sidebar', 'minimal']).default('top'),
+  layout: z.enum(['top', 'angled', 'sidebar', 'minimal', 'corner']).default('top'),
   sticky: z.boolean().default(true),
   /** Transparent over the hero, solid background once the user scrolls. */
   transparentOnTop: z.boolean().default(true),

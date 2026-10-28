@@ -28,7 +28,7 @@ export type PrimitiveKind = (typeof PRIMITIVE_KINDS)[number];
 
 export { cx } from './cx';
 export type { ClassValue } from './cx';
-export { Icon } from './icons';
+export { Icon, ICON_NAMES } from './icons';
 export type { IconProps } from './icons';
 export { backgroundToStyle } from './background-style';
 

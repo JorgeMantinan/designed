@@ -21,7 +21,7 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
   menú superior, menú esquinado con hover, pricing, portfolio con carrusel).
 - Editor con panel de propiedades completo: filas, columnas (grid de12 unidades), botones por
   sección, spacing, padding, radios, sombras, gradientes y breakpoints responsive.
-- 69 paletas de 5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible,
+- 81 paletas de 5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible,
   filtradas por estilo (clara, oscura, corporativa, cálida, fría, vibrante, natural, elegante,
   divertida, tecnológica, pastel, neón y metalizado).
 - Animaciones de entrada y hover con preview en vivo (16 efectos) y 18 fondos interactivos que reaccionan

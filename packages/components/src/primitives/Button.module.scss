@@ -32,6 +32,7 @@
 .solid {
   color: var(--color-on-primary);
   background-color: var(--btn-color, var(--color-primary));
+  box-shadow: var(--shadow-sm);
 }
 
 .solid:hover {
@@ -39,6 +40,7 @@
     --btn-hover-color,
     color-mix(in srgb, var(--btn-color, var(--color-primary)) 85%, black)
   );
+  box-shadow: var(--shadow-md);
 }
 
 .outline {
@@ -142,4 +144,32 @@
 
 .icon {
   flex-shrink: 0;
+}
+
+// ── Formas fijas (shape) ─────────────────────────────────────────────────────
+
+.rect {
+  border-radius: 0;
+}
+
+.rounded {
+  border-radius: var(--radius-md);
+}
+
+.pill {
+  border-radius: var(--radius-pill);
+}
+
+.circle {
+  aspect-ratio: 1;
+  padding: 1rem;
+  border-radius: 50%;
+}
+
+.tag {
+  border-radius: 0 var(--radius-pill) 0 var(--radius-pill);
+}
+
+.bubble {
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
 }

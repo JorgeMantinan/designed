@@ -31,6 +31,18 @@ export function Preview() {
         const kind = node.getAttribute('data-node');
         const nodeId = node.getAttribute('data-id');
         const sectionId = node.getAttribute('data-section');
+
+        // Header/footer are single editable zones (no ids needed).
+        if (kind === 'header') {
+          event.stopPropagation();
+          dispatch({ type: 'select', selection: { kind: 'header' } });
+          return;
+        }
+        if (kind === 'footer') {
+          event.stopPropagation();
+          dispatch({ type: 'select', selection: { kind: 'footer' } });
+          return;
+        }
         if (!nodeId) return;
 
         let selection: Selection | null = null;

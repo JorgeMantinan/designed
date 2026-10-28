@@ -9,6 +9,7 @@
   background-color: var(--color-surface);
   border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .question {

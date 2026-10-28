@@ -126,17 +126,47 @@ export function TemplateGallery({
               className={s.templateCard}
               onClick={() => onPick(template.id, palette)}
             >
+              {/* Miniatura: wireframe en miniatura teñido con la paleta elegida */}
+              <span className={s.templateMini} aria-hidden="true">
+                <i className={s.miniHeader} style={{ background: palette.colors.surface }} />
+                <i
+                  className={s.miniHero}
+                  style={{
+                    background: `linear-gradient(135deg, ${palette.colors.primary}, ${palette.colors.accent})`,
+                  }}
+                />
+                {template.tags.includes('4x2') ? (
+                  <span className={s.miniGrid4}>
+                    {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
+                      <i key={index} style={{ background: palette.colors.surface }} />
+                    ))}
+                  </span>
+                ) : template.tags.includes('vertical') ? (
+                  <span className={s.miniStack}>
+                    {[0, 1, 2].map((index) => (
+                      <i key={index} style={{ background: palette.colors.surface }} />
+                    ))}
+                  </span>
+                ) : (
+                  <span className={s.miniRow}>
+                    {[0, 1, 2].map((index) => (
+                      <i key={index} style={{ background: palette.colors.surface }} />
+                    ))}
+                  </span>
+                )}
+                <i className={s.miniFooter} style={{ background: palette.colors.surface }} />
+              </span>
               <span className={s.templateName}>{template.name}</span>
               <span className={s.templateDescription}>{template.description}</span>
-              <span className={s.templateTags}>
-                {template.tags.map((tag) => (
-                  <em key={tag}>{tag}</em>
-                ))}
-              </span>
             </button>
           ))}
 
           <button type="button" className={s.templateCardBlank} onClick={() => onBlank(palette)}>
+            <span className={s.templateMini} aria-hidden="true">
+              <i className={s.miniHeader} style={{ background: palette.colors.surface }} />
+              <i className={s.miniHero} style={{ background: palette.colors.surface }} />
+              <i className={s.miniFooter} style={{ background: palette.colors.surface }} />
+            </span>
             <span className={s.templateName}>⌗ Diseño en blanco</span>
             <span className={s.templateDescription}>
               Una sola sección con un título para empezar de cero.

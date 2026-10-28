@@ -24,6 +24,7 @@
 }
 
 .inner {
+  position: relative;
   display: flex;
   gap: var(--space-lg);
   align-items: center;
@@ -254,4 +255,56 @@
 
 .minimal .brandName {
   font-size: 1.1rem;
+}
+
+// ── Corner layout: round toggle that expands a panel from the corner ────────
+
+.cornerToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-inline-start: auto;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .corner .nav[data-open='true'] {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: block;
+    min-width: 15rem;
+    padding: var(--space-md);
+    background-color: var(--color-surface);
+    border-end-start-radius: var(--radius-lg);
+    border-end-end-radius: var(--radius-lg);
+    border-start-end-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transform-origin: top right;
+    animation: corner-in 0.22s ease-out;
+  }
+
+  .corner .list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@keyframes corner-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translate(10px, -10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
 }

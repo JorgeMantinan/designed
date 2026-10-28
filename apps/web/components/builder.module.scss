@@ -505,6 +505,42 @@
   gap: 0.4rem;
 }
 
+// ── Selector visual de iconos ────────────────────────────────────────────────
+
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2.4rem, 1fr));
+  gap: 0.3rem;
+  max-height: 11rem;
+  overflow-y: auto;
+  padding: 0.3rem;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+}
+
+.iconChip,
+.iconChipActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  font-size: 0.65rem;
+  color: var(--ui-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.iconChip:hover {
+  background: color-mix(in srgb, var(--ui-accent) 12%, transparent);
+}
+
+.iconChipActive {
+  background: color-mix(in srgb, var(--ui-accent) 20%, transparent);
+  border-color: var(--ui-accent);
+}
+
 .swatchButton {
   width: 1.9rem;
   height: 1.9rem;
@@ -771,7 +807,8 @@
 
 .templateGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  //6 por fila en pantallas anchas; cae a menos columnas al estrechar.
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
   gap: 1rem;
 }
 
@@ -812,6 +849,67 @@
   font-size: 0.8125rem;
   color: var(--ui-muted);
   line-height: 1.5;
+}
+
+// ── Miniatura wireframe de cada plantilla ────────────────────────────────────
+
+.templateMini {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 6.4rem;
+  overflow: hidden;
+  padding: 5px;
+  background: #fff;
+  border: 1px solid var(--ui-border);
+  border-radius: 7px;
+}
+
+.miniHeader {
+  display: block;
+  height: 9px;
+  border-radius: 3px;
+}
+
+.miniHero {
+  display: block;
+  height: 26px;
+  border-radius: 4px;
+}
+
+.miniRow,
+.miniStack,
+.miniGrid4 {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+
+.miniRow {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.miniStack {
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.miniGrid4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.miniRow i,
+.miniStack i,
+.miniGrid4 i {
+  display: block;
+  border-radius: 3px;
+}
+
+.miniFooter {
+  display: block;
+  height: 8px;
+  border-radius: 3px;
 }
 
 .templateTags {

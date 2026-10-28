@@ -8,6 +8,7 @@ import { COMPONENT_FIELDS, getPath, setPath } from '../lib/fields';
 import type { FieldDescriptor } from '../lib/fields';
 
 import { SliderNumberField } from './controls';
+import { IconField } from './controls';
 import s from './builder.module.scss';
 import {
   CheckboxField,
@@ -88,6 +89,7 @@ export function FieldsForm({
               min={field.min}
               max={field.max}
               step={field.step ?? 1}
+              hint={field.hint}
               onChange={(next) => change(field.key, next)}
             />
           );
@@ -108,6 +110,16 @@ export function FieldsForm({
             label={field.label}
             value={current as string | undefined}
             onCommit={(next) => change(field.key, next)}
+          />
+        );
+
+      case 'icon':
+        return (
+          <IconField
+            key={field.key}
+            label={field.label}
+            value={current as string | undefined}
+            onChange={(next) => change(field.key, next)}
           />
         );
 
@@ -310,6 +322,14 @@ function ItemField({
           label={field.label}
           value={current as string | undefined}
           onCommit={(next) => onChange({ ...item, [field.key]: next })}
+        />
+      );
+    case 'icon':
+      return (
+        <IconField
+          label={field.label}
+          value={current as string | undefined}
+          onChange={(next) => onChange({ ...item, [field.key]: next })}
         />
       );
     case 'checkbox':

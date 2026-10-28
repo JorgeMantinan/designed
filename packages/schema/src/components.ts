@@ -22,6 +22,16 @@ export const buttonVariantSchema = z.enum([
   'neon',
   'brutal',
 ]);
+/** Button shapes: 'theme' follows the global radius; the rest are fixed forms. */
+export const buttonShapeSchema = z.enum([
+  'theme',
+  'rect',
+  'rounded',
+  'pill',
+  'circle',
+  'tag',
+  'bubble',
+]);
 export const buttonSizeSchema = z.enum(['sm', 'md', 'lg']);
 export const toneSchema = z.enum(['default', 'primary', 'muted', 'inverse']);
 export const radiusSizeSchema = z.enum(['none', 'sm', 'md', 'lg', 'pill']);
@@ -37,10 +47,14 @@ export const buttonSchema = z.object({
   /** Icon name from the icon set (e.g. "arrow-right"). */
   icon: z.string().min(1).max(40).optional(),
   newTab: z.boolean().default(false),
+  /** Button shape; 'theme' follows the global corner radius. */
+  shape: buttonShapeSchema.default('theme'),
   /** Custom color; overrides the variant's palette color. */
   color: hexColorSchema.optional(),
   /** Custom color on hover; falls back to a darker mix of the color. */
   hoverColor: hexColorSchema.optional(),
+  /** Opacity of the hover color (0-1). Only applies with a custom color. */
+  hoverOpacity: z.number().min(0).max(1).optional(),
   animation: animationSchema.optional(),
 });
 
@@ -54,6 +68,8 @@ export const headingSchema = z.object({
   size: z.enum(['display', 'xl', 'lg', 'md', 'sm']).optional(),
   align: alignSchema.default('left'),
   tone: toneSchema.default('default'),
+  /** Custom text color; overrides the tone's color. */
+  color: hexColorSchema.optional(),
   animation: animationSchema.optional(),
 });
 
@@ -63,6 +79,8 @@ export const textSchema = z.object({
   text: z.string().min(1).max(2000),
   align: alignSchema.default('left'),
   tone: toneSchema.default('default'),
+  /** Custom text color; overrides the tone's color. */
+  color: hexColorSchema.optional(),
   /** Caps the paragraph width for readability (px). */
   maxWidthPx: pxSchema.max(1200).optional(),
   animation: animationSchema.optional(),

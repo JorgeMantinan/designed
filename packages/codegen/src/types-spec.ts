@@ -68,10 +68,12 @@ export interface ButtonInput {
     | 'neon'
     | 'brutal';
   size?: 'sm' | 'md' | 'lg';
+  shape?: 'theme' | 'rect' | 'rounded' | 'pill' | 'circle' | 'tag' | 'bubble';
   icon?: string;
   newTab?: boolean;
   color?: string;
   hoverColor?: string;
+  hoverOpacity?: number;
   animation?: AnimationInput;
 }
 
@@ -135,6 +137,7 @@ export type ComponentSpec =
       size?: 'display' | 'xl' | 'lg' | 'md' | 'sm';
       align?: 'left' | 'center' | 'right';
       tone?: 'default' | 'primary' | 'muted' | 'inverse';
+      color?: string;
       animation?: AnimationInput;
     }
   | {
@@ -143,6 +146,7 @@ export type ComponentSpec =
       text: string;
       align?: 'left' | 'center' | 'right';
       tone?: 'default' | 'primary' | 'muted' | 'inverse';
+      color?: string;
       maxWidthPx?: number;
       animation?: AnimationInput;
     }
@@ -276,7 +280,7 @@ export interface NavItem {
 }
 
 export interface HeaderSpec {
-  layout: 'top' | 'angled' | 'sidebar' | 'minimal';
+  layout: 'top' | 'angled' | 'sidebar' | 'minimal' | 'corner';
   sticky: boolean;
   transparentOnTop: boolean;
   brand: { name: string; logoUrl?: string; href: string };

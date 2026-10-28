@@ -15,6 +15,8 @@ export interface HeadingProps {
   size?: 'display' | 'xl' | 'lg' | 'md' | 'sm';
   align?: 'left' | 'center' | 'right';
   tone?: 'default' | 'primary' | 'muted' | 'inverse';
+  /** Custom text color; overrides the tone. */
+  color?: string;
   animation?: AnimationInput;
   className?: string;
 }
@@ -29,6 +31,7 @@ export function Heading({
   size,
   align = 'left',
   tone = 'default',
+  color,
   animation,
   className,
 }: HeadingProps) {
@@ -51,7 +54,7 @@ export function Heading({
         className,
       )}
       data-hover={motion.hoverType}
-      style={motion.style}
+      style={{ color, ...motion.style }}
     >
       {text}
     </Tag>

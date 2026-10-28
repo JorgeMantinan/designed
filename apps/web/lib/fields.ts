@@ -9,8 +9,17 @@ import type { ComponentSpec, ComponentType } from '@designed/schema';
 export type FieldDescriptor =
   | { key: string; kind: 'text'; label: string; placeholder?: string }
   | { key: string; kind: 'textarea'; label: string; rows?: number }
-  | { key: string; kind: 'number'; label: string; min?: number; max?: number; step?: number }
+  | {
+      key: string;
+      kind: 'number';
+      label: string;
+      min?: number;
+      max?: number;
+      step?: number;
+      hint?: string;
+    }
   | { key: string; kind: 'color'; label: string }
+  | { key: string; kind: 'icon'; label: string }
   | {
       key: string;
       kind: 'select';
@@ -202,9 +211,23 @@ const BUTTON_ITEM_FIELDS: FieldDescriptor[] = [
     label: 'Estilo',
     options: BUTTON_VARIANT_OPTIONS,
   },
-  { key: 'color', kind: 'color', label: 'Color del botón (opcional)' },
+  {
+    key: 'shape',
+    kind: 'select',
+    label: 'Forma',
+    options: [
+      { value: 'theme', label: 'Del tema (radio global)' },
+      { value: 'rect', label: 'Rectangular' },
+      { value: 'rounded', label: 'Redondeado' },
+      { value: 'pill', label: 'Píldora' },
+      { value: 'circle', label: 'Circular (ideal con icono)' },
+      { value: 'tag', label: 'Etiqueta' },
+      { value: 'bubble', label: 'Burbuja' },
+    ],
+  },
+  { key: 'color', kind: 'color', label: 'Color del botón (vacío = paleta)' },
   { key: 'hoverColor', kind: 'color', label: 'Color al pasar el ratón (opcional)' },
-  { key: 'icon', kind: 'text', label: 'Icono (p. ej. arrow-right)' },
+  { key: 'icon', kind: 'icon', label: 'Icono' },
 ];
 
 /** Editable fields for every component type of the union. */
@@ -242,11 +265,13 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
     { key: 'text', kind: 'textarea', label: 'Texto', rows: 2 },
     { key: 'align', kind: 'select', label: 'Alineación', options: ALIGN_OPTIONS },
     { key: 'tone', kind: 'select', label: 'Color', options: TONE_OPTIONS },
+    { key: 'color', kind: 'color', label: 'Color personalizado (opcional)' },
   ],
   text: [
     { key: 'text', kind: 'textarea', label: 'Texto', rows: 4 },
     { key: 'align', kind: 'select', label: 'Alineación', options: ALIGN_OPTIONS },
     { key: 'tone', kind: 'select', label: 'Color', options: TONE_OPTIONS },
+    { key: 'color', kind: 'color', label: 'Color personalizado (opcional)' },
     { key: 'maxWidthPx', kind: 'number', label: 'Ancho máx. (px)', min: 100, max: 1200 },
   ],
   buttonGroup: [
@@ -263,13 +288,27 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
       key: 'direction',
       kind: 'select',
       label: 'Dirección',
+      hint: 'Horizontal o vertical — solo se nota con 2 o más botones.',
       options: [
         { value: 'row', label: 'Horizontal' },
         { value: 'column', label: 'Vertical' },
       ],
     },
-    { key: 'align', kind: 'select', label: 'Alineación', options: ALIGN_OPTIONS },
-    { key: 'gapPx', kind: 'number', label: 'Separación (px)', min: 0, max: 80 },
+    {
+      key: 'align',
+      kind: 'select',
+      label: 'Alineación',
+      hint: 'Dónde se colocan los botones dentro de su columna.',
+      options: ALIGN_OPTIONS,
+    },
+    {
+      key: 'gapPx',
+      kind: 'number',
+      label: 'Separación (px)',
+      hint: 'Distancia entre botones — solo se nota con 2 o más botones.',
+      min: 0,
+      max: 80,
+    },
   ],
   badge: [
     { key: 'label', kind: 'text', label: 'Texto' },

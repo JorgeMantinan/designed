@@ -63,6 +63,9 @@ const ICONS: Record<string, IconDefinition> = {
   facebook: { path: 'M14 8h3V4h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V9a1 1 0 0 1 1-1Z' },
 };
 
+/** Every icon name in the built-in set (for building visual pickers). */
+export const ICON_NAMES: readonly string[] = Object.keys(ICONS);
+
 export interface IconProps {
   /** Icon name from the built-in set. Unknown names render nothing. */
   name: string;

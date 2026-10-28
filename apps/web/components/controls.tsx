@@ -1,6 +1,7 @@
 'use client';
 
 import { FONT_STACK } from '@designed/schema';
+import { Icon, ICON_NAMES } from '@designed/components';
 import type { ReactNode } from 'react';
 
 import { buildShadow, DEFAULT_SHADOW_PARTS, parseShadow } from '../lib/shadow';
@@ -426,7 +427,14 @@ export function FontField({
           className={s.select}
           value={selectedId}
           onChange={(event) => {
-            const option = FONT_OPTIONS.find((item) => item.id === event.target.value);
+            const id = event.target.value;
+            // "Personalizada" escribe la primera familia actual para abrir el
+            // editor simple (antes no hacía nada: '' es falsy y se ignoraba).
+            if (id === 'personalizada') {
+              onChange(firstFamily(value) || 'Georgia');
+              return;
+            }
+            const option = FONT_OPTIONS.find((item) => item.id === id);
             if (option?.value) onChange(option.value);
           }}
         >
@@ -474,6 +482,47 @@ export function PaletteSwatches({
             title={color}
             aria-label={`Usar el color ${color}`}
           />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Visual icon picker: a grid of every built-in icon (no code names needed). */
+export function IconField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string | undefined;
+  onChange: (value: string | undefined) => void;
+}) {
+  return (
+    <div className={s.field}>
+      <span className={s.fieldLabel}>{label}</span>
+      <div className={s.iconGrid} role="radiogroup" aria-label={label}>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={!value}
+          className={!value ? s.iconChipActive : s.iconChip}
+          onClick={() => onChange(undefined)}
+        >
+          ninguno
+        </button>
+        {ICON_NAMES.map((name) => (
+          <button
+            key={name}
+            type="button"
+            role="radio"
+            aria-checked={value === name}
+            className={value === name ? s.iconChipActive : s.iconChip}
+            title={name}
+            onClick={() => onChange(name)}
+          >
+            <Icon name={name} size={18} />
+          </button>
         ))}
       </div>
     </div>

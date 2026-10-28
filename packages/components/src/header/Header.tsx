@@ -60,6 +60,7 @@ export function Header({
       )}
       data-layout={layout}
       data-mobile={mobileMenu}
+      data-node="header"
     >
       <div className={s.inner}>
         <a className={s.brand} href={brand.href}>
@@ -80,10 +81,23 @@ export function Header({
           </button>
         )}
 
+        {layout === 'corner' && (
+          <button
+            type="button"
+            className={s.cornerToggle}
+            aria-expanded={menuOpen}
+            aria-controls="dsg-nav"
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <Icon name={menuOpen ? 'x' : 'menu'} size={22} />
+          </button>
+        )}
+
         <nav
           id="dsg-nav"
           className={cx(s.nav, mobileMenu === 'hidden' && s.navHidden)}
-          data-open={mobileMenu !== 'hidden' ? menuOpen : undefined}
+          data-open={layout === 'corner' || mobileMenu !== 'hidden' ? menuOpen : undefined}
           aria-label="Principal"
         >
           <ul className={s.list}>
