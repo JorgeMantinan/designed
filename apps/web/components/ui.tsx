@@ -161,6 +161,23 @@ export function ColorField({ label, value, onCommit, hint }: CommitFieldProps) {
     onCommit(local);
   };
 
+  // Alfa (RGBA): hex de8 dígitos #RRGGBBAA → slider 0-100%.
+  const base = local.length >= 7 ? local.slice(0, 7) : local;
+  const alpha =
+    local.length === 9 ? Math.round((Number.parseInt(local.slice(7, 9), 16) / 255) * 100) : 100;
+
+  const commitAlpha = (pct: number): void => {
+    const clamped = Math.min(100, Math.max(0, pct));
+    const next =
+      clamped >= 100
+        ? base
+        : `${base}${Math.round((clamped / 100) * 255)
+            .toString(16)
+            .padStart(2, '0')}`;
+    setLocal(next);
+    if (next !== hex) onCommit(next);
+  };
+
   return (
     <FieldRow label={label}>
       <span className={s.colorRow}>
@@ -168,7 +185,11 @@ export function ColorField({ label, value, onCommit, hint }: CommitFieldProps) {
           className={s.colorSwatch}
           type="color"
           value={local.slice(0, 7)}
-          onChange={(event) => setLocal(event.target.value)}
+          onChange={(event) => {
+            // Mantener la opacidad actual al cambiar de tono.
+            const keep = local.length === 9 ? local.slice(7) : '';
+            setLocal(`${event.target.value}${keep}`);
+          }}
           onBlur={commit}
         />
         <input
@@ -182,6 +203,32 @@ export function ColorField({ label, value, onCommit, hint }: CommitFieldProps) {
           }}
         />
       </span>
+      <span className={s.fieldLabelRow}>
+        <span className={s.fieldLabel}>Opacidad (transparencia)</span>
+        <output className={s.sliderValue}>{alpha}%</output>
+      </span>
+      <input
+        className={s.slider}
+        type="range"
+        min={0}
+        max={100}
+        step={5}
+        value={alpha}
+        onChange={(event) => {
+          // Solo actualiza la vista local; se confirma al soltar.
+          const pct = Number(event.target.value);
+          const next =
+            pct >= 100
+              ? base
+              : `${base}${Math.round((pct / 100) * 255)
+                  .toString(16)
+                  .padStart(2, '0')}`;
+          setLocal(next);
+        }}
+        onPointerUp={() => commitAlpha(alpha)}
+        onKeyUp={() => commitAlpha(alpha)}
+        onBlur={() => commitAlpha(alpha)}
+      />
       {hint && <small className={s.fieldHint}>{hint}</small>}
     </FieldRow>
   );

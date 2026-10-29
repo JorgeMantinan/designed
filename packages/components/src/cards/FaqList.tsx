@@ -19,14 +19,34 @@ export interface FaqListProps {
   radius?: 'sm' | 'md' | 'lg' | 'pill';
   /** Accent color for the question rows (text + hover tint). */
   color?: string;
+  /** Custom background color of the items. */
+  backgroundColor?: string;
+  /** Second background color: with `backgroundColor` forms a gradient. */
+  backgroundTo?: string;
   animation?: AnimationInput;
   className?: string;
 }
 
 /** Accessible accordion built on native <details>/<summary> (no JS needed). */
-export function FaqList({ id, items, radius = 'md', color, animation, className }: FaqListProps) {
+export function FaqList({
+  id,
+  items,
+  radius = 'md',
+  color,
+  backgroundColor,
+  backgroundTo,
+  animation,
+  className,
+}: FaqListProps) {
   const ref = useRef<HTMLDivElement>(null);
   const motion = useMotion(animation, ref);
+
+  const itemStyle =
+    backgroundColor && backgroundTo
+      ? { background: `linear-gradient(135deg, ${backgroundColor}, ${backgroundTo})` }
+      : backgroundColor
+        ? { backgroundColor }
+        : undefined;
 
   return (
     <div
@@ -37,7 +57,7 @@ export function FaqList({ id, items, radius = 'md', color, animation, className 
       style={motion.style}
     >
       {items.map((item) => (
-        <details key={item.question} className={s.item}>
+        <details key={item.question} className={s.item} style={itemStyle}>
           <summary className={s.question} style={color ? { color } : undefined}>
             <span>{item.question}</span>
             <Icon name="chevron-down" size={20} className={s.chevron} />

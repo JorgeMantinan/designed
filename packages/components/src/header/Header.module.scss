@@ -269,58 +269,6 @@
   font-size: 1.1rem;
 }
 
-// ── Corner layout: round toggle that expands a panel from the corner ────────
-
-.cornerToggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  margin-inline-start: auto;
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-md);
-  cursor: pointer;
-}
-
-@media (min-width: 1024px) {
-  .corner .nav[data-open='true'] {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    display: block;
-    min-width: 15rem;
-    padding: var(--space-md);
-    background-color: var(--color-surface);
-    border-end-start-radius: var(--radius-lg);
-    border-end-end-radius: var(--radius-lg);
-    border-start-end-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    transform-origin: top right;
-    animation: corner-in 0.22s ease-out;
-  }
-
-  .corner .list {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-@keyframes corner-in {
-  from {
-    opacity: 0;
-    transform: scale(0.85) translate(10px, -10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translate(0, 0);
-  }
-}
-
 // ── Floating: barra flotante tipo app (centrada, redondeada) ────────────────
 
 .floating {
@@ -331,7 +279,9 @@
 .floating .inner {
   min-height: 3.5rem;
   max-width: 60rem;
-  margin-top: 0.75rem;
+  // Sin margen superior: la píldora toca el borde (antes dejaba una
+  // franja blanca del fondo de la página por encima).
+  margin-top: 0;
   background: var(--color-surface);
   border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
   border-radius: var(--radius-pill);
@@ -359,7 +309,7 @@
   margin-inline-start: var(--space-md);
 }
 
-// ── Sidebar real: panel fijo a izquierda o derecha ──────────────────────────
+// ── Sidebar: rail estrecho (1 dedo) que se despliega al pasar el ratón ──────
 
 @media (min-width: 1024px) {
   .sideLeft,
@@ -367,9 +317,20 @@
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 16rem;
+    width: 3.5rem;
     z-index: 50;
+    overflow: hidden;
     border-bottom: 0;
+    transition: width 0.25s ease;
+  }
+
+  // Despliegue: hover/foco o estado abierto (burger) → panel completo.
+  .sideLeft:hover,
+  .sideRight:hover,
+  .sideLeft.menuOpen,
+  .sideRight.menuOpen {
+    width: 16rem;
+    box-shadow: var(--shadow-lg);
   }
 
   .sideLeft {
@@ -389,7 +350,39 @@
     align-items: stretch;
     height: 100%;
     max-width: none;
-    padding: var(--space-lg);
+    min-height: 0;
+    padding: var(--space-sm) 0.5rem;
+    gap: var(--space-sm);
+  }
+
+  // Colapsado: solo la inicial + la hamburguesa; el texto espera al despliegue.
+  .sideLeft .brandName,
+  .sideRight .brandName,
+  .sideLeft .nav,
+  .sideRight .nav,
+  .sideLeft .ctaWrap,
+  .sideRight .ctaWrap {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease;
+  }
+
+  .sideLeft:hover .brandName,
+  .sideRight:hover .brandName,
+  .sideLeft.menuOpen .brandName,
+  .sideRight.menuOpen .brandName,
+  .sideLeft:hover .nav,
+  .sideRight:hover .nav,
+  .sideLeft.menuOpen .nav,
+  .sideRight.menuOpen .nav,
+  .sideLeft:hover .ctaWrap,
+  .sideRight:hover .ctaWrap,
+  .sideLeft.menuOpen .ctaWrap,
+  .sideRight.menuOpen .ctaWrap {
+    opacity: 1;
+    visibility: visible;
   }
 
   .sideLeft .list,
@@ -400,24 +393,49 @@
   }
 
   .sideLeft .ctaWrap,
-  .sideRight .ctaWrap,
-  .sideLeft .cornerToggle,
-  .sideRight .cornerToggle {
+  .sideRight .ctaWrap {
     margin-inline-start: 0;
-    margin-top: var(--space-md);
-  }
-
-  // El menú inline del lateral se gestiona con el mismo estado abierto.
-  .sideLeft .nav:not([data-open='true']),
-  .sideRight .nav:not([data-open='true']) {
-    display: none;
+    margin-top: auto;
+    margin-bottom: var(--space-sm);
   }
 
   .sideLeft .burger,
   .sideRight .burger {
     display: inline-flex;
+    order: 99;
     margin-inline-start: 0;
-    margin-top: var(--space-md);
-    align-self: flex-start;
+    margin-top: var(--space-sm);
+    align-self: center;
   }
+
+  .sideLeft .brandInitial,
+  .sideRight .brandInitial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-weight: 700;
+    color: var(--color-on-primary);
+    background-color: var(--color-primary);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+  }
+
+  // Al desplegarse, la marca completa sustituye a la inicial.
+  .sideLeft:hover .brandInitial,
+  .sideRight:hover .brandInitial,
+  .sideLeft.menuOpen .brandInitial,
+  .sideRight.menuOpen .brandInitial {
+    display: none;
+  }
+
+  .sideLeft .ctaWrap,
+  .sideRight .ctaWrap {
+    visibility: hidden;
+  }
+}
+
+.brandInitial {
+  display: none;
 }

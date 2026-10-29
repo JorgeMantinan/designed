@@ -97,15 +97,15 @@ export function ShootingStars({ effect }: EffectProps) {
         if (!streak.active) continue;
 
         const fade = 1 - streak.life / streak.maxLife;
-        const tailX = streak.x - streak.vx * 14;
-        const tailY = streak.y - streak.vy * 14;
+        const tailX = streak.x - streak.vx * 22;
+        const tailY = streak.y - streak.vy * 22;
 
         const gradient = context.createLinearGradient(streak.x, streak.y, tailX, tailY);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, 'transparent');
         context.strokeStyle = gradient;
-        context.globalAlpha = fade * (0.5 + effect.intensity * 0.5);
-        context.lineWidth = 2;
+        context.globalAlpha = fade * (0.6 + effect.intensity * 0.5);
+        context.lineWidth = 3.5;
         context.lineCap = 'round';
         context.beginPath();
         context.moveTo(streak.x, streak.y);
@@ -116,7 +116,7 @@ export function ShootingStars({ effect }: EffectProps) {
         context.fillStyle = color;
         context.globalAlpha = fade;
         context.beginPath();
-        context.arc(streak.x, streak.y, 2, 0, Math.PI * 2);
+        context.arc(streak.x, streak.y, 4, 0, Math.PI * 2);
         context.fill();
       }
       context.globalAlpha = 1;

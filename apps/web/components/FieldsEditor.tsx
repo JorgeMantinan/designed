@@ -109,6 +109,7 @@ export function FieldsForm({
             <ColorField
               label={field.label}
               value={current as string | undefined}
+              hint={field.hint}
               onCommit={(next) => change(field.key, next)}
             />
             {current != null && (
@@ -332,6 +333,7 @@ function ItemField({
           <ColorField
             label={field.label}
             value={current as string | undefined}
+            hint={field.hint}
             onCommit={(next) => onChange({ ...item, [field.key]: next })}
           />
           {current != null && (

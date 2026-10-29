@@ -18,7 +18,7 @@ export type FieldDescriptor =
       step?: number;
       hint?: string;
     }
-  | { key: string; kind: 'color'; label: string }
+  | { key: string; kind: 'color'; label: string; hint?: string }
   | { key: string; kind: 'icon'; label: string }
   | {
       key: string;
@@ -462,6 +462,17 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
       ],
     },
     { key: 'color', kind: 'color', label: 'Color de las preguntas (opcional)' },
+    {
+      key: 'backgroundColor',
+      kind: 'color',
+      label: 'Color de fondo de las preguntas (opcional)',
+    },
+    {
+      key: 'backgroundTo',
+      kind: 'color',
+      label: 'Color final del degradado (opcional)',
+      hint: 'Si también eliges color de fondo, los dos forman un degradado.',
+    },
     {
       key: 'items',
       kind: 'list',

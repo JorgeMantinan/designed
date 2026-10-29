@@ -388,11 +388,11 @@ function HeaderForm() {
             { value: 'top', label: 'Superior horizontal' },
             { value: 'floating', label: 'Barra flotante (tipo app)' },
             { value: 'angled', label: 'Esquinado (hover)' },
-            { value: 'corner', label: 'Esquina (menú que se despliega)' },
-            { value: 'sidebar', label: 'Lateral fijo' },
+            { value: 'sidebar', label: 'Lateral (rail que se despliega)' },
             { value: 'bottom', label: 'Inferior (estilo barra del sistema)' },
             { value: 'minimal', label: 'Mínimo' },
           ]}
+          hint="El rail lateral se muestra estrecho y se despliega al pasar el ratón."
           onChange={(value) =>
             update((draft) => void (draft.header.layout = value as typeof draft.header.layout))
           }
@@ -720,6 +720,11 @@ function FooterForm() {
           })
         }
       />
+      <BackgroundEditor
+        background={footer.background}
+        onChange={(next) => update((draft) => void (draft.footer.background = next))}
+        title="Fondo del pie — color, degradado, imagen o interactivo"
+      />
       <ColorField
         label="Color de los títulos"
         hint="Así se ve hoy. Vacío = color normal del texto."
@@ -912,7 +917,11 @@ function SectionForm({ sectionId }: { sectionId: string }) {
         </ButtonRow>
       </PanelSection>
 
-      <BackgroundEditor section={section} onPatch={patch} />
+      <BackgroundEditor
+        background={section.background}
+        onChange={(next) => patch((target) => void (target.background = next))}
+        title="Fondo de la sección — color, degradado, imagen o interactivo"
+      />
 
       <PanelSection title={`Filas (${section.rows.length})`}>
         <div className={s.rowList}>
@@ -1015,27 +1024,29 @@ function SectionForm({ sectionId }: { sectionId: string }) {
 // ── Background editor ────────────────────────────────────────────────────────
 
 function BackgroundEditor({
-  section,
-  onPatch,
+  background,
+  onChange,
+  title = 'Fondo — color, degradado, imagen o interactivo',
 }: {
-  section: SectionDraft;
-  onPatch: (mutate: (target: SectionDraft) => void) => void;
+  background: SectionDraft['background'];
+  onChange: (next: SectionDraft['background']) => void;
+  title?: string;
 }) {
   const { state } = useBuilder();
   const palette = state.spec.theme.palette;
-  const background = section.background;
   const type = background?.type ?? '';
 
   const setBackground = (next: SectionDraft['background']): void => {
-    onPatch((target) => void (target.background = next));
+    onChange(next);
   };
 
   const patchBackground = (
     mutate: (draft: NonNullable<SectionDraft['background']>) => void,
   ): void => {
-    onPatch((target) => {
-      if (target.background) mutate(target.background);
-    });
+    if (!background) return;
+    const draft = structuredClone(background);
+    mutate(draft);
+    onChange(draft);
   };
 
   const quickColors = [
@@ -1047,7 +1058,7 @@ function BackgroundEditor({
   ];
 
   return (
-    <PanelSection title="Fondo de la sección — color, degradado, imagen o interactivo">
+    <PanelSection title={title}>
       <SelectField
         label="Tipo de fondo"
         value={type}

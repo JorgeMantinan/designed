@@ -217,6 +217,8 @@ export type ComponentSpec =
       items: { question: string; answer: string }[];
       radius?: 'sm' | 'md' | 'lg' | 'pill';
       color?: string;
+      backgroundColor?: string;
+      backgroundTo?: string;
       animation?: AnimationInput;
     }
   | {

@@ -45,9 +45,10 @@
 
 // ── Compensaciones de layout según la posición del menú ─────────────────────
 
-// Sidebar fijo: reserva el ancho del panel para que el contenido no quede debajo.
+// Sidebar fijo (rail estrecho): reserva el ancho colapsado del panel para
+// que el contenido no quede debajo; al desplegarse (hover) se superpone.
 .dsg-nav-sidebar {
-  --dsg-sidebar-width: 16rem;
+  --dsg-sidebar-width: 3.5rem;
 }
 
 @media (min-width: 1024px) {

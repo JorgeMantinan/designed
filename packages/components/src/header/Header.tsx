@@ -80,7 +80,8 @@ export function Header({
         s[layout],
         layout === 'sidebar' && (sidebarPosition === 'right' ? s.sideRight : s.sideLeft),
         sticky && s.sticky,
-        transparentOnTop && !scrolled && s.transparent,
+        // La barra inferior SIEMPRE lleva fondo (el cristal no tiene sentido ahí).
+        transparentOnTop && layout !== 'bottom' && !scrolled && s.transparent,
         menuOpen && s.menuOpen,
         className,
       )}
@@ -97,14 +98,17 @@ export function Header({
       <div className={s.inner}>
         <a className={s.brand} href={brand.href}>
           {brand.logoUrl && <img className={s.logo} src={brand.logoUrl} alt="" />}
+          {layout === 'sidebar' && !brand.logoUrl && (
+            <span className={s.brandInitial} aria-hidden="true">
+              {brand.name.charAt(0)}
+            </span>
+          )}
           <span className={s.brandName} style={{ color: brandColor || undefined }}>
             {brand.name}
           </span>
         </a>
 
-        {/* El menú en esquina lleva SU propio botón (nunca la hamburguesa:
-            antes se renderizaban los dos y parecían dos menús). */}
-        {mobileMenu !== 'hidden' && layout !== 'corner' && (
+        {mobileMenu !== 'hidden' && (
           <button
             type="button"
             className={s.burger}
@@ -117,23 +121,10 @@ export function Header({
           </button>
         )}
 
-        {layout === 'corner' && (
-          <button
-            type="button"
-            className={s.cornerToggle}
-            aria-expanded={menuOpen}
-            aria-controls="dsg-nav"
-            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <Icon name={menuOpen ? 'x' : 'menu'} size={22} />
-          </button>
-        )}
-
         <nav
           id="dsg-nav"
           className={cx(s.nav, mobileMenu === 'hidden' && s.navHidden)}
-          data-open={layout === 'corner' || mobileMenu !== 'hidden' ? menuOpen : undefined}
+          data-open={mobileMenu !== 'hidden' ? menuOpen : undefined}
           aria-label="Principal"
         >
           <ul className={s.list}>

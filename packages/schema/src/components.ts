@@ -187,6 +187,10 @@ export const faqListSchema = z.object({
   radius: z.enum(['sm', 'md', 'lg', 'pill']).default('md'),
   /** Accent color for the question rows (text + hover tint). */
   color: hexColorSchema.optional(),
+  /** Custom background color of the items. */
+  backgroundColor: hexColorSchema.optional(),
+  /** Second background color: with `backgroundColor` forms a gradient. */
+  backgroundTo: hexColorSchema.optional(),
   animation: animationSchema.optional(),
 });
 
