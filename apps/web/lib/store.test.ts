@@ -43,8 +43,8 @@ const multiPageSpec = (() => {
 })();
 
 describe('templates', () => {
-  it('las8 plantillas generan specs válidos con cualquier paleta', () => {
-    expect(TEMPLATES).toHaveLength(8);
+  it('las10 plantillas generan specs válidos con cualquier paleta', () => {
+    expect(TEMPLATES).toHaveLength(10);
 
     const palettes = [PALETTES[0]!, PALETTES.find((item) => item.id === 'onix')!];
 

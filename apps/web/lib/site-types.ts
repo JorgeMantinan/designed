@@ -76,7 +76,7 @@ export const SITE_TYPES: readonly SiteType[] = [
     icon: '🍽️',
     description: 'Carta, reservas y galería de platos con ambiente propio.',
     paletteId: 'bordeos',
-    templateId: 'menu-esquinado',
+    templateId: 'restaurante',
     pagePresetIds: ['reservas', 'galeria', 'contacto'],
     siteName: 'Mi restaurante',
   },

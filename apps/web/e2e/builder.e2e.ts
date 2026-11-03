@@ -21,6 +21,8 @@ test('galería: plantillas filtrables y tira de paletas', async ({ page }) => {
   // Catálogo ampliado: las nuevas plantillas aparecen en la galería.
   await expect(page.getByRole('button', { name: /Tienda online/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Negocio local/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Restaurante/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Curso online/ })).toBeVisible();
 
   // Tira de paletas (catálogo amplio).
   expect(await page.getByRole('option').count()).toBeGreaterThan(40);

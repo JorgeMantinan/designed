@@ -1460,6 +1460,463 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
         footer: footer('© 2026 Mi negocio'),
       }),
   },
+  {
+    id: 'restaurante',
+    name: 'Restaurante',
+    description: 'Hero sobre foto, carta en tres bloques, opiniones y reservas.',
+    tags: ['menu-superior', 'hero-centrado', 'contacto'],
+    build: (palette) =>
+      withTheme(palette, {
+        version: 1,
+        meta: { name: 'La Mesa' },
+        header: {
+          layout: 'top',
+          brand: { name: 'La Mesa', href: '/' },
+          items: [
+            { id: 'nav-carta', label: 'La carta', href: '#carta' },
+            { id: 'nav-opiniones', label: 'Opiniones', href: '#opiniones' },
+            { id: 'nav-reservas', label: 'Reservas', href: '#reservas' },
+          ],
+          cta: { id: 'nav-cta', label: 'Reservar', href: '#reservas', variant: 'solid' },
+        },
+        sections: [
+          section(
+            'r-hero',
+            'hero',
+            [
+              row('r-hero-fila', [
+                col(
+                  'r-hero-col',
+                  [
+                    comp('badge', 'r-hero-badge', { label: 'Cocina de temporada', tone: 'accent' }),
+                    comp('heading', 'r-hero-titulo', {
+                      level: 1,
+                      text: 'Comer bien es un placer sencillo',
+                      size: 'display',
+                      align: 'center',
+                      animation: { entrance: { type: 'fade-in', delayMs: 100 } },
+                    }),
+                    comp('text', 'r-hero-texto', {
+                      text: 'Producto local, carta corta que cambia cada semana y un servicio que hace sentir en casa.',
+                      align: 'center',
+                      maxWidthPx: 560,
+                    }),
+                    comp('buttonGroup', 'r-hero-botones', {
+                      buttons: [
+                        {
+                          id: 'r-cta-1',
+                          label: 'Ver la carta',
+                          href: '#carta',
+                          variant: 'gradient',
+                        },
+                        {
+                          id: 'r-cta-2',
+                          label: 'Reservar mesa',
+                          href: '#reservas',
+                          variant: 'outline',
+                        },
+                      ],
+                      align: 'center',
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
+              ]),
+            ],
+            {
+              background: {
+                type: 'image',
+                src: 'https://placehold.co/1600x900?text=Restaurante',
+                overlay: { direction: 'to-bottom', color: '#000000', intensity: 0.62 },
+                size: 'cover',
+                position: 'center',
+              },
+              animation: { entrance: { type: 'fade-in' } },
+            },
+          ),
+          section(
+            'r-carta',
+            'features',
+            [
+              row('r-carta-fila', [
+                col(
+                  'r-carta-col-1',
+                  [
+                    comp('featureCard', 'r-carta-entrantes', {
+                      icon: 'zap',
+                      title: 'Para empezar',
+                      text: 'Croquetas de la casa, ensalada de temporada y producto de la lonja.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'r-carta-col-2',
+                  [
+                    comp('featureCard', 'r-carta-principales', {
+                      icon: 'star',
+                      title: 'Platos principales',
+                      text: 'Arroces, pescado del día y carnes a la brasa con guarnición de mercado.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'r-carta-col-3',
+                  [
+                    comp('featureCard', 'r-carta-postres', {
+                      icon: 'sparkles',
+                      title: 'Postres caseros',
+                      text: 'Tarta de queso, turrón helado y una selección de quesos con miel.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            'r-opiniones',
+            'testimonials',
+            [
+              row('r-opiniones-fila', [
+                col(
+                  'r-testi-col-1',
+                  [
+                    comp('testimonialCard', 'r-testi-1', {
+                      quote:
+                        'El mejor arroz que he probado fuera de casa. Volveremos el mes que viene.',
+                      author: 'Lucía Marín',
+                      role: 'Comensal habitual',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+                col(
+                  'r-testi-col-2',
+                  [
+                    comp('testimonialCard', 'r-testi-2', {
+                      quote: 'Reservamos para seis y el servicio fue impecable de principio a fin.',
+                      author: 'Pablo Serra',
+                      role: 'Cena de empresa',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+              ]),
+            ],
+            {
+              background: { type: 'color', color: palette.colors.surface },
+              animation: { entrance: { type: 'slide-up' } },
+            },
+          ),
+          section(
+            'r-reservas',
+            'contact',
+            [
+              row('r-reservas-fila', [
+                col(
+                  'r-reservas-col',
+                  [
+                    comp('heading', 'r-reservas-titulo', {
+                      level: 2,
+                      text: 'Reserva tu mesa',
+                      align: 'center',
+                      animation: { entrance: { type: 'fade-in' } },
+                    }),
+                    comp('text', 'r-reservas-texto', {
+                      text: 'Martes a domingo, de 13:00 a 16:00 y de 20:00 a 23:30. También aceptamos grupos.',
+                      align: 'center',
+                    }),
+                    comp('buttonGroup', 'r-reservas-botones', {
+                      buttons: [
+                        {
+                          id: 'r-cta-llamar',
+                          label: 'Llamar ahora',
+                          href: 'tel:+34910000000',
+                          variant: 'solid',
+                          icon: 'phone',
+                        },
+                        {
+                          id: 'r-cta-mail',
+                          label: 'Reservar por email',
+                          href: 'mailto:reservas@ejemplo.com',
+                          variant: 'outline',
+                          icon: 'mail',
+                        },
+                      ],
+                      align: 'center',
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'blur-in' } } },
+          ),
+        ],
+        footer: footer('© 2026 La Mesa'),
+      }),
+  },
+  {
+    id: 'curso-online',
+    name: 'Curso online',
+    description: 'Convocatoria, temario, planes, opiniones y FAQ de venta.',
+    tags: ['menu-superior', 'pricing', 'faq'],
+    build: (palette) =>
+      withTheme(palette, {
+        version: 1,
+        meta: { name: 'Aula Nova' },
+        header: {
+          layout: 'top',
+          brand: { name: 'Aula Nova', href: '/' },
+          items: [
+            { id: 'nav-temario', label: 'Temario', href: '#temario' },
+            { id: 'nav-precio', label: 'Precio', href: '#precio' },
+            { id: 'nav-faq', label: 'FAQ', href: '#faq' },
+          ],
+          cta: { id: 'nav-cta', label: 'Inscribirme', href: '#precio', variant: 'gradient' },
+        },
+        sections: [
+          section('c-hero', 'hero', [
+            row('c-hero-fila', [
+              col(
+                'c-hero-col',
+                [
+                  comp('badge', 'c-hero-badge', { label: 'Próxima convocatoria', tone: 'primary' }),
+                  comp('heading', 'c-hero-titulo', {
+                    level: 1,
+                    text: 'Aprende a tu ritmo, con resultados reales',
+                    size: 'display',
+                    align: 'center',
+                    animation: { entrance: { type: 'fade-in', delayMs: 100 } },
+                  }),
+                  comp('text', 'c-hero-texto', {
+                    text: 'Vídeo lecciones, ejercicios prácticos y tutorías en directo. Acceso de por vida.',
+                    align: 'center',
+                    maxWidthPx: 560,
+                  }),
+                  comp('buttonGroup', 'c-hero-botones', {
+                    buttons: [
+                      {
+                        id: 'c-cta-1',
+                        label: 'Ver el temario',
+                        href: '#temario',
+                        variant: 'gradient',
+                      },
+                      { id: 'c-cta-2', label: 'Precios', href: '#precio', variant: 'outline' },
+                    ],
+                    align: 'center',
+                  }),
+                ],
+                12,
+                { contentAlign: 'center' },
+              ),
+            ]),
+          ]),
+          section(
+            'c-temario',
+            'generic',
+            [
+              row('c-temario-titulo-fila', [
+                col(
+                  'c-temario-titulo-col',
+                  [
+                    comp('heading', 'c-temario-titulo', {
+                      level: 2,
+                      text: 'Qué vas a aprender',
+                      align: 'center',
+                      animation: { entrance: { type: 'fade-in' } },
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
+              ]),
+              row('c-temario-fila', [
+                col(
+                  'c-temario-col',
+                  [
+                    comp('featureList', 'c-temario-lista', {
+                      items: [
+                        {
+                          icon: 'check',
+                          title: 'Módulo 1 · Fundamentos',
+                          text: 'Bases sólidas con ejercicios guiados.',
+                        },
+                        {
+                          icon: 'check',
+                          title: 'Módulo 2 · Práctica',
+                          text: 'Proyecto real paso a paso.',
+                        },
+                        {
+                          icon: 'check',
+                          title: 'Módulo 3 · Profundización',
+                          text: 'Técnicas avanzadas y atajos.',
+                        },
+                        {
+                          icon: 'check',
+                          title: 'Módulo 4 · Portfolio',
+                          text: 'Termina con un proyecto para enseñar.',
+                        },
+                        {
+                          icon: 'check',
+                          title: 'Tutorías en directo',
+                          text: 'Sesiones mensuales en vivo y grabadas.',
+                        },
+                        {
+                          icon: 'check',
+                          title: 'Comunidad',
+                          text: 'Canal privado con el resto de alumnado.',
+                        },
+                      ],
+                      columns: 3,
+                    }),
+                  ],
+                  12,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            'c-precio',
+            'pricing',
+            [
+              row('c-precio-fila', [
+                col(
+                  'c-precio-col-1',
+                  [
+                    comp('pricingCard', 'c-precio-auto', {
+                      planName: 'Autoformativo',
+                      price: '49',
+                      currency: '€',
+                      period: ' único',
+                      features: ['Vídeos para siempre', 'Ejercicios', 'Certificado'],
+                      cta: { id: 'c-precio-1-cta', label: 'Empezar', variant: 'outline' },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'c-precio-col-2',
+                  [
+                    comp('pricingCard', 'c-precio-tutoria', {
+                      planName: 'Con tutoría',
+                      price: '99',
+                      currency: '€',
+                      period: ' único',
+                      highlighted: true,
+                      features: [
+                        'Todo lo anterior',
+                        'Tutorías en directo',
+                        'Revisión de proyectos',
+                      ],
+                      cta: { id: 'c-precio-2-cta', label: 'Inscribirme', variant: 'gradient' },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'c-precio-col-3',
+                  [
+                    comp('pricingCard', 'c-precio-equipo', {
+                      planName: 'Equipos',
+                      price: '299',
+                      currency: '€',
+                      period: ' /5 personas',
+                      features: ['5 accesos', 'Panel de progreso', 'Factura única'],
+                      cta: { id: 'c-precio-3-cta', label: 'Hablar con ventas', variant: 'solid' },
+                    }),
+                  ],
+                  4,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'fade-in' } } },
+          ),
+          section(
+            'c-opiniones',
+            'testimonials',
+            [
+              row('c-opiniones-fila', [
+                col(
+                  'c-testi-col-1',
+                  [
+                    comp('testimonialCard', 'c-testi-1', {
+                      quote:
+                        'En dos semanas ya tenía mi primer proyecto funcionando en producción.',
+                      author: 'Elena Vidal',
+                      role: 'Alumna, promoción marzo',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+                col(
+                  'c-testi-col-2',
+                  [
+                    comp('testimonialCard', 'c-testi-2', {
+                      quote:
+                        'Las tutorías en directo marcan la diferencia: resuelven todo en el momento.',
+                      author: 'Diego Campos',
+                      role: 'Alumno, promoción mayo',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+              ]),
+            ],
+            {
+              background: { type: 'color', color: palette.colors.surface },
+              animation: { entrance: { type: 'slide-up' } },
+            },
+          ),
+          section(
+            'c-faq',
+            'faq',
+            [
+              row('c-faq-fila', [
+                col('c-faq-col', [
+                  comp('heading', 'c-faq-titulo', {
+                    level: 2,
+                    text: 'Preguntas frecuentes',
+                    align: 'center',
+                  }),
+                  comp('faqList', 'c-faq-lista', {
+                    items: [
+                      {
+                        question: '¿Cuánto tiempo tengo acceso?',
+                        answer: 'De por vida, incluidas las actualizaciones.',
+                      },
+                      {
+                        question: '¿Hay certificado?',
+                        answer: 'Sí, al completar todos los módulos.',
+                      },
+                      { question: '¿Puedo pedir devolución?', answer: '30 días sin preguntas.' },
+                    ],
+                  }),
+                ]),
+              ]),
+            ],
+            {
+              background: { type: 'color', color: palette.colors.surface },
+              animation: { entrance: { type: 'fade-in' } },
+            },
+          ),
+        ],
+        footer: footer('© 2026 Aula Nova'),
+      }),
+  },
 ];
 
 /** Parses a template with the chosen palette (throws when invalid). */

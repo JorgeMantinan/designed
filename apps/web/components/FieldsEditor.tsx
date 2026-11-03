@@ -6,6 +6,7 @@ import type { ComponentType } from '@designed/schema';
 
 import { COMPONENT_FIELDS, getPath, setPath } from '../lib/fields';
 import type { FieldDescriptor } from '../lib/fields';
+import { useBuilder } from '../lib/store';
 
 import { SliderNumberField } from './controls';
 import { IconField } from './controls';
@@ -37,6 +38,40 @@ function coerceSelectValue(
 ): number | string | undefined {
   if (next == null || next === '') return undefined;
   return field.valueType === 'number' ? Number(next) : next;
+}
+
+/**
+ * One-click colors under every color field: the design palette plus white
+ * and black, so common picks don't require opening the native picker.
+ */
+function QuickColorRow({ onPick }: { onPick: (color: string) => void }) {
+  const { state } = useBuilder();
+  const palette = state.spec.theme.palette;
+  const colors = [
+    palette.primary,
+    palette.secondary,
+    palette.accent,
+    palette.background,
+    palette.surface,
+    '#FFFFFF',
+    '#000000',
+  ];
+
+  return (
+    <span className={s.swatchRow} role="group" aria-label="Colores rápidos">
+      {colors.map((color, index) => (
+        <button
+          key={`${color}-${index}`}
+          type="button"
+          className={s.swatchButton}
+          style={{ background: color }}
+          title={color}
+          aria-label={`Usar el color ${color}`}
+          onClick={() => onPick(color)}
+        />
+      ))}
+    </span>
+  );
 }
 
 export function FieldsForm({
@@ -114,6 +149,7 @@ export function FieldsForm({
               hint={field.hint}
               onCommit={(next) => change(field.key, next)}
             />
+            <QuickColorRow onPick={(next) => change(field.key, next)} />
             {current != null && (
               <button
                 type="button"
@@ -338,6 +374,7 @@ function ItemField({
             hint={field.hint}
             onCommit={(next) => onChange({ ...item, [field.key]: next })}
           />
+          <QuickColorRow onPick={(next) => onChange({ ...item, [field.key]: next })} />
           {current != null && (
             <button
               type="button"

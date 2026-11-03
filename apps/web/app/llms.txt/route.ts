@@ -17,8 +17,9 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
 
 ## Qué hace
 
-- Galería de plantillas al entrar, filtrables por preferencias (rejilla 4x2, historia vertical 1x3,
-  menú superior, menú esquinado con hover, pricing, portfolio con carrusel).
+- Galería de plantillas al entrar, filtrables por preferencias (rejilla con10 plantillas,
+  historia vertical, menú superior, menú esquinado con hover, pricing, portfolio con carrusel,
+  tienda, negocio local, restaurante y curso online).
 - Web multipágina: cada diseño admite páginas ilimitadas (portada en la raíz + \`pages[]\` con ruta
   propia) con11 plantillas de página listas (tienda, contacto, sobre mí, blog, galería, portfolio,
   planes, ayuda, destinos, reservas y página en blanco). El árbol muestra un selector de páginas

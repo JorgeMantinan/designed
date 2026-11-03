@@ -247,6 +247,77 @@ export const PAGE_PRESETS: readonly PagePreset[] = [
       ],
     }),
   },
+  {
+    id: 'legales',
+    label: 'Aviso legal',
+    icon: '⚖️',
+    description: 'Texto legal y de privacidad en bloques claros, listo para rellenar.',
+    path: '/legales',
+    build: () => ({
+      name: 'Aviso legal',
+      sections: [
+        makeSection(
+          'generic',
+          [
+            makeRow([
+              makeColumn(
+                [
+                  comp('heading', newId('titulo'), {
+                    level: 1,
+                    text: 'Aviso legal y privacidad',
+                    animation: { entrance: { type: 'fade-in' } },
+                  }),
+                  comp('heading', newId('titulo'), {
+                    level: 2,
+                    text: '1. Responsable del sitio',
+                  }),
+                  comp('text', newId('texto'), {
+                    text: 'Titular del sitio web, NIF/CIF 00000000X, con domicilio en Calle Mayor 12, 28013 Madrid. Contacto: hola@ejemplo.com.',
+                  }),
+                  comp('heading', newId('titulo'), {
+                    level: 2,
+                    text: '2. Datos personales',
+                  }),
+                  comp('text', newId('texto'), {
+                    text: 'Los datos que nos facilitas a través de los formularios se tratan para responder a tu consulta. No se ceden a terceros salvo obligación legal. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiendo a nuestro correo.',
+                  }),
+                  comp('heading', newId('titulo'), {
+                    level: 2,
+                    text: '3. Propiedad intelectual',
+                  }),
+                  comp('text', newId('texto'), {
+                    text: 'Todos los contenidos de este sitio (textos, imágenes y código) son propiedad de su autor o se usan con licencia. Queda prohibida su reproducción sin permiso.',
+                  }),
+                  comp('divider', newId('separador'), { animated: true }),
+                  comp('text', newId('texto'), {
+                    text: 'Última actualización: enero de 2026.',
+                    tone: 'muted',
+                  }),
+                ],
+                8,
+                'start',
+              ),
+            ]),
+          ],
+          { animation: { entrance: { type: 'slide-up' } } },
+        ),
+      ],
+    }),
+  },
+  {
+    id: 'carta',
+    label: 'Carta del restaurante',
+    icon: '🍽️',
+    description: 'Menú en tres bloques (entrantes, principales, postres) con CTA de reserva.',
+    path: '/carta',
+    build: () => ({
+      name: 'La carta',
+      sections: [
+        hero('Nuestra carta', 'Producto de temporada, cocina honesta y raciones para compartir.'),
+        ...fromPresets(['features', 'cta']),
+      ],
+    }),
+  },
 ];
 
 export interface NewPage {

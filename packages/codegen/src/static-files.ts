@@ -183,6 +183,12 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
+  // Título del navegador por página (SEO y pestañas).
+  useEffect(() => {
+    const page = design.pages.find((item) => item.path === path);
+    document.title = page ? \`\${page.name} · \${design.meta.name}\` : design.meta.name;
+  }, [path]);
+
   return <DesignRenderer spec={design} pageId={ROUTES[path]} />;
 }
 `;
