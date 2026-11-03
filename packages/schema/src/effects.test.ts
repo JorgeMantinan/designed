@@ -11,9 +11,9 @@ import { backgroundSchema, gradientSchema } from './background';
 import { OVERLAY_DIRECTIONS, imageOverlaySchema } from './overlay';
 
 describe('animationSchema', () => {
-  it('cuenta con8 entradas y8 hovers en el catálogo', () => {
-    expect(ENTRANCE_ANIMATION_TYPES).toHaveLength(8);
-    expect(HOVER_ANIMATION_TYPES).toHaveLength(8);
+  it('cuenta con10 entradas y10 hovers en el catálogo', () => {
+    expect(ENTRANCE_ANIMATION_TYPES).toHaveLength(10);
+    expect(HOVER_ANIMATION_TYPES).toHaveLength(10);
   });
 
   it('aplica defaults de entrada', () => {

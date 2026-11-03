@@ -13,10 +13,10 @@ import {
 } from './catalog';
 
 describe('ANIMATION_CATALOG', () => {
-  it('tiene exactamente8 entradas y8 hovers', () => {
-    expect(animationsByFamily('entrance')).toHaveLength(8);
-    expect(animationsByFamily('hover')).toHaveLength(8);
-    expect(ANIMATION_CATALOG).toHaveLength(16);
+  it('tiene exactamente10 entradas y10 hovers', () => {
+    expect(animationsByFamily('entrance')).toHaveLength(10);
+    expect(animationsByFamily('hover')).toHaveLength(10);
+    expect(ANIMATION_CATALOG).toHaveLength(20);
   });
 
   it('cubre exactamente los tipos del schema (sin ids huérfanos)', () => {

@@ -5,7 +5,8 @@ import type { ReactNode } from 'react';
 
 import type { ComponentSpec } from '@designed/schema';
 
-import { activeSections } from '../lib/pages';
+import { reassignIds } from '../lib/fields';
+import { activeSections, sectionsOwner } from '../lib/pages';
 import { PAGE_PRESETS, createPageFromPreset } from '../lib/page-presets';
 import { useBuilder } from '../lib/store';
 import type { Selection } from '../lib/store';
@@ -120,6 +121,27 @@ export function LayersTree() {
       if (index >= 0) list.splice(index, 1);
     });
     if (selection.kind === 'section' && selection.id === id) select({ kind: 'global' });
+  };
+
+  /** Copies a section (with fresh ids) right after the original. */
+  const duplicateSection = (id: string): void => {
+    let clonedId: string | null = null;
+    dispatch({
+      type: 'update',
+      mutate: (draft) => {
+        const sections = sectionsOwner(draft, id);
+        if (!sections) return;
+        const index = sections.findIndex((section) => section.id === id);
+        const source = sections[index];
+        if (!source) return;
+        const clone = structuredClone(source);
+        // Regenera todos los ids: parseDesignSpec exige unicidad global.
+        reassignIds(clone);
+        clonedId = clone.id;
+        sections.splice(index + 1, 0, clone);
+      },
+    });
+    if (clonedId) select({ kind: 'section', id: clonedId });
   };
 
   const [showPresets, setShowPresets] = useState(false);
@@ -281,6 +303,7 @@ export function LayersTree() {
                 <span className={s.treeMiniRow}>
                   {rowButton('↑', () => moveSection(index, -1))}
                   {rowButton('↓', () => moveSection(index, 1))}
+                  {rowButton('⧉', () => duplicateSection(section.id))}
                   {rowButton('✕', () => removeSection(section.id), true)}
                 </span>
               </div>

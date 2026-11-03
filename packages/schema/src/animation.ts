@@ -19,6 +19,8 @@ export const ENTRANCE_ANIMATION_TYPES = [
   'zoom-in',
   'blur-in',
   'reveal-up',
+  'flip-in',
+  'bounce-in',
 ] as const;
 
 export const entranceAnimationSchema = z.object({
@@ -42,6 +44,8 @@ export const HOVER_ANIMATION_TYPES = [
   'shine',
   'underline',
   'border-draw',
+  'jelly',
+  'bounce',
 ] as const;
 
 export const hoverAnimationSchema = z.object({

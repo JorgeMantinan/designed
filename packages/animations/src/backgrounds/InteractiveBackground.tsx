@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { Dots, RetroGrid, Ripples, Spotlight, Waves } from './CssEffects';
 import { AuroraCurtains } from './AuroraCurtains';
+import { Bubbles } from './Bubbles';
 import { Confetti } from './Confetti';
 import { Constellation } from './Constellation';
 import { Equalizer } from './Equalizer';
@@ -120,6 +121,8 @@ export function InteractiveBackground({ background, hostRef }: InteractiveBackgr
       return <Equalizer {...props} />;
     case 'shapes':
       return <Shapes {...props} />;
+    case 'bubbles':
+      return <Bubbles {...props} />;
     default:
       return null;
   }

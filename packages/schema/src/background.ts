@@ -46,6 +46,7 @@ export const INTERACTIVE_BACKGROUND_EFFECTS = [
   'shooting-stars',
   'equalizer',
   'shapes',
+  'bubbles',
 ] as const;
 
 export const backgroundSchema = z.discriminatedUnion('type', [

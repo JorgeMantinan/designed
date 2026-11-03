@@ -71,6 +71,18 @@ export const ANIMATION_CATALOG: readonly AnimationCatalogEntry[] = [
     name: 'Cortina ascendente',
     description: 'Se descubre como una cortina hacia arriba.',
   },
+  {
+    id: 'flip-in',
+    family: 'entrance',
+    name: 'Voltereta3D',
+    description: 'Gira hacia adelante desde el aire hasta quedar plana.',
+  },
+  {
+    id: 'bounce-in',
+    family: 'entrance',
+    name: 'Entrada elástica',
+    description: 'Llega rebotando de forma alegre y controlada.',
+  },
 
   // ── Hover ──────────────────────────────────────────────────────────────────
   {
@@ -111,6 +123,18 @@ export const ANIMATION_CATALOG: readonly AnimationCatalogEntry[] = [
     name: 'Borde de acento',
     description: 'Aparece un contorno con el color de acento.',
   },
+  {
+    id: 'jelly',
+    family: 'hover',
+    name: 'Gelatina',
+    description: 'Se deforma como gelatina al pasar el ratón.',
+  },
+  {
+    id: 'bounce',
+    family: 'hover',
+    name: 'Rebote',
+    description: 'Da un salto corto y vuelve a su sitio.',
+  },
 ];
 
 export interface BackgroundEffectEntry {
@@ -123,7 +147,7 @@ export interface BackgroundEffectEntry {
   tracksPointer: boolean;
 }
 
-/** The12 interactive backgrounds offered in the builder. */
+/** The19 interactive backgrounds offered in the builder. */
 export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
   {
     id: 'spotlight',
@@ -231,6 +255,12 @@ export const BACKGROUND_EFFECTS: readonly BackgroundEffectEntry[] = [
     id: 'shapes',
     name: 'Formas flotantes',
     description: 'Triángulos, cuadrados y círculos que flotan y giran.',
+    tracksPointer: false,
+  },
+  {
+    id: 'bubbles',
+    name: 'Burbujas',
+    description: 'Burbujas subiendo con balanceo, como en agua.',
     tracksPointer: false,
   },
 ];

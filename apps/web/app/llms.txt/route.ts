@@ -32,10 +32,10 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
 - 93 paletas de 5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible,
   filtradas por estilo (clara, oscura, corporativa, cálida, fría, vibrante, natural, elegante,
   divertida, tecnológica, pastel, neón y metalizado).
-- Animaciones de entrada y hover con preview en vivo (16 efectos) y 18 fondos interactivos que reaccionan
-  al ratón (spotlight, partículas, rejilla de puntos, ondas, cuadrícula retro, ondas expansivas,
-  lluvia, constelación, rejilla luminosa, lluvia de código, confeti, nieve, cortinas de luz,
-  llamas, chispas, estrellas fugaces, ecualizador y formas flotantes).
+- Animaciones de entrada y hover con preview en vivo (20 efectos) y 19 fondos interactivos que
+  reaccionan al ratón (spotlight, partículas, rejilla de puntos, ondas, cuadrícula retro, ondas
+  expansivas, lluvia, constelación, rejilla luminosa, lluvia de código, confeti, nieve, cortinas
+  de luz, llamas, chispas, estrellas fugaces, ecualizador, formas flotantes y burbujas).
 - Sombreados de imágenes y carruseles: lateral, vertical, diagonal, radial, duotone y viñeta.
 - Undo/redo, autoguardado local e import/export del diseño como JSON.
 
