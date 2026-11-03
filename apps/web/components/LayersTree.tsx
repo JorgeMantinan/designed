@@ -5,6 +5,8 @@ import type { ReactNode } from 'react';
 
 import type { ComponentSpec } from '@designed/schema';
 
+import { activeSections } from '../lib/pages';
+import { PAGE_PRESETS, createPageFromPreset } from '../lib/page-presets';
 import { useBuilder } from '../lib/store';
 import type { Selection } from '../lib/store';
 import { SECTION_PRESETS, createSectionFromPreset } from '../lib/section-presets';
@@ -71,8 +73,17 @@ function isSelected(selection: Selection, target: Selection): boolean {
 export function LayersTree() {
   const { state, dispatch } = useBuilder();
   const { spec, selection } = state;
+  const sections = activeSections(spec, state.activePageId);
 
   const select = (target: Selection): void => dispatch({ type: 'select', selection: target });
+
+  /** Mutates the section list of the ACTIVE page (home = spec root). */
+  const mutateSections = (mutate: (list: typeof sections) => void): void => {
+    dispatch({
+      type: 'update',
+      mutate: (draft) => mutate(activeSections(draft, state.activePageId)),
+    });
+  };
 
   const rowButton = (label: string, onClick: () => void, danger = false): ReactNode => (
     <button
@@ -89,41 +100,51 @@ export function LayersTree() {
   );
 
   const moveSection = (index: number, delta: number): void => {
-    dispatch({
-      type: 'update',
-      mutate: (draft) => {
-        const target = index + delta;
-        if (target < 0 || target >= draft.sections.length) return;
-        const [moved] = draft.sections.splice(index, 1);
-        if (moved) draft.sections.splice(target, 0, moved);
-      },
+    mutateSections((list) => {
+      const target = index + delta;
+      if (target < 0 || target >= list.length) return;
+      const [moved] = list.splice(index, 1);
+      if (moved) list.splice(target, 0, moved);
     });
   };
 
   const removeSection = (id: string): void => {
-    dispatch({
-      type: 'update',
-      mutate: (draft) => {
-        draft.sections = draft.sections.filter((section) => section.id !== id);
-      },
+    mutateSections((list) => {
+      const index = list.findIndex((section) => section.id === id);
+      if (index >= 0) list.splice(index, 1);
     });
     if (selection.kind === 'section' && selection.id === id) select({ kind: 'global' });
   };
 
   const [showPresets, setShowPresets] = useState(false);
+  const [showPagePresets, setShowPagePresets] = useState(false);
 
   /** Adds a rich, pre-designed section from the preset catalog. */
   const addSection = (presetId: string): void => {
     const section = createSectionFromPreset(presetId);
     if (!section) return;
-    dispatch({
-      type: 'update',
-      mutate: (draft) => {
-        draft.sections.push(section as (typeof draft.sections)[number]);
-      },
+    mutateSections((list) => {
+      list.push(section as (typeof list)[number]);
     });
     select({ kind: 'section', id: section.id });
     setShowPresets(false);
+  };
+
+  /** Adds a complete pre-built page and switches the editor to it. */
+  const addPage = (presetId: string): void => {
+    const page = createPageFromPreset(
+      presetId,
+      spec.pages.map((item) => item.path),
+    );
+    if (!page) return;
+    dispatch({
+      type: 'update',
+      mutate: (draft) => {
+        draft.pages.push(page as (typeof draft.pages)[number]);
+      },
+    });
+    dispatch({ type: 'page', pageId: page.id });
+    setShowPagePresets(false);
   };
 
   return (
@@ -136,6 +157,52 @@ export function LayersTree() {
         🎨 Diseño — {spec.meta.name}
       </button>
 
+      <div className={s.treeGroup}>
+        <span className={s.treeGroupLabel}>Páginas</span>
+        <button
+          type="button"
+          className={
+            state.activePageId === null && selection.kind !== 'page' ? s.treeItemActive : s.treeItem
+          }
+          onClick={() => dispatch({ type: 'page', pageId: null })}
+        >
+          🏠 Inicio <span className={s.treeGroupLabel}>/</span>
+        </button>
+        {spec.pages.map((page) => (
+          <button
+            key={page.id}
+            type="button"
+            className={state.activePageId === page.id ? s.treeItemActive : s.treeItem}
+            title={`${page.name} — ${page.path}`}
+            onClick={() => dispatch({ type: 'page', pageId: page.id })}
+          >
+            📄 {page.name} <span className={s.treeGroupLabel}>{page.path}</span>
+          </button>
+        ))}
+        <button
+          type="button"
+          className={s.ghostButton}
+          onClick={() => setShowPagePresets((visible) => !visible)}
+        >
+          {showPagePresets ? '✕ Cerrar' : '+ Añadir página'}
+        </button>
+        {showPagePresets && (
+          <div className={s.chipGrid} role="group" aria-label="Tipos de página">
+            {PAGE_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                type="button"
+                className={s.chip}
+                title={preset.description}
+                onClick={() => addPage(preset.id)}
+              >
+                <span aria-hidden="true">{preset.icon}</span> {preset.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <button
         type="button"
         className={isSelected(selection, { kind: 'header' }) ? s.treeItemActive : s.treeItem}
@@ -145,8 +212,13 @@ export function LayersTree() {
       </button>
 
       <div className={s.treeGroup}>
-        <span className={s.treeGroupLabel}>Secciones</span>
-        {spec.sections.map((section, index) => {
+        <span className={s.treeGroupLabel}>
+          Secciones
+          {state.activePageId !== null
+            ? ` · ${spec.pages.find((page) => page.id === state.activePageId)?.name ?? ''}`
+            : ''}
+        </span>
+        {sections.map((section, index) => {
           const sectionSelected = isSelected(selection, { kind: 'section', id: section.id });
           return (
             <div key={section.id} className={s.treeBlock}>

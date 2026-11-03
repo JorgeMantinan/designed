@@ -19,17 +19,25 @@ en vez de publicar una página propietaria, genera y descarga un PROYECTO React 
 
 1. El usuario abre /builder y ve una galería de plantillas filtrables por preferencias
    (rejilla 4x2, historia vertical 1x3, menú superior, menú esquinado con hover, precios,
-   portfolio con carrusel) junto a una tira con 93 paletas.
+   portfolio con carrusel) junto a una tira con 93 paletas. Desde la portada también hay
+   starters por tipo de negocio (\`/builder?start=ecommerce\`, negocio, famoso, viajes,
+   restaurante, creador) que abren un proyecto multipágina ya montado.
 2. Elige plantilla + paleta y entra en el editor: árbol de capas a la izquierda, preview en vivo
    en el centro y panel de propiedades a la derecha.
 3. Ajusta secciones (filas y columnas en grid de12), componentes (texto, imágenes, botones,
    tarjetas, carrusel...), animaciones de entrada/hover, fondos interactivos y colores.
-4. Exporta: "Exportar ZIP" descarga un proyecto Vite autónomo; "JSON" descarga el diseño editable.
+4. Multi-página: el árbol lista las páginas (portada + \`spec.pages\`), «+ Añadir página» ofrece
+  11 presets con contenido real, y cada página tiene nombre, ruta única y sus propias secciones
+   (el menú y el pie son globales). Las rutas '/…' del menú cambian de página dentro del preview.
+5. Exporta: "Exportar ZIP" descarga un proyecto Vite autónomo; "JSON" descarga el diseño editable.
 
 ## Qué contiene el ZIP exportado
 
 - package.json con scripts dev/build/preview (Vite8, React19, TypeScript6, sass).
-- src/design.ts: todo el contenido y la estructura (el archivo que el cliente edita).
+- src/design.ts: todo el contenido y la estructura (el archivo que el cliente edita), incluidas
+  las páginas multipágina (\`pages\` con id, nombre, ruta y secciones).
+- src/App.tsx: composición de la web; con varias páginas incluye un enrutador de hash (#/tienda)
+  que pinta la página activa con DesignRenderer.
 - src/components/: los componentes reales en TSX con sus CSS Modules (.module.scss).
 - src/hooks/: motor de animación (useMotion) y entradas con IntersectionObserver.
 - src/styles/tokens.scss: colores, espaciados, radios y sombras como variables SCSS y CSS.

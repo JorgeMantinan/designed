@@ -156,6 +156,77 @@ describe('generateProject', () => {
   });
 });
 
+// ── Multi-página ─────────────────────────────────────────────────────────────
+
+/** Mismo diseño + una página extra enlazada desde el menú (ids propios). */
+const parsedMultiPage = (() => {
+  const result = parseDesignSpec({
+    ...exampleDesignSpec,
+    header: {
+      ...exampleDesignSpec.header,
+      items: [
+        ...(exampleDesignSpec.header?.items ?? []),
+        { id: 'nav-tienda', label: 'Tienda', href: '/tienda' },
+      ],
+    },
+    pages: [
+      {
+        id: 'pagina-tienda',
+        name: 'Tienda',
+        path: '/tienda',
+        sections: [
+          {
+            id: 'seccion-tienda',
+            rows: [
+              {
+                id: 'fila-tienda',
+                columns: [
+                  {
+                    id: 'columna-tienda',
+                    components: [{ type: 'heading', id: 'titulo-tienda', text: 'Tienda' }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  if (!result.success) throw new Error(result.errors.join('\n'));
+  return result.data;
+})();
+
+describe('multi-página (codegen)', () => {
+  it('con páginas genera un router de hash con todas las rutas', async () => {
+    const files = await generateProject(parsedMultiPage);
+    const app = contentOf(files, 'src/App.tsx');
+
+    expect(app).toContain('ROUTES');
+    expect(app).toContain("'/tienda': 'pagina-tienda'");
+    expect(app).toContain('pageId={ROUTES[path]}');
+    // Solo rutas de navegación ('#/…'); los anclas siguen siendo '#seccion'.
+    expect(app).toContain("hash.startsWith('#/')");
+  });
+
+  it('reescribe los href internos a rutas de hash en design.ts', async () => {
+    const design = contentOf(await generateProject(parsedMultiPage), 'src/design.ts');
+
+    expect(design).toContain('"pages"');
+    expect(design).toContain('"path": "/tienda"');
+    expect(design).toContain('"#/tienda"');
+    // Ningún href interno queda como ruta absoluta (rompería sin fallback).
+    expect(design).not.toMatch(/"href": "\/[^/]/);
+  });
+
+  it('sin páginas se mantiene el App simple (sin router)', async () => {
+    const app = contentOf(await generateProject(parsed), 'src/App.tsx');
+
+    expect(app).not.toContain('ROUTES');
+    expect(app).toContain('<DesignRenderer spec={design} />');
+  });
+});
+
 // ── Verificación end-to-end (local, opt-in) ─────────────────────────────────
 // Ejecutar con: VERIFY_EXPORT=1 pnpm --filter @designed/codegen test
 // Genera el proyecto en un temporal y comprueba `pnpm install && pnpm build`.

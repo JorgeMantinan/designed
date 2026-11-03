@@ -19,6 +19,13 @@ No usa inteligencia artificial: solo diseño, animaciones y código limpio.
 
 - Galería de plantillas al entrar, filtrables por preferencias (rejilla 4x2, historia vertical 1x3,
   menú superior, menú esquinado con hover, pricing, portfolio con carrusel).
+- Web multipágina: cada diseño admite páginas ilimitadas (portada en la raíz + \`pages[]\` con ruta
+  propia) con11 plantillas de página listas (tienda, contacto, sobre mí, blog, galería, portfolio,
+  planes, ayuda, destinos, reservas y página en blanco). El árbol muestra un selector de páginas
+  y la preview cambia al pulsar un enlace o una pestaña.
+- Starters por tipo de negocio desde la portada: tienda online, negocio físico, persona famosa,
+  viajes, restaurante y creador; cada uno abre un proyecto multipágina con el menú ya enlazado
+  (\`/builder?start=ecommerce\`).
 - Editor con panel de propiedades completo: filas, columnas (grid de12 unidades), botones por
   sección, spacing, padding, radios, sombras, gradientes y breakpoints responsive.
 - 93 paletas de 5 colores con validación automática de contraste WCAG AA/AAA y semáforo visible,
@@ -37,6 +44,8 @@ El botón "Exportar ZIP" genera un proyecto Vite + React + TypeScript autónomo:
 
 - estructura real: src/components/{primitives,cards,carousel,sections,header,footer,backgrounds},
   src/hooks, src/styles/{tokens,global,motion}.scss, src/types y src/design.ts con el contenido.
+- con diseño multipágina, src/App.tsx incluye un enrutador de hash propio (#/tienda) y todos los
+  enlaces internos se reescriben a '#/…' para funcionar sin fallback de servidor.
 - el cliente edita textos en src/design.ts y colores en src/styles/tokens.scss.
 - sin dependencias del editor: cero imports de paquetes internos en el código exportado.
 

@@ -111,22 +111,92 @@ createRoot(container).render(
 );
 `;
 
-function appTsx(): string {
-  return `import { DesignRenderer } from './components/DesignRenderer';
+/**
+ * Rewrites internal hrefs (`/tienda`) into hash routes (`#/tienda`) so the
+ * exported multi-page app navigates client-side without needing a
+ * server-side fallback for deep links. Anchors (`#seccion`) and external
+ * URLs are left untouched.
+ */
+function toHashRoutes(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(toHashRoutes);
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, entry]) => [
+        key,
+        key === 'href' &&
+        typeof entry === 'string' &&
+        entry.startsWith('/') &&
+        !entry.startsWith('//')
+          ? `#${entry}`
+          : toHashRoutes(entry),
+      ]),
+    );
+  }
+  return value;
+}
+
+function appTsx(spec: DesignSpec): string {
+  // Single-page export: no router needed (keeps the generated app minimal).
+  if (spec.pages.length === 0) {
+    return `import { DesignRenderer } from './components/DesignRenderer';
 import { design } from './design';
 
 export default function App() {
   return <DesignRenderer spec={design} />;
 }
 `;
+  }
+
+  const routes = ['/', ...spec.pages.map((page) => page.path)]
+    .map((path) => {
+      const pageId = spec.pages.find((page) => page.path === path)?.id;
+      return `  '${path}': ${pageId === undefined ? 'undefined' : `'${pageId}'`},`;
+    })
+    .join('\n');
+
+  return `import { useEffect, useState } from 'react';
+
+import { DesignRenderer } from './components/DesignRenderer';
+import { design } from './design';
+
+// Rutas de tu web (generadas por designed). Enlaza con '#/tienda'…
+const ROUTES: Record<string, string | undefined> = {
+${routes}
+};
+
+/** Ruta actual solo cuando el hash es de navegación ('#/tienda'). */
+function routeFromHash(): string | null {
+  const hash = window.location.hash;
+  return hash.startsWith('#/') ? hash.slice(1) : null;
+}
+
+export default function App() {
+  const [path, setPath] = useState<string>(() => routeFromHash() ?? '/');
+
+  useEffect(() => {
+    const onHashChange = (): void => {
+      // Los anclas internas (#funciones) no son rutas: se ignoran.
+      const route = routeFromHash();
+      if (route !== null) setPath(route);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  return <DesignRenderer spec={design} pageId={ROUTES[path]} />;
+}
+`;
 }
 
 function designTs(spec: DesignSpec): string {
+  // Multi-page: internal hrefs become hash routes ('#/tienda') so the
+  // exported app can navigate without a server rewrite rule.
+  const data = spec.pages.length > 0 ? toHashRoutes(spec) : spec;
   return `import type { DesignSpec } from './types/spec';
 
 // Tu diseño, exportado desde designed. Todo el contenido vive aquí:
 // textos, imágenes, colores y estructura de secciones.
-export const design: DesignSpec = ${JSON.stringify(spec, null, 2)};
+export const design: DesignSpec = ${JSON.stringify(data, null, 2)};
 `;
 }
 
@@ -247,7 +317,7 @@ export function staticFiles(spec: DesignSpec): ExportedFile[] {
     { path: 'README.md', content: readme(spec) },
     { path: 'src/vite-env.d.ts', content: VITE_ENV },
     { path: 'src/main.tsx', content: MAIN_TSX },
-    { path: 'src/App.tsx', content: appTsx() },
+    { path: 'src/App.tsx', content: appTsx(spec) },
     { path: 'src/design.ts', content: designTs(spec) },
     { path: 'src/styles/tokens.ts', content: tokensTs(spec) },
     { path: 'src/styles/tokens.scss', content: toScssVariables(spec.theme) },

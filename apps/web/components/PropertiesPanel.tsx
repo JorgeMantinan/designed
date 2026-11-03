@@ -15,6 +15,7 @@ import {
 } from '../lib/fields';
 import { BUTTON_VARIANT_OPTIONS } from '../lib/fields';
 import { mergeDeep, normalizeAnimation, normalizeHover } from '../lib/normalize';
+import { normalizePagePath, sectionsOwner, uniquePagePath } from '../lib/pages';
 import { useBuilder } from '../lib/store';
 
 import { AnimationPicker } from './AnimationPicker';
@@ -98,6 +99,8 @@ export function PropertiesPanel() {
   switch (state.selection.kind) {
     case 'global':
       return <GlobalPanel />;
+    case 'page':
+      return <PageForm pageId={state.selection.id} />;
     case 'header':
       return <HeaderForm />;
     case 'footer':
@@ -123,7 +126,14 @@ function useUpdate(): (mutate: (draft: DesignSpec) => void) => void {
 }
 
 function findSection(draft: DesignSpec, id: string): SectionDraft | undefined {
-  return draft.sections.find((section) => section.id === id);
+  // Ids are globally unique: search home first, then every extra page.
+  const root = draft.sections.find((section) => section.id === id);
+  if (root) return root;
+  for (const page of draft.pages) {
+    const found = page.sections.find((section) => section.id === id);
+    if (found) return found;
+  }
+  return undefined;
 }
 
 /** Advances an item inside an array (reorder helper). */
@@ -782,15 +792,112 @@ function FooterForm() {
   );
 }
 
+// ── Page ─────────────────────────────────────────────────────────────────────
+
+function PageForm({ pageId }: { pageId: string }) {
+  const { state, dispatch } = useBuilder();
+  const update = useUpdate();
+  const page = state.spec.pages.find((item) => item.id === pageId);
+
+  if (!page) return null;
+
+  const otherPaths = state.spec.pages.filter((item) => item.id !== pageId).map((item) => item.path);
+
+  const commitName = (value: string | number | undefined): void => {
+    const name = String(value ?? '').trim();
+    if (!name || name === page.name) return;
+    update((draft) => {
+      const target = draft.pages.find((item) => item.id === pageId);
+      if (target) target.name = name.slice(0, 60);
+    });
+  };
+
+  const commitPath = (value: string | number | undefined): void => {
+    const path = uniquePagePath(normalizePagePath(String(value ?? page.path)), otherPaths);
+    if (path === page.path) return;
+    update((draft) => {
+      const target = draft.pages.find((item) => item.id === pageId);
+      if (target) target.path = path;
+    });
+  };
+
+  const duplicate = (): void => {
+    let clonedId: string | null = null;
+    update((draft) => {
+      const index = draft.pages.findIndex((item) => item.id === pageId);
+      const source = draft.pages[index];
+      if (!source) return;
+      const clone = structuredClone(source);
+      reassignIds(clone);
+      clone.name = `${source.name} (copia)`.slice(0, 60);
+      clone.path = uniquePagePath(
+        `${source.path}-copia`,
+        draft.pages.map((item) => item.path),
+      );
+      clonedId = clone.id;
+      draft.pages.splice(index + 1, 0, clone);
+    });
+    if (clonedId) {
+      dispatch({ type: 'page', pageId: clonedId });
+    }
+  };
+
+  const remove = (): void => {
+    if (
+      !window.confirm(
+        `¿Eliminar la página «${page.name}»? Sus ${page.sections.length} secciones se perderán.`,
+      )
+    ) {
+      return;
+    }
+    update((draft) => {
+      draft.pages = draft.pages.filter((item) => item.id !== pageId);
+    });
+    // Vuelve a la portada: la página activa ya no existe.
+    dispatch({ type: 'page', pageId: null });
+  };
+
+  return (
+    <>
+      <PanelSection title={`Página · ${page.name}`}>
+        <TextField
+          label="Nombre"
+          value={page.name}
+          hint="Como aparece en el editor y en el menú."
+          onCommit={commitName}
+        />
+        <TextField
+          label="Ruta (URL)"
+          value={page.path}
+          hint={`Dirección pública: example.com${page.path} — la portada siempre es «/».`}
+          onCommit={commitPath}
+        />
+        <p className={s.hint}>
+          Esta página tiene {page.sections.length} sección
+          {page.sections.length === 1 ? '' : 'es'}. Su menú superior y su pie son los del sitio
+          global.
+        </p>
+        <ButtonRow>
+          <button type="button" className={s.ghostButton} onClick={duplicate}>
+            Duplicar página
+          </button>
+          <DangerButton onClick={remove}>Eliminar página</DangerButton>
+        </ButtonRow>
+      </PanelSection>
+    </>
+  );
+}
+
 // ── Section ──────────────────────────────────────────────────────────────────
 
 function SectionForm({ sectionId }: { sectionId: string }) {
   const { state, dispatch } = useBuilder();
   const update = useUpdate();
-  const section = state.spec.sections.find((item) => item.id === sectionId);
-  const sectionNumber = state.spec.sections.findIndex((item) => item.id === sectionId) + 1;
+  const section = findSection(state.spec, sectionId);
+  const owner = sectionsOwner(state.spec, sectionId);
+  const sectionNumber = (owner?.findIndex((item) => item.id === sectionId) ?? -1) + 1;
 
-  if (!section) return null;
+  if (!section || !owner) return null;
 
   const patch = (mutate: (target: SectionDraft) => void): void => {
     update((draft) => {
@@ -800,13 +907,16 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   };
 
   const move = (delta: number): void => {
-    update((draft) =>
+    update((draft) => {
+      // Opera sobre la lista que CONTIENE la sección (portada o página activa).
+      const sections = sectionsOwner(draft, sectionId);
+      if (!sections) return;
       moveItem(
-        draft.sections,
-        draft.sections.findIndex((i) => i.id === sectionId),
+        sections,
+        sections.findIndex((i) => i.id === sectionId),
         delta,
-      ),
-    );
+      );
+    });
   };
 
   const moveRow = (index: number, delta: number): void => {
@@ -829,15 +939,17 @@ function SectionForm({ sectionId }: { sectionId: string }) {
   const duplicate = (): void => {
     let clonedId: string | null = null;
     update((draft) => {
-      const index = draft.sections.findIndex((item) => item.id === sectionId);
-      const source = draft.sections[index];
+      const sections = sectionsOwner(draft, sectionId);
+      if (!sections) return;
+      const index = sections.findIndex((item) => item.id === sectionId);
+      const source = sections[index];
       if (!source) return;
       const clone = structuredClone(source);
       // Regenera TODOS los ids (incluidos los anidados, p. ej. los botones de
       // un grupo): sin esto parseDesignSpec rechaza la mutación en silencio.
       reassignIds(clone);
       clonedId = clone.id;
-      draft.sections.splice(index + 1, 0, clone);
+      sections.splice(index + 1, 0, clone);
     });
     // Selecciona la copia para que el usuario vea al instante qué ha duplicado.
     if (clonedId) dispatch({ type: 'select', selection: { kind: 'section', id: clonedId } });
@@ -845,7 +957,10 @@ function SectionForm({ sectionId }: { sectionId: string }) {
 
   const remove = (): void => {
     update((draft) => {
-      draft.sections = draft.sections.filter((item) => item.id !== sectionId);
+      const sections = sectionsOwner(draft, sectionId);
+      if (!sections) return;
+      const index = sections.findIndex((item) => item.id === sectionId);
+      if (index >= 0) sections.splice(index, 1);
     });
   };
 
@@ -1454,7 +1569,7 @@ function OverlayFields({
 function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
   const { state, dispatch } = useBuilder();
   const update = useUpdate();
-  const section = state.spec.sections.find((item) => item.id === sectionId);
+  const section = findSection(state.spec, sectionId);
   const row = section?.rows.find((item) => item.id === rowId);
 
   if (!section || !row) return null;
@@ -1572,7 +1687,7 @@ function RowForm({ sectionId, rowId }: { sectionId: string; rowId: string }) {
 function ColumnForm({ sectionId, columnId }: { sectionId: string; columnId: string }) {
   const { state, dispatch } = useBuilder();
   const update = useUpdate();
-  const section = state.spec.sections.find((item) => item.id === sectionId);
+  const section = findSection(state.spec, sectionId);
   const row = section?.rows.find((item) => item.columns.some((c) => c.id === columnId));
   const column = row?.columns.find((item) => item.id === columnId);
 
@@ -1701,8 +1816,7 @@ function ComponentForm({ sectionId, componentId }: { sectionId: string; componen
   const { state, dispatch } = useBuilder();
   const update = useUpdate();
 
-  const column = state.spec.sections
-    .find((item) => item.id === sectionId)
+  const column = findSection(state.spec, sectionId)
     ?.rows.flatMap((item) => item.columns)
     .find((item) => item.components.some((component) => component.id === componentId));
   const component = column?.components.find((item) => item.id === componentId);
@@ -1711,8 +1825,7 @@ function ComponentForm({ sectionId, componentId }: { sectionId: string; componen
 
   const replace = (next: unknown): void => {
     update((draft) => {
-      const target = draft.sections
-        .find((item) => item.id === sectionId)
+      const target = findSection(draft, sectionId)
         ?.rows.flatMap((item) => item.columns)
         .find((item) => item.id === column.id);
       if (!target) return;
@@ -1736,8 +1849,7 @@ function ComponentForm({ sectionId, componentId }: { sectionId: string; componen
                 return;
               }
               update((draft) => {
-                const target = draft.sections
-                  .find((item) => item.id === sectionId)
+                const target = findSection(draft, sectionId)
                   ?.rows.flatMap((item) => item.columns)
                   .find((item) => item.id === column.id);
                 if (target) {

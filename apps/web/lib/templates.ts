@@ -992,6 +992,474 @@ export const TEMPLATES: readonly TemplateDefinition[] = [
         footer: footer('© 2026 Planes'),
       }),
   },
+  {
+    id: 'tienda-online',
+    name: 'Tienda online',
+    description: 'Producto, ventajas, tres productos con precio, opiniones y FAQ.',
+    tags: ['menu-superior', 'hero-centrado', 'pricing'],
+    build: (palette) =>
+      withTheme(palette, {
+        version: 1,
+        meta: { name: 'Mi tienda' },
+        header: {
+          layout: 'top',
+          brand: { name: 'Mi tienda', href: '/' },
+          items: [
+            { id: 'nav-productos', label: 'Productos', href: '#productos' },
+            { id: 'nav-opiniones', label: 'Opiniones', href: '#testimonios' },
+            { id: 'nav-faq', label: 'FAQ', href: '#faq' },
+          ],
+          cta: { id: 'nav-cta', label: 'Comprar', href: '#productos', variant: 'gradient' },
+        },
+        sections: [
+          section('t-hero', 'hero', [
+            row('t-hero-fila', [
+              col(
+                't-hero-col',
+                [
+                  comp('badge', 't-hero-badge', {
+                    label: 'Envío gratis desde 30 €',
+                    tone: 'accent',
+                  }),
+                  comp('heading', 't-hero-titulo', {
+                    level: 1,
+                    text: 'Tu tienda, lista para vender',
+                    size: 'display',
+                    align: 'center',
+                    animation: { entrance: { type: 'fade-in', delayMs: 100 } },
+                  }),
+                  comp('text', 't-hero-texto', {
+                    text: 'Producto de calidad, pago seguro y devoluciones sin líos durante30 días.',
+                    align: 'center',
+                    maxWidthPx: 560,
+                  }),
+                  comp('buttonGroup', 't-hero-botones', {
+                    buttons: [
+                      {
+                        id: 't-cta-1',
+                        label: 'Ver productos',
+                        href: '#productos',
+                        variant: 'gradient',
+                      },
+                      {
+                        id: 't-cta-2',
+                        label: 'Cómo funciona',
+                        href: '#servicios',
+                        variant: 'outline',
+                      },
+                    ],
+                    align: 'center',
+                  }),
+                ],
+                12,
+                { contentAlign: 'center' },
+              ),
+            ]),
+          ]),
+          section(
+            't-servicios',
+            'features',
+            [
+              row('t-servicios-fila', [
+                col(
+                  't-servicios-col-1',
+                  [
+                    comp('featureCard', 't-servicio-envio', {
+                      icon: 'zap',
+                      title: 'Envío en 48 horas',
+                      text: 'Seguimiento en tiempo real desde el almacén hasta tu puerta.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  't-servicios-col-2',
+                  [
+                    comp('featureCard', 't-servicio-pagos', {
+                      icon: 'shield',
+                      title: 'Pagos seguros',
+                      text: 'Tarjeta, PayPal y bizum con cifrado de extremo a extremo.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  't-servicios-col-3',
+                  [
+                    comp('featureCard', 't-servicio-devolucion', {
+                      icon: 'check',
+                      title: 'Devoluciones fáciles',
+                      text: '30 días para cambiar de opinión, con etiqueta prepagada.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            't-productos',
+            'pricing',
+            [
+              row('t-productos-fila', [
+                col(
+                  't-prod-col-1',
+                  [
+                    comp('pricingCard', 't-prod-1', {
+                      planName: 'Esencial',
+                      price: '19',
+                      currency: '€',
+                      period: '',
+                      features: ['Material premium', 'Envío en 48 h'],
+                      cta: { id: 't-prod-1-cta', label: 'Añadir al carrito', variant: 'outline' },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  't-prod-col-2',
+                  [
+                    comp('pricingCard', 't-prod-2', {
+                      planName: 'Pro',
+                      price: '39',
+                      currency: '€',
+                      period: '',
+                      highlighted: true,
+                      features: ['Todo lo esencial', 'Personalización', 'Soporte prioritario'],
+                      cta: { id: 't-prod-2-cta', label: 'Añadir al carrito', variant: 'gradient' },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  't-prod-col-3',
+                  [
+                    comp('pricingCard', 't-prod-3', {
+                      planName: 'Pack completo',
+                      price: '89',
+                      currency: '€',
+                      period: '',
+                      features: ['3 unidades', 'Ahorro del 20%'],
+                      cta: { id: 't-prod-3-cta', label: 'Añadir al carrito', variant: 'solid' },
+                    }),
+                  ],
+                  4,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'fade-in' } } },
+          ),
+          section(
+            't-testimonios',
+            'testimonials',
+            [
+              row('t-testimonios-fila', [
+                col(
+                  't-testi-col-1',
+                  [
+                    comp('testimonialCard', 't-testi-1', {
+                      quote: 'Pedí un martes y lo tenía el jueves. Precios perfectos.',
+                      author: 'Laura Pérez',
+                      role: 'Cliente verificada',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+                col(
+                  't-testi-col-2',
+                  [
+                    comp('testimonialCard', 't-testi-2', {
+                      quote: 'La devolución fue un juego de niños: etiqueta en el correo y listo.',
+                      author: 'Marcos Díaz',
+                      role: 'Cliente verificado',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            't-faq',
+            'faq',
+            [
+              row('t-faq-fila', [
+                col('t-faq-col', [
+                  comp('heading', 't-faq-titulo', {
+                    level: 2,
+                    text: 'Preguntas frecuentes',
+                    align: 'center',
+                  }),
+                  comp('faqList', 't-faq-lista', {
+                    items: [
+                      {
+                        question: '¿Cuánto tarda el envío?',
+                        answer: 'Entre 24 y 48 horas laborables.',
+                      },
+                      {
+                        question: '¿Puedo devolverlo?',
+                        answer: 'Sí,30 días con etiqueta prepagada.',
+                      },
+                      {
+                        question: '¿Qué métodos de pago aceptáis?',
+                        answer: 'Tarjeta, PayPal y bizum.',
+                      },
+                    ],
+                  }),
+                ]),
+              ]),
+            ],
+            {
+              background: { type: 'color', color: palette.colors.surface },
+              animation: { entrance: { type: 'fade-in' } },
+            },
+          ),
+        ],
+        footer: footer('© 2026 Mi tienda'),
+      }),
+  },
+  {
+    id: 'negocio-local',
+    name: 'Negocio local',
+    description: 'Servicios, ubicación con mapa, opiniones y contacto directo.',
+    tags: ['menu-superior', 'hero-centrado', 'contacto'],
+    build: (palette) =>
+      withTheme(palette, {
+        version: 1,
+        meta: { name: 'Mi negocio' },
+        header: {
+          layout: 'floating',
+          brand: { name: 'Mi negocio', href: '/' },
+          items: [
+            { id: 'nav-servicios', label: 'Servicios', href: '#servicios' },
+            { id: 'nav-ubicacion', label: 'Ubicación', href: '#ubicacion' },
+            { id: 'nav-contacto', label: 'Contacto', href: '#contacto' },
+          ],
+          cta: { id: 'nav-cta', label: 'Reservar', href: '#contacto', variant: 'solid' },
+        },
+        sections: [
+          section('n-hero', 'hero', [
+            row('n-hero-fila', [
+              col(
+                'n-hero-col',
+                [
+                  comp('badge', 'n-hero-badge', { label: 'Atención personal', tone: 'primary' }),
+                  comp('heading', 'n-hero-titulo', {
+                    level: 1,
+                    text: 'Tu negocio de barrio, también online',
+                    size: 'display',
+                    align: 'center',
+                    animation: { entrance: { type: 'fade-in', delayMs: 100 } },
+                  }),
+                  comp('text', 'n-hero-texto', {
+                    text: 'Reserva cita en un minuto, consulta el horario y encuentra en un clic.',
+                    align: 'center',
+                    maxWidthPx: 560,
+                  }),
+                  comp('buttonGroup', 'n-hero-botones', {
+                    buttons: [
+                      {
+                        id: 'n-cta-1',
+                        label: 'Reservar cita',
+                        href: '#contacto',
+                        variant: 'gradient',
+                      },
+                      {
+                        id: 'n-cta-2',
+                        label: 'Cómo llegar',
+                        href: '#ubicacion',
+                        variant: 'outline',
+                      },
+                    ],
+                    align: 'center',
+                  }),
+                ],
+                12,
+                { contentAlign: 'center' },
+              ),
+            ]),
+          ]),
+          section(
+            'n-servicios',
+            'features',
+            [
+              row('n-servicios-fila', [
+                col(
+                  'n-servicios-col-1',
+                  [
+                    comp('featureCard', 'n-servicio-1', {
+                      icon: 'sparkles',
+                      title: 'Primera visita',
+                      text: 'Presupuesto detallado sin compromiso antes de empezar.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'n-servicios-col-2',
+                  [
+                    comp('featureCard', 'n-servicio-2', {
+                      icon: 'star',
+                      title: 'Horario flexible',
+                      text: 'Citas tempranas y tardes hasta las20:00 de lunes a viernes.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+                col(
+                  'n-servicios-col-3',
+                  [
+                    comp('featureCard', 'n-servicio-3', {
+                      icon: 'users',
+                      title: 'Equipo de confianza',
+                      text: 'Profesionales con más de10 años de experiencia.',
+                      animation: { hover: { type: 'lift', intensity: 0.6 } },
+                    }),
+                  ],
+                  4,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            'n-ubicacion',
+            'generic',
+            [
+              row('n-ubicacion-fila', [
+                col(
+                  'n-ubicacion-col-mapa',
+                  [
+                    comp('image', 'n-mapa', {
+                      src: 'https://placehold.co/800x520?text=Mapa',
+                      alt: 'Mapa de la ubicación',
+                      radius: 'lg',
+                      shadow: 'md',
+                      animation: { entrance: { type: 'reveal-up' } },
+                    }),
+                  ],
+                  6,
+                ),
+                col(
+                  'n-ubicacion-col-texto',
+                  [
+                    comp('heading', 'n-ubicacion-titulo', {
+                      level: 2,
+                      text: 'Dónde estamos',
+                      animation: { entrance: { type: 'fade-in' } },
+                    }),
+                    comp('text', 'n-ubicacion-texto', {
+                      text: 'Calle Mayor 12,28013 Madrid. A2 minutos del metro y con parking en la misma calle.',
+                    }),
+                    comp('buttonGroup', 'n-ubicacion-botones', {
+                      buttons: [
+                        {
+                          id: 'n-cta-mapa',
+                          label: 'Cómo llegar',
+                          href: 'https://maps.google.com/?q=Calle+Mayor+12+Madrid',
+                          variant: 'gradient',
+                          icon: 'map-pin',
+                        },
+                        {
+                          id: 'n-cta-llamar',
+                          label: 'Llamar',
+                          href: 'tel:+34910000000',
+                          variant: 'outline',
+                          icon: 'phone',
+                        },
+                      ],
+                    }),
+                  ],
+                  6,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'fade-in' } } },
+          ),
+          section(
+            'n-opiniones',
+            'testimonials',
+            [
+              row('n-opiniones-fila', [
+                col(
+                  'n-testi-col-1',
+                  [
+                    comp('testimonialCard', 'n-testi-1', {
+                      quote: 'Me atendieron el mismo día y el trato fue excelente.',
+                      author: 'Carmen Ruiz',
+                      role: 'Vecina del barrio',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+                col(
+                  'n-testi-col-2',
+                  [
+                    comp('testimonialCard', 'n-testi-2', {
+                      quote: 'Reservé desde el móvil en dos toques. Impecable.',
+                      author: 'Javier Nieto',
+                      role: 'Cliente habitual',
+                      rating: 5,
+                    }),
+                  ],
+                  6,
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'slide-up' } } },
+          ),
+          section(
+            'n-contacto',
+            'contact',
+            [
+              row('n-contacto-fila', [
+                col(
+                  'n-contacto-col',
+                  [
+                    comp('heading', 'n-contacto-titulo', {
+                      level: 2,
+                      text: 'Pide tu cita',
+                      align: 'center',
+                      animation: { entrance: { type: 'fade-in' } },
+                    }),
+                    comp('text', 'n-contacto-texto', {
+                      text: 'Escríbenos y te confirmamos la hora en menos de24 horas.',
+                      align: 'center',
+                    }),
+                    comp('buttonGroup', 'n-contacto-botones', {
+                      buttons: [
+                        {
+                          id: 'n-cta-mail',
+                          label: 'Escríbenos',
+                          href: 'mailto:hola@ejemplo.com',
+                          variant: 'solid',
+                          icon: 'mail',
+                        },
+                      ],
+                      align: 'center',
+                    }),
+                  ],
+                  12,
+                  { contentAlign: 'center' },
+                ),
+              ]),
+            ],
+            { animation: { entrance: { type: 'blur-in' } } },
+          ),
+        ],
+        footer: footer('© 2026 Mi negocio'),
+      }),
+  },
 ];
 
 /** Parses a template with the chosen palette (throws when invalid). */

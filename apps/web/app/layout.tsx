@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     'TypeScript',
     'plantillas',
     'diseño web sin código',
+    'web multipágina',
     'exportar código react',
   ],
   applicationName: siteName,

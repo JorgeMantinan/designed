@@ -15,6 +15,24 @@ test('landing: SEO semántico, CTA al editor y JSON-LD', async ({ page }) => {
   expect(jsonLd).toContain('DesignApplication');
 });
 
+test('landing: tipos de sitio con páginas ya montadas', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(
+    page.getByRole('heading', { name: 'Crea tu web por tipo de negocio' }),
+  ).toBeVisible();
+
+  const starters = ['Tienda online', 'Negocio físico', 'Página de famoso', 'Viajes y destinos'];
+  for (const label of starters) {
+    const link = page.getByRole('link', { name: new RegExp(label) });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('href', /^\/builder\?start=/);
+  }
+
+  // El catálogo de tipos es amplio (6+).
+  expect(await page.locator('a[href*="/builder?start="]').count()).toBeGreaterThanOrEqual(6);
+});
+
 test('rutas SEO y LLMO: robots, sitemap, llms.txt', async ({ request }) => {
   const robots = await request.get('/robots.txt');
   expect(robots.status()).toBe(200);

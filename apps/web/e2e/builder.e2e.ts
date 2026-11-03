@@ -18,6 +18,10 @@ test('galería: plantillas filtrables y tira de paletas', async ({ page }) => {
   await page.getByRole('button', { name: 'limpiar ✕' }).click();
   await expect(page.getByRole('button', { name: /Landing clásica/ })).toBeVisible();
 
+  // Catálogo ampliado: las nuevas plantillas aparecen en la galería.
+  await expect(page.getByRole('button', { name: /Tienda online/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Negocio local/ })).toBeVisible();
+
   // Tira de paletas (catálogo amplio).
   expect(await page.getByRole('option').count()).toBeGreaterThan(40);
 });
@@ -101,4 +105,38 @@ test('autoguardado: la galería ofrece reanudar el diseño', async ({ page }) =>
   await expect(page.getByText('Tienes un diseño guardado:')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Continuar' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Descartar' })).toBeVisible();
+});
+
+test('multi-página: starter con páginas y cambio entre ellas', async ({ page }) => {
+  // Arranque directo desde la landing (?start=ecommerce).
+  await page.goto('/builder?start=ecommerce');
+
+  // El editor abre directo con las páginas del starter en el árbol.
+  await expect(page.getByRole('button', { name: /Inicio/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Tienda/ }).first()).toBeVisible();
+  await expect(page.getByRole('button', { name: /Planes y precios/ })).toBeVisible();
+
+  // La portada se muestra primero (home del starter ecommerce).
+  await expect(page.getByRole('heading', { name: 'Tu tienda, lista para vender' })).toBeVisible();
+
+  // Cambiar de página actualiza árbol y preview.
+  await page.getByRole('button', { name: /📄 Tienda/ }).click();
+  await expect(page.getByText('Secciones · Tienda')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Descubre nuestros productos' })).toBeVisible();
+  await expect(page.getByText('Página · Tienda')).toBeVisible();
+  await expect(page.getByText('/tienda', { exact: true })).toBeVisible();
+
+  // Volver a la portada.
+  await page.getByRole('button', { name: /🏠 Inicio/ }).click();
+  await expect(page.getByRole('heading', { name: 'Tu tienda, lista para vender' })).toBeVisible();
+
+  // Añadir una página nueva desde el catálogo de presets.
+  await page.getByRole('button', { name: /Añadir página/ }).click();
+  await page.getByRole('button', { name: /Galería/ }).click();
+  await expect(page.getByRole('button', { name: /Galería/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Galería', exact: true })).toBeVisible();
+
+  // La página nueva queda seleccionada con su formulario (nombre y ruta).
+  await expect(page.getByText('Página · Galería')).toBeVisible();
+  await expect(page.getByText('/galeria', { exact: true })).toBeVisible();
 });

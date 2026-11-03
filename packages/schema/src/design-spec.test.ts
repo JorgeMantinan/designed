@@ -161,6 +161,108 @@ describe('parseDesignSpec', () => {
   });
 });
 
+describe('páginas (multi-página)', () => {
+  /** Sección mínima con ids propios para no chocar con la portada. */
+  function pageSection(prefix: string) {
+    return {
+      id: `seccion-${prefix}`,
+      rows: [
+        {
+          id: `fila-${prefix}`,
+          columns: [
+            {
+              id: `columna-${prefix}`,
+              components: [{ type: 'heading', id: `titulo-${prefix}`, text: 'Hola' }],
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  it('los diseños de una sola página siguen funcionando (pages = [])', () => {
+    const result = parseDesignSpec(minimalDesignSpec);
+
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data.pages).toEqual([]);
+  });
+
+  it('acepta páginas extra con ruta propia', () => {
+    const result = parseDesignSpec({
+      ...cloneMinimal(),
+      pages: [
+        { id: 'pagina-tienda', name: 'Tienda', path: '/tienda', sections: [pageSection('t')] },
+        {
+          id: 'pagina-contacto',
+          name: 'Contacto',
+          path: '/contacto',
+          sections: [pageSection('c')],
+        },
+      ],
+    });
+
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data.pages).toHaveLength(2);
+    expect(result.data.pages[1]?.path).toBe('/contacto');
+  });
+
+  it('rechaza rutas duplicadas', () => {
+    const result = parseDesignSpec({
+      ...cloneMinimal(),
+      pages: [
+        { id: 'pagina-x', name: 'X', path: '/x', sections: [pageSection('x1')] },
+        { id: 'pagina-y', name: 'Y', path: '/x', sections: [pageSection('x2')] },
+      ],
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) return;
+    expect(result.errors.some((error) => error.includes('duplicada'))).toBe(true);
+  });
+
+  it('reserva "/" para la portada', () => {
+    const result = parseDesignSpec({
+      ...cloneMinimal(),
+      pages: [{ id: 'pagina-casa', name: 'Casa', path: '/', sections: [pageSection('casa')] }],
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) return;
+    expect(result.errors.some((error) => error.includes('portada'))).toBe(true);
+  });
+
+  it('rechaza rutas que no empiezan por / o traen fragmentos', () => {
+    for (const path of ['tienda', '#tienda', '/tienda#novedades', '/Tienda_otros']) {
+      const result = parseDesignSpec({
+        ...cloneMinimal(),
+        pages: [{ id: 'pagina-mala', name: 'Mala', path, sections: [pageSection('m')] }],
+      });
+      expect(result.success, path).toBe(false);
+    }
+  });
+
+  it('detecta ids duplicados entre la portada y las páginas', () => {
+    const result = parseDesignSpec({
+      ...cloneMinimal(),
+      pages: [
+        {
+          id: 'pagina-x',
+          name: 'X',
+          path: '/x',
+          // Reutiliza el id de la primera sección de la portada.
+          sections: [{ ...minimalDesignSpec.sections[0]! }],
+        },
+      ],
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) return;
+    expect(result.errors.some((error) => error.includes('seccion-principal'))).toBe(true);
+  });
+});
+
 describe('collectIds', () => {
   it('recorre arrays y objetos anidados', () => {
     expect(collectIds({ id: 'a', nested: { id: 'b' }, list: [{ id: 'c' }] })).toEqual([

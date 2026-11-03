@@ -12,6 +12,7 @@ import type { DesignSpec } from '@designed/schema';
 
 export type Selection =
   | { kind: 'global' }
+  | { kind: 'page'; id: string }
   | { kind: 'header' }
   | { kind: 'footer' }
   | { kind: 'section'; id: string }
@@ -24,6 +25,8 @@ export interface BuilderState {
   past: DesignSpec[];
   future: DesignSpec[];
   selection: Selection;
+  /** Page being edited (null = home, the spec root). */
+  activePageId: string | null;
   /** Bumped to replay entrance animations in the preview. */
   previewKey: number;
 }
@@ -34,12 +37,31 @@ export type BuilderAction =
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'select'; selection: Selection }
+  | { type: 'page'; pageId: string | null }
   | { type: 'replay' };
 
 const HISTORY_LIMIT = 60;
 
 export function createInitialState(spec: DesignSpec): BuilderState {
-  return { spec, past: [], future: [], selection: { kind: 'global' }, previewKey: 0 };
+  return {
+    spec,
+    past: [],
+    future: [],
+    selection: { kind: 'global' },
+    activePageId: null,
+    previewKey: 0,
+  };
+}
+
+/**
+ * After a spec change (update/undo/redo/load) the active page may have been
+ * deleted: fall back to the home page instead of pointing at a ghost.
+ */
+function withClampedPage(state: BuilderState): BuilderState {
+  if (state.activePageId && !state.spec.pages.some((page) => page.id === state.activePageId)) {
+    return { ...state, activePageId: null };
+  }
+  return state;
 }
 
 export function builderReducer(state: BuilderState, action: BuilderAction): BuilderState {
@@ -53,38 +75,47 @@ export function builderReducer(state: BuilderState, action: BuilderAction): Buil
       const parsed = parseDesignSpec(draft);
       // Reject invalid mutations instead of corrupting the design.
       if (!parsed.success) return state;
-      return {
+      return withClampedPage({
         ...state,
         spec: parsed.data,
         past: [...state.past.slice(-(HISTORY_LIMIT - 1)), state.spec],
         future: [],
-      };
+      });
     }
 
     case 'undo': {
       const previous = state.past[state.past.length - 1];
       if (!previous) return state;
-      return {
+      return withClampedPage({
         ...state,
         spec: previous,
         past: state.past.slice(0, -1),
         future: [state.spec, ...state.future].slice(0, HISTORY_LIMIT),
-      };
+      });
     }
 
     case 'redo': {
       const next = state.future[0];
       if (!next) return state;
-      return {
+      return withClampedPage({
         ...state,
         spec: next,
         past: [...state.past.slice(-(HISTORY_LIMIT - 1)), state.spec],
         future: state.future.slice(1),
-      };
+      });
     }
 
     case 'select':
       return { ...state, selection: action.selection };
+
+    case 'page':
+      // Switching pages resets the selection: the previous selection lives
+      // on another page and its form would render nothing.
+      return {
+        ...state,
+        activePageId: action.pageId,
+        selection: action.pageId ? { kind: 'page', id: action.pageId } : { kind: 'global' },
+      };
 
     case 'replay':
       return { ...state, previewKey: state.previewKey + 1 };

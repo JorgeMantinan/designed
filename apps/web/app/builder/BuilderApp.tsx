@@ -20,6 +20,7 @@ import {
   writeSaved,
 } from '../../lib/savedDesign';
 import { BuilderProvider, useBuilder } from '../../lib/store';
+import { buildSiteType, SITE_TYPES } from '../../lib/site-types';
 import { buildBlankDesign, buildTemplate } from '../../lib/templates';
 
 function downloadBlob(blob: Blob, filename: string): void {
@@ -149,12 +150,26 @@ function EditorShell({ onGallery }: { onGallery: () => void }) {
   );
 }
 
+/** Resuelve el starter pedido en la URL (/builder?start=…), si es válido. */
+function resolveStarter(starterId: string | null | undefined): DesignSpec | null {
+  if (!starterId || !SITE_TYPES.some((site) => site.id === starterId)) return null;
+  try {
+    return buildSiteType(starterId);
+  } catch {
+    // Starter inválido: se ignora y se muestra la galería normal.
+    return null;
+  }
+}
+
 /** Root of /builder: gallery first, editor once a design is chosen. */
-export function BuilderApp() {
+export function BuilderApp({ starterId }: { starterId?: string | null } = {}) {
   const savedRaw = useSyncExternalStore(subscribeSaved, getSavedRaw, getSavedServerRaw);
   const saved = useMemo(() => parseSaved(savedRaw), [savedRaw]);
-  const [spec, setSpec] = useState<DesignSpec | null>(null);
-  const [editing, setEditing] = useState(false);
+  // Estado inicial: el starter de la URL (?start=ecommerce) arranca el editor
+  // directamente con un diseño multi-página montado.
+  const [initialStarter] = useState<DesignSpec | null>(() => resolveStarter(starterId));
+  const [spec, setSpec] = useState<DesignSpec | null>(initialStarter);
+  const [editing, setEditing] = useState(initialStarter !== null);
 
   const start = (next: DesignSpec): void => {
     setSpec(next);

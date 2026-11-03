@@ -9,6 +9,8 @@ import { Section } from './sections/Section';
 
 export interface DesignRendererProps {
   spec: DesignSpec;
+  /** Extra page to render; omitted = home page (sections at the spec root). */
+  pageId?: string;
 }
 
 /**
@@ -16,9 +18,14 @@ export interface DesignRendererProps {
  * Injects the theme as CSS custom properties on the root element, so the
  * preview restyles instantly when the user changes palette or tokens.
  *
+ * Multi-page: `pageId` selects an entry of `spec.pages`; chrome (header +
+ * footer) always comes from the spec root, so every page shares the menu.
+ *
  * Load the global stylesheets once in the app entry (tokens, base y motion).
  */
-export function DesignRenderer({ spec }: DesignRendererProps) {
+export function DesignRenderer({ spec, pageId }: DesignRendererProps) {
+  const page = pageId ? spec.pages.find((item) => item.id === pageId) : undefined;
+  const sections = page?.sections ?? spec.sections;
   const tokens = flattenTokens(spec.theme);
   const cssVariables = Object.fromEntries(
     Object.entries(tokens).map(([name, value]) => [`--${name}`, value]),
@@ -36,7 +43,7 @@ export function DesignRenderer({ spec }: DesignRendererProps) {
           position:sticky funciona (anclado al final del flujo). */}
       {spec.header.layout !== 'bottom' && <Header {...spec.header} />}
       <main className="dsg-main">
-        {spec.sections.map((section) => (
+        {sections.map((section) => (
           <Section key={section.id} {...section} />
         ))}
       </main>

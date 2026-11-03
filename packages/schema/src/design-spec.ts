@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { idSchema } from './common';
 import { footerSchema, headerSchema, DEFAULT_FOOTER, DEFAULT_HEADER } from './navigation';
 import { sectionSchema } from './layout';
 import { themeSchema } from './tokens';
@@ -27,6 +28,34 @@ export const designMetaSchema = z.object({
   lang: z.enum(['es', 'en']).default('es'),
 });
 
+/**
+ * Public URL path of an extra page: `/tienda`, `/sobre-mi`… Never a fragment
+ * (`#…`) and never `/` — the home page always lives at the spec root.
+ */
+export const pagePathSchema = z
+  .string()
+  .regex(
+    /^\/(?:[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*)?$/i,
+    'must be a path like /tienda',
+  );
+
+/**
+ * An extra page of a multi-page design. The home page is NOT listed here:
+ * it is the spec root (`sections`), so single-page designs keep working
+ * unchanged (`pages` defaults to `[]`).
+ *
+ * Chrome (header/footer) is shared across pages; each page only owns its
+ * sections. All ids remain globally unique across the whole document.
+ */
+export const pageSchema = z.object({
+  id: idSchema,
+  /** Display name shown in the builder page list. */
+  name: z.string().min(1).max(60),
+  /** Public URL path, unique across pages (home uses `/`). */
+  path: pagePathSchema,
+  sections: z.array(sectionSchema).min(1).max(40),
+});
+
 export const designSpecSchema = z.object({
   version: z.literal(DESIGN_SPEC_VERSION),
   meta: designMetaSchema,
@@ -34,12 +63,17 @@ export const designSpecSchema = z.object({
   header: headerSchema.default({ ...DEFAULT_HEADER }),
   sections: z.array(sectionSchema).min(1).max(40),
   footer: footerSchema.default({ ...DEFAULT_FOOTER }),
+  /** Extra pages beyond the home page. Empty for single-page designs. */
+  pages: z.array(pageSchema).max(50).default([]),
 });
 
 export type DesignSpec = z.infer<typeof designSpecSchema>;
 /** Partial-friendly shape accepted by `parseDesignSpec` (defaults filled by Zod). */
 export type DesignSpecInput = z.input<typeof designSpecSchema>;
 export type DesignMeta = z.infer<typeof designMetaSchema>;
+export type PageSpec = z.infer<typeof pageSchema>;
+/** Partial-friendly shape for building pages (defaults filled by Zod). */
+export type PageSpecInput = z.input<typeof pageSchema>;
 
 /**
  * Recursively collects every `id` found in a parsed spec (sections, rows,
@@ -100,6 +134,20 @@ export function parseDesignSpec(input: unknown): ParseDesignSpecResult {
       ),
     };
   }
+
+  // Extra pages: unique paths, and `/` is reserved for the home page.
+  const seenPaths = new Set<string>();
+  const pathErrors: string[] = [];
+  for (const page of parsed.data.pages) {
+    if (page.path === '/') {
+      pathErrors.push(`pages: la página "${page.name}" usa "/" — esa ruta es la portada`);
+    }
+    if (seenPaths.has(page.path)) {
+      pathErrors.push(`pages: ruta duplicada "${page.path}" — cada página necesita su propia ruta`);
+    }
+    seenPaths.add(page.path);
+  }
+  if (pathErrors.length > 0) return { success: false, errors: pathErrors };
 
   return { success: true, data: parsed.data };
 }

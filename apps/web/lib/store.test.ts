@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { PALETTES } from '@designed/palettes';
+import { parseDesignSpec } from '@designed/schema';
 
 import { builderReducer, createInitialState } from './store-core';
 import type { BuilderState } from './store-core';
@@ -9,9 +10,41 @@ import { buildBlankDesign, buildTemplate, TEMPLATES } from './templates';
 
 const spec = buildTemplate('landing-clasica', PALETTES[0]!);
 
+/** Diseño con una página extra válida (ids propios, no chocan con la portada). */
+const multiPageSpec = (() => {
+  const result = parseDesignSpec({
+    ...spec,
+    pages: [
+      {
+        id: 'pagina-tienda',
+        name: 'Tienda',
+        path: '/tienda',
+        sections: [
+          {
+            id: 'seccion-tienda',
+            rows: [
+              {
+                id: 'fila-tienda',
+                columns: [
+                  {
+                    id: 'columna-tienda',
+                    components: [{ type: 'heading', id: 'titulo-tienda', text: 'Tienda' }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  if (!result.success) throw new Error(result.errors.join('\n'));
+  return result.data;
+})();
+
 describe('templates', () => {
-  it('las6 plantillas generan specs válidos con cualquier paleta', () => {
-    expect(TEMPLATES).toHaveLength(6);
+  it('las8 plantillas generan specs válidos con cualquier paleta', () => {
+    expect(TEMPLATES).toHaveLength(8);
 
     const palettes = [PALETTES[0]!, PALETTES.find((item) => item.id === 'onix')!];
 
@@ -131,5 +164,110 @@ describe('builderReducer', () => {
 
     const replayed = builderReducer(selected, { type: 'replay' });
     expect(replayed.previewKey).toBe(1);
+  });
+});
+
+describe('multi-página (store)', () => {
+  it('arranca en la portada con la página activa vacía', () => {
+    const state = createInitialState(multiPageSpec);
+    expect(state.activePageId).toBeNull();
+    expect(state.selection).toEqual({ kind: 'global' });
+  });
+
+  it('cambia de página y resetea la selección', () => {
+    const initial = createInitialState(multiPageSpec);
+    const withSelection = builderReducer(initial, {
+      type: 'select',
+      selection: { kind: 'section', id: 'hero' },
+    });
+    const onPage = builderReducer(withSelection, { type: 'page', pageId: 'pagina-tienda' });
+
+    expect(onPage.activePageId).toBe('pagina-tienda');
+    expect(onPage.selection).toEqual({ kind: 'page', id: 'pagina-tienda' });
+
+    const backHome = builderReducer(onPage, { type: 'page', pageId: null });
+    expect(backHome.activePageId).toBeNull();
+    expect(backHome.selection).toEqual({ kind: 'global' });
+  });
+
+  it('vuelve a la portada si la página activa se elimina', () => {
+    let state = builderReducer(createInitialState(multiPageSpec), {
+      type: 'page',
+      pageId: 'pagina-tienda',
+    });
+    state = builderReducer(state, {
+      type: 'update',
+      mutate: (draft) => {
+        draft.pages = [];
+      },
+    });
+
+    expect(state.spec.pages).toHaveLength(0);
+    expect(state.activePageId).toBeNull();
+  });
+
+  it('permite añadir páginas nuevas (y las re-valida)', () => {
+    const state = builderReducer(createInitialState(multiPageSpec), {
+      type: 'update',
+      mutate: (draft) => {
+        draft.pages.push({
+          id: 'pagina-blog',
+          name: 'Blog',
+          path: '/blog',
+          sections: [
+            {
+              id: 'seccion-blog',
+              rows: [
+                {
+                  id: 'fila-blog',
+                  columns: [
+                    {
+                      id: 'columna-blog',
+                      components: [{ type: 'heading', id: 'titulo-blog', text: 'Blog' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        } as (typeof draft.pages)[number]);
+      },
+    });
+
+    expect(state.spec.pages).toHaveLength(2);
+    expect(state.spec.pages[1]?.path).toBe('/blog');
+  });
+
+  it('rechaza en silencio una página con ruta duplicada', () => {
+    const before = createInitialState(multiPageSpec);
+    const after = builderReducer(before, {
+      type: 'update',
+      mutate: (draft) => {
+        draft.pages.push({
+          id: 'pagina-duplicada',
+          name: 'Otra',
+          path: '/tienda',
+          sections: [
+            {
+              id: 'seccion-duplicada',
+              rows: [
+                {
+                  id: 'fila-duplicada',
+                  columns: [
+                    {
+                      id: 'columna-duplicada',
+                      components: [{ type: 'heading', id: 'titulo-duplicada', text: 'X' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        } as (typeof draft.pages)[number]);
+      },
+    });
+
+    expect(after).toBe(before);
+    expect(after.spec.pages).toHaveLength(1);
   });
 });

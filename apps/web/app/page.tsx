@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SITE_TYPES } from '../lib/site-types';
 import { repoUrl, siteDescription, siteUrl } from '../lib/site';
 
 const FEATURES = [
@@ -23,6 +24,11 @@ const FEATURES = [
     title: 'Export como proyecto real',
     text: 'ZIP con estructura profesional: components/, hooks/, styles/ y pnpm dev funcionando.',
   },
+  {
+    icon: '🌐',
+    title: 'Web multipágina',
+    text: 'Infinitas páginas por diseño, con plantillas listas: tienda, contacto, blog, destinos...',
+  },
 ];
 
 /** Structured data for search engines and AI answer cards (schema.org). */
@@ -45,6 +51,7 @@ const softwareJsonLd = {
     'Galería de plantillas filtrables',
     '93 paletas con validación WCAG AA/AAA',
     '16 animaciones y 18 fondos interactivos',
+    'Web multipágina con páginas predefinidas por tipo de negocio',
     'Export a ZIP: proyecto Vite + React + TypeScript autónomo',
   ],
   codeRepository: repoUrl,
@@ -98,6 +105,28 @@ export default function HomePage() {
             <p className="landing__cardText">{feature.text}</p>
           </article>
         ))}
+      </section>
+
+      <section className="landing__types">
+        <p className="landing__kicker">Empieza con lo básico resuelto</p>
+        <h2 className="landing__sectionTitle">Crea tu web por tipo de negocio</h2>
+        <p className="landing__sectionText">
+          Cada opción abre un proyecto <strong>multi-página completo</strong>: portada + páginas ya
+          montadas (tienda, reservas, blog, destinos...) con su menú enlazado. Después editas,
+          añades páginas ilimitadas y descargas el ZIP.
+        </p>
+        <div className="landing__typesGrid">
+          {SITE_TYPES.map((site) => (
+            <Link key={site.id} className="landing__typeCard" href={`/builder?start=${site.id}`}>
+              <span className="landing__typeIcon" aria-hidden="true">
+                {site.icon}
+              </span>
+              <h3 className="landing__typeTitle">{site.label}</h3>
+              <p className="landing__typeText">{site.description}</p>
+              <span className="landing__typeCta">Crear esta web →</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <footer className="landing__footer">

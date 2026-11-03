@@ -356,5 +356,16 @@ export interface DesignSpec {
   header: HeaderSpec;
   sections: SectionSpec[];
   footer: FooterSpec;
+  /** Extra pages beyond the home page (which lives at the spec root). */
+  pages: PageSpec[];
+}
+
+/** Extra page of a multi-page design; chrome comes from the spec root. */
+export interface PageSpec {
+  id: string;
+  name: string;
+  /** Public URL path, e.g. '/tienda' (home is always '/'). */
+  path: string;
+  sections: SectionSpec[];
 }
 `;

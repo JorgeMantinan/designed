@@ -23,7 +23,22 @@ export function Preview() {
       className={s.previewArea}
       onClickCapture={(event) => {
         const target = event.target as HTMLElement;
-        if (target.closest('a')) event.preventDefault();
+        const anchor = target.closest('a');
+        if (anchor) event.preventDefault();
+
+        // Navegación entre páginas del diseño: un enlace a /tienda (o #/tienda)
+        // cambia la página activa en el propio editor, sin salir de la preview.
+        if (anchor) {
+          const href = anchor.getAttribute('href') ?? '';
+          const path = href.startsWith('#/') ? href.slice(1) : href.startsWith('/') ? href : null;
+          if (path !== null) {
+            const page = state.spec.pages.find((item) => item.path === path);
+            event.stopPropagation();
+            if (path === '/') dispatch({ type: 'page', pageId: null });
+            else if (page) dispatch({ type: 'page', pageId: page.id });
+            return;
+          }
+        }
 
         // Los controles interactivos (burger del menú, flechas del carrusel,
         // preguntas del FAQ...) conservan SU clic: el click-to-select no los
@@ -65,7 +80,11 @@ export function Preview() {
       }}
     >
       <div className={s.previewFrame}>
-        <DesignRenderer key={state.previewKey} spec={state.spec} />
+        <DesignRenderer
+          key={state.previewKey}
+          spec={state.spec}
+          pageId={state.activePageId ?? undefined}
+        />
       </div>
     </div>
   );

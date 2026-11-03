@@ -17,13 +17,17 @@ type RowInput = SectionInput['rows'][number];
 type ColumnInput = RowInput['columns'][number];
 type ComponentInput = ColumnInput['components'][number];
 
-function comp(type: ComponentTypeLike, id: string, props: Record<string, unknown>): ComponentInput {
+export function comp(
+  type: ComponentTypeLike,
+  id: string,
+  props: Record<string, unknown>,
+): ComponentInput {
   return { type, id, ...props } as ComponentInput;
 }
 
 type ComponentTypeLike = ComponentInput['type'];
 
-function makeSection(
+export function makeSection(
   kind: SectionInput['kind'],
   rows: RowInput[],
   extra: Partial<SectionInput> = {},
@@ -31,11 +35,11 @@ function makeSection(
   return { id: newId('seccion'), kind, width: 'contained', rows, ...extra };
 }
 
-function makeRow(columns: ColumnInput[], extra: Partial<RowInput> = {}): RowInput {
+export function makeRow(columns: ColumnInput[], extra: Partial<RowInput> = {}): RowInput {
   return { id: newId('fila'), stackBelow: 'mobile', columns, ...extra };
 }
 
-function makeColumn(
+export function makeColumn(
   components: ComponentInput[],
   span = 12,
   contentAlign: 'stretch' | 'start' | 'center' | 'end' = 'stretch',
@@ -615,6 +619,258 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
           ]),
         ],
         { animation: { entrance: { type: 'slide-up' } } },
+      ),
+  },
+  {
+    id: 'horarios',
+    label: 'Horario semanal',
+    description: 'Días y horas en tres columnas con iconos de verificación.',
+    icon: '🕐',
+    build: () =>
+      makeSection(
+        'generic',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Horario de atención',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('featureList', newId('horario'), {
+                  items: [
+                    { icon: 'check', title: 'Lunes a viernes', text: '9:00 – 18:00 h' },
+                    { icon: 'check', title: 'Sábados', text: '10:00 – 14:00 h' },
+                    { icon: 'x', title: 'Domingos y festivos', text: 'Cerrado' },
+                  ],
+                  columns: 3,
+                }),
+              ],
+              12,
+              'center',
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'slide-up' } } },
+      ),
+  },
+  {
+    id: 'ubicacion',
+    label: 'Ubicación y cómo llegar',
+    description: 'Mapa ilustrado al lado de la dirección y botones de ruta y llamada.',
+    icon: '📍',
+    build: () =>
+      makeSection(
+        'generic',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('image', newId('mapa'), {
+                  src: 'https://placehold.co/800x520?text=Mapa',
+                  alt: 'Mapa de la ubicación',
+                  radius: 'lg',
+                  shadow: 'md',
+                  animation: { entrance: { type: 'reveal-up' } },
+                }),
+              ],
+              6,
+            ),
+            makeColumn(
+              [
+                comp('badge', newId('badge'), { label: 'Visítanos', tone: 'accent' }),
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Dónde estamos',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Calle Mayor 12, 28013 Madrid. A 2 minutos del metro y con parking en la misma calle.',
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [
+                    {
+                      id: newId('cta'),
+                      label: 'Cómo llegar',
+                      href: 'https://maps.google.com/?q=Calle+Mayor+12+Madrid',
+                      variant: 'gradient',
+                      icon: 'map-pin',
+                    },
+                    {
+                      id: newId('cta'),
+                      label: 'Llamar',
+                      href: 'tel:+34910000000',
+                      variant: 'outline',
+                      icon: 'phone',
+                    },
+                  ],
+                }),
+              ],
+              6,
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'fade-in' } } },
+      ),
+  },
+  {
+    id: 'productos',
+    label: 'Productos (3 con precio)',
+    description: 'Rejilla de productos con precio, ventajas y botón de compra.',
+    icon: '🛒',
+    build: () =>
+      makeSection(
+        'pricing',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('pricingCard', newId('producto'), {
+                  planName: 'Producto esencial',
+                  price: '19',
+                  currency: '€',
+                  period: '',
+                  features: ['Material premium', 'Envío en 48 h', 'Garantía 2 años'],
+                  cta: { id: newId('cta'), label: 'Añadir al carrito', variant: 'outline' },
+                }),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
+                comp('pricingCard', newId('producto'), {
+                  planName: 'Producto pro',
+                  price: '39',
+                  currency: '€',
+                  period: '',
+                  highlighted: true,
+                  features: ['Todo lo esencial', 'Personalización', 'Soporte prioritario'],
+                  cta: { id: newId('cta'), label: 'Añadir al carrito', variant: 'gradient' },
+                }),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
+                comp('pricingCard', newId('producto'), {
+                  planName: 'Pack completo',
+                  price: '89',
+                  currency: '€',
+                  period: '',
+                  features: ['3 unidades', 'Ahorro del 20%', 'Regalo de bienvenida'],
+                  cta: { id: newId('cta'), label: 'Añadir al carrito', variant: 'solid' },
+                }),
+              ],
+              4,
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'slide-up' } } },
+      ),
+  },
+  {
+    id: 'pasos',
+    label: 'Cómo funciona (3 pasos)',
+    description: 'Tres pasos numerados con icono, título y descripción.',
+    icon: '🧭',
+    build: () =>
+      makeSection(
+        'generic',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Cómo funciona',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+              ],
+              12,
+              'center',
+            ),
+          ]),
+          makeRow([
+            makeColumn(
+              [
+                featureCard(
+                  '1 · Elige',
+                  'Escoge la plantilla que más se acerque a tu idea.',
+                  'layout',
+                ),
+              ],
+              4,
+            ),
+            makeColumn(
+              [
+                featureCard(
+                  '2 · Personaliza',
+                  'Cambia textos, colores y animaciones con clics.',
+                  'palette',
+                ),
+              ],
+              4,
+            ),
+            makeColumn(
+              [featureCard('3 · Publica', 'Descarga el ZIP y despliega con pnpm dev.', 'zap')],
+              4,
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'slide-up' } } },
+      ),
+  },
+  {
+    id: 'boletin',
+    label: 'Boletín / newsletter',
+    description: 'Titular, promesa breve y botón de suscripción sobre degradado.',
+    icon: '✉️',
+    build: () =>
+      makeSection(
+        'cta',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('badge', newId('badge'), { label: 'Sin spam', tone: 'primary' }),
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Suscríbete a nuestro boletín',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Una vez al mes: novedades, guías y ofertas. Baja cuando quieras.',
+                  align: 'center',
+                  maxWidthPx: 520,
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [
+                    { id: newId('cta'), label: 'Quiero suscribirme', variant: 'gradient' },
+                    { id: newId('cta'), label: 'Ver un ejemplo', href: '#', variant: 'ghost' },
+                  ],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
+          ]),
+        ],
+        {
+          background: {
+            type: 'gradient',
+            gradient: {
+              type: 'linear',
+              angle: 120,
+              stops: [{ color: '#6C5CE7' }, { color: '#FD79A8', position: 100 }],
+            },
+          },
+          animation: { entrance: { type: 'blur-in' } },
+        },
       ),
   },
 ];
