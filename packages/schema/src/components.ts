@@ -238,6 +238,30 @@ export const dividerSchema = z.object({
   animated: z.boolean().default(false),
 });
 
+export const contactFormSchema = z.object({
+  type: z.literal('contactForm'),
+  id: idSchema,
+  namePlaceholder: z.string().min(1).max(60).default('Tu nombre'),
+  emailPlaceholder: z.string().min(1).max(60).default('Tu email'),
+  messagePlaceholder: z.string().min(1).max(120).default('Cuéntanos qué necesitas'),
+  buttonText: z.string().min(1).max(40).default('Enviar mensaje'),
+  /** Message shown after a (simulated) successful submit — no backend. */
+  successMessage: z.string().min(1).max(200).default('¡Gracias! Te responderemos muy pronto.'),
+  animation: animationSchema.optional(),
+});
+
+export const countdownSchema = z.object({
+  type: z.literal('countdown'),
+  id: idSchema,
+  /** Local target date/time: '2026-12-31T23:59' (invalid → expired state). */
+  target: z.string().min(4).max(40),
+  /** Optional eyebrow above the clock, e.g. "La oferta termina en". */
+  label: z.string().max(80).optional(),
+  /** Text shown when the target is reached (or the date is invalid). */
+  expiredText: z.string().min(1).max(80).default('¡Ha terminado!'),
+  animation: animationSchema.optional(),
+});
+
 export const spacerSchema = z.object({
   type: z.literal('spacer'),
   id: idSchema,
@@ -264,6 +288,8 @@ export const componentSchema = z.discriminatedUnion('type', [
   carouselSchema,
   dividerSchema,
   spacerSchema,
+  contactFormSchema,
+  countdownSchema,
 ]);
 
 export type ButtonSpec = z.infer<typeof buttonSchema>;
@@ -287,3 +313,5 @@ export type CarouselSpec = z.infer<typeof carouselSchema>;
 export type CarouselSlide = z.infer<typeof carouselSlideSchema>;
 export type DividerSpec = z.infer<typeof dividerSchema>;
 export type SpacerSpec = z.infer<typeof spacerSchema>;
+export type ContactFormSpec = z.infer<typeof contactFormSchema>;
+export type CountdownSpec = z.infer<typeof countdownSchema>;

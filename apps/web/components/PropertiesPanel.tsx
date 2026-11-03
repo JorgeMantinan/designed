@@ -84,6 +84,8 @@ const COMPONENT_TYPE_LABELS: Record<string, string> = {
   carousel: 'Carrusel',
   divider: 'Separador',
   spacer: 'Espaciador',
+  contactForm: 'Formulario de contacto',
+  countdown: 'Cuenta atrás',
 };
 
 const ANIMATABLE_TYPES = new Set(

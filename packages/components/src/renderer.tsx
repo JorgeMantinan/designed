@@ -11,6 +11,8 @@ import { Carousel } from './carousel/Carousel';
 import { Badge } from './primitives/Badge';
 import { BodyText } from './primitives/BodyText';
 import { ButtonGroup } from './primitives/ButtonGroup';
+import { ContactForm } from './primitives/ContactForm';
+import { Countdown } from './primitives/Countdown';
 import { Divider } from './primitives/Divider';
 import { Heading } from './primitives/Heading';
 import { Image } from './primitives/Image';
@@ -53,6 +55,10 @@ export function SpecRenderer({ spec }: SpecRendererProps) {
       return <Divider {...spec} />;
     case 'spacer':
       return <Spacer {...spec} />;
+    case 'contactForm':
+      return <ContactForm {...spec} />;
+    case 'countdown':
+      return <Countdown {...spec} />;
     default:
       return null;
   }

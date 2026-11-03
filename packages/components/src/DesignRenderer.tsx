@@ -26,6 +26,8 @@ export interface DesignRendererProps {
 export function DesignRenderer({ spec, pageId }: DesignRendererProps) {
   const page = pageId ? spec.pages.find((item) => item.id === pageId) : undefined;
   const sections = page?.sections ?? spec.sections;
+  /** Public path of the rendered page ('/' = home): drives the active menu link. */
+  const activePath = page ? page.path : '/';
   const tokens = flattenTokens(spec.theme);
   const cssVariables = Object.fromEntries(
     Object.entries(tokens).map(([name, value]) => [`--${name}`, value]),
@@ -41,13 +43,14 @@ export function DesignRenderer({ spec, pageId }: DesignRendererProps) {
     <div className={cx('dsg-root', layoutClasses)} style={cssVariables}>
       {/* El menú inferior se renderiza DESPUÉS del contenido: así
           position:sticky funciona (anclado al final del flujo). */}
-      {spec.header.layout !== 'bottom' && <Header {...spec.header} />}
+      {/* Ruta pública de la página mostrada: resalta el enlace activo del menú. */}
+      {spec.header.layout !== 'bottom' && <Header {...spec.header} activePath={activePath} />}
       <main className="dsg-main">
         {sections.map((section) => (
           <Section key={section.id} {...section} />
         ))}
       </main>
-      {spec.header.layout === 'bottom' && <Header {...spec.header} />}
+      {spec.header.layout === 'bottom' && <Header {...spec.header} activePath={activePath} />}
       <Footer {...spec.footer} />
     </div>
   );

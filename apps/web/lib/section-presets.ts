@@ -1,6 +1,6 @@
 import type { DesignSpecInput } from '@designed/schema';
 
-import { newId } from './fields';
+import { newId, inDays } from './fields';
 
 /**
  * Section presets: rich defaults created when the user adds a section.
@@ -871,6 +871,74 @@ export const SECTION_PRESETS: readonly SectionPreset[] = [
           },
           animation: { entrance: { type: 'blur-in' } },
         },
+      ),
+  },
+  {
+    id: 'formulario',
+    label: 'Formulario de contacto',
+    description: 'Nombre, email y mensaje con validación y confirmación al enviar.',
+    icon: '🧾',
+    build: () =>
+      makeSection(
+        'contact',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: 'Escríbenos',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('text', newId('texto'), {
+                  text: 'Rellena el formulario y te respondemos en menos de 24 horas.',
+                  align: 'center',
+                }),
+                comp('contactForm', newId('formulario'), {}),
+              ],
+              8,
+              'center',
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'slide-up' } } },
+      ),
+  },
+  {
+    id: 'cuenta-atras',
+    label: 'Cuenta atrás (oferta)',
+    description: 'Reloj en vivo con días, horas, minutos y segundos hasta la fecha.',
+    icon: '⏳',
+    build: () =>
+      makeSection(
+        'cta',
+        [
+          makeRow([
+            makeColumn(
+              [
+                comp('badge', newId('badge'), { label: 'Oferta limitada', tone: 'accent' }),
+                comp('heading', newId('titulo'), {
+                  level: 2,
+                  text: '¡La oferta termina pronto!',
+                  align: 'center',
+                  animation: { entrance: { type: 'fade-in' } },
+                }),
+                comp('countdown', newId('cuenta-atras'), {
+                  target: inDays(3),
+                  label: 'Quedan',
+                }),
+                comp('buttonGroup', newId('botones'), {
+                  buttons: [{ id: newId('cta'), label: 'Aprovechar ahora', variant: 'gradient' }],
+                  align: 'center',
+                }),
+              ],
+              12,
+              'center',
+            ),
+          ]),
+        ],
+        { animation: { entrance: { type: 'fade-in' } } },
       ),
   },
 ];

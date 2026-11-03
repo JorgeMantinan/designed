@@ -25,11 +25,13 @@ const validSamples = [
   { type: 'carousel', id: 'c-carrusel', slides: [{ src: 'https://example.com/slide.jpg' }] },
   { type: 'divider', id: 'c-separador' },
   { type: 'spacer', id: 'c-espaciador' },
+  { type: 'contactForm', id: 'c-formulario' },
+  { type: 'countdown', id: 'c-cuenta-atras', target: '2026-12-31T23:59' },
 ] as const;
 
 describe('componentSchema', () => {
   it('tiene un sample válido por cada tipo del catálogo', () => {
-    expect(validSamples).toHaveLength(15);
+    expect(validSamples).toHaveLength(17);
   });
 
   it.each(validSamples)('acepta el componente $type', (sample) => {
@@ -59,6 +61,30 @@ describe('componentSchema', () => {
     expect(parsed.buttons[0]?.size).toBe('md');
     expect(parsed.buttons[0]?.href).toBe('#');
     expect(parsed.buttons[0]?.newTab).toBe(false);
+  });
+
+  it('rellena los textos por defecto del formulario de contacto', () => {
+    const parsed = componentSchema.parse({ type: 'contactForm', id: 'c-form' });
+
+    expect(parsed.type).toBe('contactForm');
+    if (parsed.type !== 'contactForm') return;
+    expect(parsed.namePlaceholder).toBe('Tu nombre');
+    expect(parsed.buttonText).toBe('Enviar mensaje');
+    expect(parsed.successMessage).toContain('Gracias');
+  });
+
+  it('la cuenta atrás exige objetivo y texto de expiración', () => {
+    expect(componentSchema.safeParse({ type: 'countdown', id: 'c-cd' }).success).toBe(false);
+
+    const parsed = componentSchema.parse({
+      type: 'countdown',
+      id: 'c-cd',
+      target: '2027-01-01T00:00',
+    });
+    expect(parsed.type).toBe('countdown');
+    if (parsed.type !== 'countdown') return;
+    expect(parsed.expiredText).toBe('¡Ha terminado!');
+    expect(parsed.target).toBe('2027-01-01T00:00');
   });
 
   it('valida los límites del intervalo del carrusel (2s mínimo)', () => {

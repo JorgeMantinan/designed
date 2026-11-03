@@ -101,6 +101,11 @@ export const footerSchema = z.object({
   /** Hover animation applied to links and social icons. */
   itemAnimation: hoverAnimationSchema.optional(),
   background: backgroundSchema.optional(),
+  /**
+   * Columns per row on desktop: 'auto' fills the available width; a number
+   * forces a multi-row grid (e.g. '2' = two columns per row, wraps below).
+   */
+  columnsPerRow: z.enum(['auto', '1', '2', '3', '4', '6']).default('auto'),
 });
 
 /** Default header used when a design spec does not define one. */
@@ -145,6 +150,7 @@ export const DEFAULT_FOOTER = {
   social: [],
   newsletter: false,
   layout: 'classic',
+  columnsPerRow: 'auto',
 } as const satisfies z.input<typeof footerSchema>;
 
 export type NavChild = z.infer<typeof navChildSchema>;

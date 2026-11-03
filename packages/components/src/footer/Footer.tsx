@@ -25,11 +25,14 @@ export function Footer({
   linkColor,
   itemAnimation,
   background,
+  columnsPerRow = 'auto',
   className,
 }: FooterProps) {
   const hasTop = columns.length > 0 || Boolean(brandText) || newsletter;
   const linkHover = hoverAttribute({ hover: itemAnimation ?? undefined });
   const linkStyle = motionStyle({ hover: itemAnimation ?? undefined });
+  // 'auto' = flex clásico; un número fuerza filas de N columnas (grid).
+  const rowsClass = columnsPerRow === 'auto' ? undefined : s[`rows${columnsPerRow}`];
 
   return (
     <footer
@@ -48,7 +51,7 @@ export function Footer({
             {brandText && <p className={s.brandText}>{brandText}</p>}
 
             {columns.length > 0 && (
-              <div className={s.columns}>
+              <div className={cx(s.columns, rowsClass)}>
                 {columns.map((column) => (
                   <nav
                     key={column.id}

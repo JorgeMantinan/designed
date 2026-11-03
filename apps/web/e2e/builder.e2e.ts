@@ -139,4 +139,44 @@ test('multi-página: starter con páginas y cambio entre ellas', async ({ page }
   // La página nueva queda seleccionada con su formulario (nombre y ruta).
   await expect(page.getByText('Página · Galería')).toBeVisible();
   await expect(page.getByText('/galeria', { exact: true })).toBeVisible();
+
+  // Reordenar: subir «Galería» una posición (por encima de «Contacto»).
+  const galeriaEntry = page.getByRole('button', { name: /Galería/ });
+  await galeriaEntry.getByTitle('↑').click();
+  const pageOrder = await page.getByRole('button').allTextContents();
+  const galleryIndex = pageOrder.findIndex((text) => text.includes('/galeria'));
+  const contactIndex = pageOrder.findIndex((text) => text.includes('/contacto'));
+  expect(galleryIndex).toBeGreaterThan(-1);
+  expect(contactIndex).toBeGreaterThan(-1);
+  expect(galleryIndex).toBeLessThan(contactIndex);
+
+  // Eliminar la página (✕ del árbol) confirmando el diálogo.
+  page.once('dialog', (dialog) => dialog.accept());
+  await galeriaEntry.getByTitle('✕').click();
+  await expect(page.getByRole('button', { name: /Galería/ })).toHaveCount(0);
+});
+
+test('componentes nuevos: formulario de contacto y cuenta atrás', async ({ page }) => {
+  await page.goto('/builder');
+  await page.getByRole('button', { name: /Landing clásica/ }).click();
+
+  // Formulario de contacto desde el catálogo de secciones.
+  await page.getByRole('button', { name: /Añadir sección/ }).click();
+  await page.getByRole('button', { name: /Formulario de contacto/ }).click();
+  await expect(page.getByText(/Sección \d+ · Contacto/)).toBeVisible();
+
+  // Se renderiza en la preview y, relleno, su envío muestra la confirmación.
+  await page.locator('input[name="name"]').fill('Ana');
+  await page.locator('input[name="email"]').fill('ana@ejemplo.com');
+  await page.locator('textarea[name="message"]').fill('Hola, quiero información.');
+  await page.getByRole('button', { name: 'Enviar mensaje', exact: true }).click();
+  // (los sliders del panel también son role=status: filtramos por texto).
+  await expect(page.locator('[role="status"]').filter({ hasText: 'Gracias' })).toBeVisible();
+
+  // Cuenta atrás: reloj en vivo con las cuatro unidades.
+  await page.getByRole('button', { name: /Añadir sección/ }).click();
+  await page.getByRole('button', { name: /Cuenta atrás/ }).click();
+  await expect(page.getByRole('timer')).toBeVisible();
+  await expect(page.getByText('Días', { exact: true })).toBeVisible();
+  await expect(page.getByText('Seg', { exact: true })).toBeVisible();
 });

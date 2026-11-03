@@ -63,6 +63,7 @@ export function FieldsForm({
             label={field.label}
             value={current as string | undefined}
             placeholder={field.placeholder}
+            hint={field.hint}
             onCommit={(next) => change(field.key, next)}
           />
         );
@@ -74,6 +75,7 @@ export function FieldsForm({
             label={field.label}
             value={current as string | undefined}
             rows={field.rows ?? 3}
+            hint={field.hint}
             onCommit={(next) => change(field.key, next)}
           />
         );

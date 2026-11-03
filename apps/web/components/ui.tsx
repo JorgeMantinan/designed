@@ -95,6 +95,7 @@ export function TextAreaField({
   value,
   onCommit,
   rows = 3,
+  hint,
 }: CommitFieldProps & { rows?: number }) {
   const [local, setLocal] = useLocalValue(value);
 
@@ -112,6 +113,7 @@ export function TextAreaField({
         onChange={(event) => setLocal(event.target.value)}
         onBlur={commit}
       />
+      {hint && <small className={s.fieldHint}>{hint}</small>}
     </FieldRow>
   );
 }

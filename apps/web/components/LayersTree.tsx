@@ -39,6 +39,10 @@ function componentLabel(component: ComponentSpec): string {
       return `${component.slides.length} diapositivas`;
     case 'featureList':
       return `${component.items.length} elementos`;
+    case 'contactForm':
+      return component.buttonText;
+    case 'countdown':
+      return component.target;
     default:
       return component.type;
   }
@@ -60,6 +64,8 @@ const TYPE_LABELS: Record<string, string> = {
   carousel: 'Carrusel',
   divider: 'Separador',
   spacer: 'Espaciador',
+  contactForm: 'Formulario',
+  countdown: 'Cuenta atrás',
 };
 
 function isSelected(selection: Selection, target: Selection): boolean {
@@ -147,6 +153,31 @@ export function LayersTree() {
     setShowPagePresets(false);
   };
 
+  const movePage = (index: number, delta: number): void => {
+    dispatch({
+      type: 'update',
+      mutate: (draft) => {
+        const target = index + delta;
+        if (target < 0 || target >= draft.pages.length) return;
+        const [moved] = draft.pages.splice(index, 1);
+        if (moved) draft.pages.splice(target, 0, moved);
+      },
+    });
+  };
+
+  const removePage = (id: string): void => {
+    if (!window.confirm('¿Eliminar esta página? Sus secciones se perderán.')) return;
+    dispatch({
+      type: 'update',
+      mutate: (draft) => {
+        draft.pages = draft.pages.filter((page) => page.id !== id);
+      },
+    });
+    // Si era la página activa, volvemos a la portada.
+    if (state.activePageId === id) dispatch({ type: 'page', pageId: null });
+    else if (selection.kind === 'page' && selection.id === id) select({ kind: 'global' });
+  };
+
   return (
     <nav className={s.tree} aria-label="Estructura del diseño">
       <button
@@ -168,17 +199,32 @@ export function LayersTree() {
         >
           🏠 Inicio <span className={s.treeGroupLabel}>/</span>
         </button>
-        {spec.pages.map((page) => (
-          <button
-            key={page.id}
-            type="button"
-            className={state.activePageId === page.id ? s.treeItemActive : s.treeItem}
-            title={`${page.name} — ${page.path}`}
-            onClick={() => dispatch({ type: 'page', pageId: page.id })}
-          >
-            📄 {page.name} <span className={s.treeGroupLabel}>{page.path}</span>
-          </button>
-        ))}
+        {spec.pages.map((page, index) => {
+          const pageSelected = state.activePageId === page.id;
+          const goToPage = (): void => dispatch({ type: 'page', pageId: page.id });
+          return (
+            <div
+              key={page.id}
+              role="button"
+              tabIndex={0}
+              className={pageSelected ? s.treeItemActive : s.treeItem}
+              title={`${page.name} — ${page.path}`}
+              onClick={goToPage}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') goToPage();
+              }}
+            >
+              <span>
+                📄 {page.name} <span className={s.treeGroupLabel}>{page.path}</span>
+              </span>
+              <span className={s.treeMiniRow}>
+                {rowButton('↑', () => movePage(index, -1))}
+                {rowButton('↓', () => movePage(index, 1))}
+                {rowButton('✕', () => removePage(page.id), true)}
+              </span>
+            </div>
+          );
+        })}
         <button
           type="button"
           className={s.ghostButton}

@@ -43,6 +43,8 @@ const KEY_FILES = [
   'src/components/background-style.ts',
   'src/components/primitives/Button.tsx',
   'src/components/primitives/Button.module.scss',
+  'src/components/primitives/ContactForm.tsx',
+  'src/components/primitives/Countdown.tsx',
   'src/components/cards/PricingCard.tsx',
   'src/components/sections/Section.tsx',
   'src/components/header/Header.tsx',

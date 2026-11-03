@@ -48,6 +48,10 @@ export { Divider } from './primitives/Divider';
 export type { DividerProps } from './primitives/Divider';
 export { Spacer } from './primitives/Spacer';
 export type { SpacerProps } from './primitives/Spacer';
+export { ContactForm } from './primitives/ContactForm';
+export type { ContactFormProps } from './primitives/ContactForm';
+export { Countdown } from './primitives/Countdown';
+export type { CountdownProps } from './primitives/Countdown';
 
 export { FeatureCard } from './cards/FeatureCard';
 export type { FeatureCardProps } from './cards/FeatureCard';

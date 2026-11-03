@@ -16,7 +16,14 @@ export interface HeaderProps extends Omit<HeaderSpec, 'cta' | 'itemAnimation'> {
   cta?: ButtonInput;
   /** Hover animation applied to every menu item. */
   itemAnimation?: HoverAnimationInput;
+  /** Path of the page being viewed ('/tienda'); marks its menu link as current. */
+  activePath?: string;
   className?: string;
+}
+
+/** '#/tienda' (hash export) and '/tienda' mean the same route. */
+function routeOf(href: string): string {
+  return href.startsWith('#/') ? href.slice(1) : href;
 }
 
 /**
@@ -37,6 +44,7 @@ export function Header({
   backgroundColor,
   linkColor,
   brandColor,
+  activePath,
   className,
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -128,30 +136,40 @@ export function Header({
           aria-label="Principal"
         >
           <ul className={s.list}>
-            {items.map((item) => (
-              <li key={item.id} className={cx(s.item, layout === 'angled' && s.itemAngled)}>
-                <a
-                  className={s.link}
-                  href={item.href}
-                  data-hover={itemHover}
-                  style={{ color: linkColor || undefined, ...itemStyle }}
-                >
-                  {item.label}
-                </a>
-                {item.children.length > 0 && (
-                  <ul className={s.dropdown}>
-                    {item.children.map((child) => (
-                      <li key={child.id}>
-                        <a className={s.dropdownLink} href={child.href}>
-                          {child.label}
-                          {child.badge && <span className={s.dropdownBadge}>{child.badge}</span>}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
+            {items.map((item) => {
+              // Solo los enlaces de ruta ('/tienda') pueden estar activos:
+              // los anclas '#seccion' no identifican página.
+              const isActive =
+                activePath !== undefined &&
+                (item.href.startsWith('/') || item.href.startsWith('#/')) &&
+                routeOf(item.href) === activePath;
+
+              return (
+                <li key={item.id} className={cx(s.item, layout === 'angled' && s.itemAngled)}>
+                  <a
+                    className={cx(s.link, isActive && s.itemActive)}
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    data-hover={itemHover}
+                    style={{ color: linkColor || undefined, ...itemStyle }}
+                  >
+                    {item.label}
+                  </a>
+                  {item.children.length > 0 && (
+                    <ul className={s.dropdown}>
+                      {item.children.map((child) => (
+                        <li key={child.id}>
+                          <a className={s.dropdownLink} href={child.href}>
+                            {child.label}
+                            {child.badge && <span className={s.dropdownBadge}>{child.badge}</span>}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </nav>
 

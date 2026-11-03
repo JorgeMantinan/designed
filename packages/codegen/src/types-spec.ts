@@ -248,7 +248,25 @@ export type ComponentSpec =
       color?: string;
       animated?: boolean;
     }
-  | { type: 'spacer'; id: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' };
+  | { type: 'spacer'; id: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' }
+  | {
+      type: 'contactForm';
+      id: string;
+      namePlaceholder?: string;
+      emailPlaceholder?: string;
+      messagePlaceholder?: string;
+      buttonText?: string;
+      successMessage?: string;
+      animation?: AnimationInput;
+    }
+  | {
+      type: 'countdown';
+      id: string;
+      target: string;
+      label?: string;
+      expiredText?: string;
+      animation?: AnimationInput;
+    };
 
 export interface RowSpec {
   id: string;
@@ -331,6 +349,8 @@ export interface FooterSpec {
   linkColor?: string;
   itemAnimation?: HoverAnimationInput;
   background?: BackgroundSpec;
+  /** Desktop columns per row ('auto' = fill the available width). */
+  columnsPerRow?: 'auto' | '1' | '2' | '3' | '4' | '6';
 }
 
 export interface ThemeSpec {

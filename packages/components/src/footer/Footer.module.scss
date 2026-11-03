@@ -68,6 +68,47 @@
   gap: var(--space-xl);
 }
 
+// Filas fijas de N columnas (columnsPerRow): en móvil siempre1 por fila.
+.rows1,
+.rows2,
+.rows3,
+.rows4,
+.rows6 {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.rows1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.rows2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rows3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.rows4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rows6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+@media (max-width: 767px) {
+  .rows1,
+  .rows2,
+  .rows3,
+  .rows4,
+  .rows6 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .column {
   min-width: 9rem;
 }

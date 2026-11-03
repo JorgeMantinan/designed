@@ -5,6 +5,8 @@ import { Badge } from './primitives/Badge';
 import { BodyText } from './primitives/BodyText';
 import { Button } from './primitives/Button';
 import { ButtonGroup } from './primitives/ButtonGroup';
+import { ContactForm } from './primitives/ContactForm';
+import { Countdown } from './primitives/Countdown';
 import { Divider } from './primitives/Divider';
 import { Heading } from './primitives/Heading';
 import { Icon } from './icons';
@@ -19,7 +21,6 @@ describe('Button', () => {
     expect(html).toContain('>Empezar<');
     expect(html).not.toContain('target=');
   });
-
   it('abre en nueva pestaña con rel seguro', () => {
     const html = renderToStaticMarkup(<Button label="Docs" href="https://example.com" newTab />);
 
@@ -156,5 +157,62 @@ describe('Icon', () => {
 
   it('no renderiza nada con nombres desconocidos', () => {
     expect(renderToStaticMarkup(<Icon name="no-existe" />)).toBe('');
+  });
+});
+
+describe('ContactForm', () => {
+  it('renderiza los tres campos con validación nativa y el botón', () => {
+    const html = renderToStaticMarkup(<ContactForm />);
+
+    expect(html).toContain('<form');
+    expect(html).toContain('type="text"');
+    expect(html).toContain('type="email"');
+    expect(html).toContain('<textarea');
+    expect(html).toContain('required');
+    expect(html).toContain('>Enviar mensaje<');
+    // Sin enviar: todavía no aparece la confirmación.
+    expect(html).not.toContain('role="status"');
+  });
+
+  it('respeta los textos personalizados', () => {
+    const html = renderToStaticMarkup(
+      <ContactForm
+        namePlaceholder="Nombre"
+        emailPlaceholder="Email"
+        messagePlaceholder="Mensaje"
+        buttonText="Reservar"
+        successMessage="¡Recibido!"
+      />,
+    );
+
+    expect(html).toContain('Reservar');
+    expect(html).toContain('placeholder="Nombre"');
+    expect(html).toContain('placeholder="Email"');
+    expect(html).toContain('placeholder="Mensaje"');
+    expect(html).not.toContain('¡Recibido!');
+  });
+});
+
+describe('Countdown', () => {
+  it('renderiza el reloj con las cuatro unidades para una fecha futura', () => {
+    const target = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+    const html = renderToStaticMarkup(<Countdown target={target} label="Quedan" />);
+
+    expect(html).toContain('role="timer"');
+    expect(html).toContain('Quedan');
+    expect(html).toContain('Días');
+    expect(html).toContain('Horas');
+    expect(html).toContain('Min');
+    expect(html).toContain('Seg');
+    expect(html).not.toContain('role="status"');
+  });
+
+  it('muestra el texto de expiración con fechas pasadas o inválidas', () => {
+    const past = renderToStaticMarkup(<Countdown target="2020-01-01T00:00" expiredText="Fin" />);
+    expect(past).toContain('role="status"');
+    expect(past).toContain('Fin');
+
+    const invalid = renderToStaticMarkup(<Countdown target="mañana sin hora" />);
+    expect(invalid).toContain('¡Ha terminado!');
   });
 });

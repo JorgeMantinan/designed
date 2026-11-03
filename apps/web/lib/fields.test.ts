@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseDesignSpec } from '@designed/schema';
+import { componentSchema, parseDesignSpec } from '@designed/schema';
 
 import {
   COMPONENT_FIELDS,
@@ -127,9 +127,9 @@ describe('setPath / getPath', () => {
 });
 
 describe('createDefaultComponent', () => {
-  it('crea instancias válidas para los15 tipos', () => {
+  it('crea instancias válidas para los 17 tipos', () => {
     const types = Object.keys(COMPONENT_FIELDS);
-    expect(types).toHaveLength(15);
+    expect(types).toHaveLength(17);
 
     for (const type of types) {
       const component = createDefaultComponent(
@@ -137,6 +137,8 @@ describe('createDefaultComponent', () => {
       );
       expect(component.type).toBe(type);
       expect(component.id).toMatch(/^[a-z0-9][a-z0-9-]*$/);
+      // El schema debe aceptar la instancia por defecto tal cual (defaults).
+      expect(componentSchema.safeParse(component).success, type).toBe(true);
     }
   });
 

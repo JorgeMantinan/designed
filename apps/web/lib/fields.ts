@@ -7,8 +7,8 @@ import type { ComponentSpec, ComponentType } from '@designed/schema';
  */
 
 export type FieldDescriptor =
-  | { key: string; kind: 'text'; label: string; placeholder?: string }
-  | { key: string; kind: 'textarea'; label: string; rows?: number }
+  | { key: string; kind: 'text'; label: string; placeholder?: string; hint?: string }
+  | { key: string; kind: 'textarea'; label: string; rows?: number; hint?: string }
   | {
       key: string;
       kind: 'number';
@@ -134,6 +134,20 @@ export const FOOTER_FIELDS: FieldDescriptor[] = [
       { value: 'classic', label: 'Clásico (marca + columnas)' },
       { value: 'centered', label: 'Centrado (todo al centro)' },
       { value: 'minimal', label: 'Mínimo (solo redes y copyright)' },
+    ],
+  },
+  {
+    key: 'columnsPerRow',
+    kind: 'select',
+    label: 'Columnas por fila',
+    hint: 'En pantallas grandes: N columnas de enlaces por fila (se apilan en móvil).',
+    options: [
+      { value: 'auto', label: 'Automático (las que quepan)' },
+      { value: '1', label: '1 por fila' },
+      { value: '2', label: '2 por fila' },
+      { value: '3', label: '3 por fila' },
+      { value: '4', label: '4 por fila' },
+      { value: '6', label: '6 por fila' },
     ],
   },
   { key: 'newsletter', kind: 'checkbox', label: 'Mostrar formulario de newsletter' },
@@ -572,6 +586,35 @@ export const COMPONENT_FIELDS: Record<ComponentType, FieldDescriptor[]> = {
       ],
     },
   ],
+  contactForm: [
+    { key: 'namePlaceholder', kind: 'text', label: 'Texto del campo nombre' },
+    { key: 'emailPlaceholder', kind: 'text', label: 'Texto del campo email' },
+    { key: 'messagePlaceholder', kind: 'text', label: 'Texto del campo mensaje' },
+    { key: 'buttonText', kind: 'text', label: 'Texto del botón' },
+    {
+      key: 'successMessage',
+      kind: 'textarea',
+      label: 'Mensaje tras enviar',
+      rows: 2,
+      hint: 'Sin servidor: el formulario simula el envío y muestra este mensaje.',
+    },
+  ],
+  countdown: [
+    {
+      key: 'target',
+      kind: 'text',
+      label: 'Fecha objetivo',
+      placeholder: '2026-12-31T23:59',
+      hint: 'Formato fecha y hora locales (AAAA-MM-DDTHH:mm).',
+    },
+    {
+      key: 'label',
+      kind: 'text',
+      label: 'Texto superior (opcional)',
+      placeholder: 'La oferta termina en',
+    },
+    { key: 'expiredText', kind: 'text', label: 'Texto al llegar la fecha' },
+  ],
 };
 
 // ── Path utilities (supports `a.b` and `a[0].b`) ─────────────────────────────
@@ -676,7 +719,16 @@ export function createDefaultComponent(type: ComponentType): ComponentSpec {
     carousel: { slides: [{ src: 'https://placehold.co/800x450', alt: 'Diapositiva' }] },
     divider: {},
     spacer: {},
+    contactForm: {},
+    countdown: { target: inDays(7) },
   };
 
   return { ...base, ...presets[type] } as unknown as ComponentSpec;
+}
+
+/** Local 'YYYY-MM-DDTHH:mm' `days` days from now (countdown default target). */
+export function inDays(days: number): string {
+  const date = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+  const pad = (value: number): string => String(value).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
